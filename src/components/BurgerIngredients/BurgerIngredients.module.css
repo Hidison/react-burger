@@ -1,0 +1,39 @@
+.BurgerIngredients {
+  max-width: 600px;
+}
+
+.burgerItem {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  max-width: 272px;
+  position: relative;
+}
+
+.burgerItem__list {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin: 0;
+}
+
+.burgerItem__countBlock {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.burgerItem__count {
+  margin-right: 9px;
+}
+
+.burgerItem__text {
+  height: 48px;
+  text-align: center;
+}
+
+.osThemeLight > .os-scrollbar > .os-scrollbar-track > .os-scrollbar-handle {
+  background: red;
+}

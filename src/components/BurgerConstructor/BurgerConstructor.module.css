@@ -1,0 +1,32 @@
+.BurgerConstructor {
+  width: 600px;
+}
+
+.BurgerConstructor__list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.BurgerConstructor__listItem {
+  display: grid;
+  grid-template-columns: 1fr 536px;
+  justify-items: stretch;
+  align-items: center;
+  row-gap: 16px;
+  margin-bottom: 16px;
+}
+
+.BurgerConstructor__listItem:last-child {
+  margin-bottom: 0;
+}
+
+.BurgerConstructor__result {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.BurgerConstructor__totalPrice {
+    margin-right: 10px;
+}
