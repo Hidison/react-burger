@@ -6,14 +6,14 @@ import {
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import MyScrollbar from "../UI/myScrollbar/MyScrollbar";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
-const BurgerIngredients = (props: any) => {
+const BurgerIngredients = (props) => {
   const [current, setCurrent] = React.useState("Булки");
 
-  const bunItem = props.data.filter((item: { type: string; }) => item.type === "bun");
-  const mainItem = props.data.filter((item: { type: string; }) => item.type === "main");
-  const sauceItem = props.data.filter((item: { type: string; }) => item.type === "sauce");
+  const bunItem = props.data.filter((item) => item.type === "bun");
+  const mainItem = props.data.filter((item) => item.type === "main");
+  const sauceItem = props.data.filter((item) => item.type === "sauce");
 
   return (
     <section className={BurgerIngredientsStyles.BurgerIngredients}>
@@ -38,7 +38,7 @@ const BurgerIngredients = (props: any) => {
         <ul
           className={`${BurgerIngredientsStyles.burgerItem__list} pt-6 pl-4 pr-4`}
         >
-          {bunItem.map((item: { _id: React.Key | null | undefined; image: string | undefined; price: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null | undefined; name: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null | undefined; }) => (
+          {bunItem.map((item) => (
             <li
               className={`${BurgerIngredientsStyles.burgerItem} mb-8`}
               key={item._id}
@@ -71,7 +71,7 @@ const BurgerIngredients = (props: any) => {
         <ul
           className={`${BurgerIngredientsStyles.burgerItem__list} pt-6 pl-4 pr-4`}
         >
-          {sauceItem.map((item: { _id: React.Key | null | undefined; image: string | undefined; price: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null | undefined; name: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null | undefined; }) => (
+          {sauceItem.map((item) => (
             <li
               className={`${BurgerIngredientsStyles.burgerItem} mb-8`}
               key={item._id}
@@ -105,7 +105,7 @@ const BurgerIngredients = (props: any) => {
         <ul
           className={`${BurgerIngredientsStyles.burgerItem__list} pt-6 pl-4 pr-4`}
         >
-          {mainItem.map((item: { _id: React.Key | null | undefined; image: string | undefined; price: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null | undefined; name: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null | undefined; }) => (
+          {mainItem.map((item) => (
             <li
               className={`${BurgerIngredientsStyles.burgerItem} mb-8`}
               key={item._id}
@@ -140,7 +140,7 @@ const BurgerIngredients = (props: any) => {
 };
 
 BurgerIngredients.propTypes = {
-  data: PropTypes.array,
-}; 
+  data: PropTypes.array.isRequired,
+};
 
 export default BurgerIngredients;

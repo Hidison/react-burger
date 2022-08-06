@@ -7,19 +7,20 @@ import {
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import MyScrollbar from "../UI/myScrollbar/MyScrollbar";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
-const BurgerConstructor = (props: any) => {
-  const totalPrice = props.data.reduce(function (tot: any, arr: any) {
+const BurgerConstructor = (props) => {
+  const totalPrice = props.data.reduce(function (tot, arr) {
     return tot + arr.price;
   }, 0);
-  console.log(props.data)
+
+  const ingredientsWithoutBun = props.data.filter((item) => {
+    return item.type !== 'bun';
+  });
 
   return (
     <section className={`${BurgerConstructorStyles.BurgerConstructor} mt-25`}>
-      <ul
-        className={`${BurgerConstructorStyles.BurgerConstructor__list}`}
-      >
+      <ul className={`${BurgerConstructorStyles.BurgerConstructor__list}`}>
         <li
           className={`${BurgerConstructorStyles.BurgerConstructor__listItem} mb-4 pl-4 pr-4`}
         >
@@ -27,13 +28,13 @@ const BurgerConstructor = (props: any) => {
           <ConstructorElement
             type={"top"}
             isLocked={true}
-            text={props.data[0].name}
+            text={`${props.data[0].name} (верх)`}
             price={props.data[0].price}
             thumbnail={props.data[0].image}
           />
         </li>
-        <MyScrollbar height={'464px'}>
-          {props.data.map((item: { _id: React.Key | null | undefined; name: string; price: number; image: string; }) => (
+        <MyScrollbar height={"464px"}>
+          {ingredientsWithoutBun.map((item) => (
             <li
               className={`${BurgerConstructorStyles.BurgerConstructor__listItem} pl-4 pr-4`}
               key={item._id}
@@ -55,9 +56,9 @@ const BurgerConstructor = (props: any) => {
           <ConstructorElement
             type={"bottom"}
             isLocked={true}
-            text={props.data[props.data.length - 1].name}
-            price={props.data[props.data.length - 1].price}
-            thumbnail={props.data[props.data.length - 1].image}
+            text={`${props.data[0].name} (низ)`}
+            price={props.data[0].price}
+            thumbnail={props.data[0].image}
           />
         </li>
       </ul>
@@ -81,7 +82,7 @@ const BurgerConstructor = (props: any) => {
 };
 
 BurgerConstructor.propTypes = {
-  data: PropTypes.array,
-}; 
+  data: PropTypes.array.isRequired
+};
 
 export default BurgerConstructor;

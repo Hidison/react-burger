@@ -3,7 +3,7 @@ import AppHeader from "../AppHeader/AppHeader";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 import AppStyles from "./App.module.css";
-import data from "../utils/data";
+import data from "../../utils/data";
 
 function App() {
   return (
