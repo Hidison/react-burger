@@ -9,6 +9,12 @@
   align-items: center;
   max-width: 272px;
   position: relative;
+  cursor: pointer;
+}
+
+.burgerItem:hover {
+  opacity: 0.6;
+  transition: all 0.2s linear;
 }
 
 .burgerItem__list {
@@ -22,7 +28,7 @@
 .burgerItem__countBlock {
   display: flex;
   flex-direction: row;
-  align-items: center;
+  justify-content: center;
 }
 
 .burgerItem__count {

@@ -1,22 +1,26 @@
 import React from "react";
 import BurgerIngredientsStyles from "./BurgerIngredients.module.css";
-import {
-  Tab,
-  CurrencyIcon,
-  Counter,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import MyScrollbar from "../UI/myScrollbar/MyScrollbar";
 import PropTypes from "prop-types";
+import Ingredient from "../Ingredient/Ingredient";
 
-const BurgerIngredients = (props) => {
+const BurgerIngredients = ({
+  data,
+  setSelectedIngredient,
+  handleOpenModal,
+}) => {
   const [current, setCurrent] = React.useState("Булки");
-
-  const bunItem = props.data.filter((item) => item.type === "bun");
-  const mainItem = props.data.filter((item) => item.type === "main");
-  const sauceItem = props.data.filter((item) => item.type === "sauce");
+  
+  const bunItem = data.filter((item) => item.type === "bun");
+  const mainItem = data.filter((item) => item.type === "main");
+  const sauceItem = data.filter((item) => item.type === "sauce");
 
   return (
-    <section className={BurgerIngredientsStyles.BurgerIngredients}>
+    <section
+      style={{ overflow: "hidden" }}
+      className={BurgerIngredientsStyles.BurgerIngredients}
+    >
       <h1 className="pb-5 pt-10 text text_type_main-large">Соберите бургер</h1>
       <div className="pb-10" style={{ display: "flex" }}>
         <Tab value="Булки" active={current === "Булки"} onClick={setCurrent}>
@@ -42,28 +46,13 @@ const BurgerIngredients = (props) => {
             <li
               className={`${BurgerIngredientsStyles.burgerItem} mb-8`}
               key={item._id}
+              card={item}
             >
-              <img
-                src={item.image}
-                alt="иконка карточки"
-                className="ml-4 mr-4"
+              <Ingredient
+                handleOpenModal={handleOpenModal}
+                setSelectedIngredient={setSelectedIngredient}
+                item={item}
               />
-              <Counter count={1} size="default" />
-              <div
-                className={`${BurgerIngredientsStyles.burgerItem__countBlock} mt-1 mb-1`}
-              >
-                <span
-                  className={`${BurgerIngredientsStyles.burgerItem__count} text text_type_digits-default`}
-                >
-                  {item.price}
-                </span>
-                <CurrencyIcon type="primary" />
-              </div>
-              <p
-                className={`${BurgerIngredientsStyles.burgerItem__text} text text_type_main-default`}
-              >
-                {item.name}
-              </p>
             </li>
           ))}
         </ul>
@@ -76,27 +65,11 @@ const BurgerIngredients = (props) => {
               className={`${BurgerIngredientsStyles.burgerItem} mb-8`}
               key={item._id}
             >
-              <img
-                src={item.image}
-                alt="иконка карточки"
-                className="ml-4 mr-4"
+              <Ingredient
+                handleOpenModal={handleOpenModal}
+                setSelectedIngredient={setSelectedIngredient}
+                item={item}
               />
-              <Counter count={1} size="default" />
-              <div
-                className={`${BurgerIngredientsStyles.burgerItem__countBlock} mt-1 mb-1`}
-              >
-                <span
-                  className={`${BurgerIngredientsStyles.burgerItem__count} text text_type_digits-default`}
-                >
-                  {item.price}
-                </span>
-                <CurrencyIcon type="primary" />
-              </div>
-              <p
-                className={`${BurgerIngredientsStyles.burgerItem__text} text text_type_main-default`}
-              >
-                {item.name}
-              </p>
             </li>
           ))}
         </ul>
@@ -110,27 +83,11 @@ const BurgerIngredients = (props) => {
               className={`${BurgerIngredientsStyles.burgerItem} mb-8`}
               key={item._id}
             >
-              <img
-                src={item.image}
-                alt="иконка карточки"
-                className="ml-4 mr-4"
+              <Ingredient
+                handleOpenModal={handleOpenModal}
+                setSelectedIngredient={setSelectedIngredient}
+                item={item}
               />
-              <Counter count={1} size="default" />
-              <div
-                className={`${BurgerIngredientsStyles.burgerItem__countBlock} mt-1 mb-1`}
-              >
-                <span
-                  className={`${BurgerIngredientsStyles.burgerItem__count} text text_type_digits-default`}
-                >
-                  {item.price}
-                </span>
-                <CurrencyIcon type="primary" />
-              </div>
-              <p
-                className={`${BurgerIngredientsStyles.burgerItem__text} text text_type_main-default`}
-              >
-                {item.name}
-              </p>
             </li>
           ))}
         </ul>
@@ -141,6 +98,8 @@ const BurgerIngredients = (props) => {
 
 BurgerIngredients.propTypes = {
   data: PropTypes.array.isRequired,
+  setSelectedIngredient: PropTypes.func,
+  handleOpenModal: PropTypes.func,
 };
 
 export default BurgerIngredients;

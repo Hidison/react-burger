@@ -15,7 +15,7 @@ const BurgerConstructor = (props) => {
   }, 0);
 
   const ingredientsWithoutBun = props.data.filter((item) => {
-    return item.type !== 'bun';
+    return item.type !== "bun";
   });
 
   return (
@@ -25,6 +25,7 @@ const BurgerConstructor = (props) => {
           className={`${BurgerConstructorStyles.BurgerConstructor__listItem} mb-4 pl-4 pr-4`}
         >
           <div></div>
+
           <ConstructorElement
             type={"top"}
             isLocked={true}
@@ -56,7 +57,7 @@ const BurgerConstructor = (props) => {
           <ConstructorElement
             type={"bottom"}
             isLocked={true}
-            text={`${props.data[0].name} (низ)`}
+            text={`${props.data[0].name} (них)`}
             price={props.data[0].price}
             thumbnail={props.data[0].image}
           />
@@ -73,7 +74,7 @@ const BurgerConstructor = (props) => {
           </span>
           <CurrencyIcon type="primary" />
         </div>
-        <Button type="primary" size="large">
+        <Button type="primary" size="large" onClick={props.handleOpenModal}>
           Оформить заказ
         </Button>
       </div>
@@ -82,7 +83,8 @@ const BurgerConstructor = (props) => {
 };
 
 BurgerConstructor.propTypes = {
-  data: PropTypes.array.isRequired
+  data: PropTypes.array.isRequired,
+  handleOpenModal: PropTypes.func,
 };
 
 export default BurgerConstructor;

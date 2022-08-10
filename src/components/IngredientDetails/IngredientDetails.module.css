@@ -1,0 +1,36 @@
+.modal__list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+  width: 520px;
+  margin-top: 0;
+}
+
+.modal__listItem {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.modal__listItemTitle {
+  margin-bottom: 8px;
+}
+
+.modal__image {
+  width: 100%;
+  margin: 0;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.modal__imageText {
+  text-align: center;
+}
+
+.modal__imageBlock {
+  width: 520px;
+  margin: 0;
+}
