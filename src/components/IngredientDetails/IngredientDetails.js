@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 const IngredientDetails = (props) => {
   return (
     <Modal
-      ingredientModalVisible={props.modalVisible}
+      title={props.title}
       modalVisible={props.modalVisible}
       handleCloseModal={props.handleCloseModal}
     >

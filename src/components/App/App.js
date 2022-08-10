@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import ReactDOM from "react-dom";
 import AppHeader from "../AppHeader/AppHeader";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
@@ -7,31 +6,6 @@ import AppStyles from "./App.module.css";
 import * as MainApi from "../../utils/MainApi.js";
 import OrderDetails from "../OrderDetails/OrderDetails";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
-
-const ModalOrderDetails = ({ modalVisible, handleCloseModal }) => {
-  return ReactDOM.createPortal(
-    <OrderDetails
-      modalVisible={modalVisible}
-      handleCloseModal={handleCloseModal}
-    />,
-    document.body
-  );
-};
-
-const ModalIngredientDetails = ({
-  modalVisible,
-  handleCloseModal,
-  selectedIngredient,
-}) => {
-  return ReactDOM.createPortal(
-    <IngredientDetails
-      modalVisible={modalVisible}
-      handleCloseModal={handleCloseModal}
-      selectedIngredient={selectedIngredient}
-    />,
-    document.body
-  );
-};
 
 function App() {
   const [orderModalVisible, setOrderModalVisible] = useState(false);
@@ -75,11 +49,12 @@ function App() {
           <BurgerConstructor data={data} handleOpenModal={openOrderModal} />
         </main>
       )}
-      <ModalOrderDetails
+      <OrderDetails
         modalVisible={orderModalVisible}
         handleCloseModal={closeAllModal}
       />
-      <ModalIngredientDetails
+      <IngredientDetails
+        title={"Детали ингредиента"}
         modalVisible={ingredientModalVisible}
         handleCloseModal={closeAllModal}
         selectedIngredient={selectedIngredient}
