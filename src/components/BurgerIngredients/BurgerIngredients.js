@@ -4,14 +4,12 @@ import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import MyScrollbar from "../UI/myScrollbar/MyScrollbar";
 import PropTypes from "prop-types";
 import Ingredient from "../Ingredient/Ingredient";
+import { IngredientContext } from "../../contexts/ingredientsContext";
 
-const BurgerIngredients = ({
-  data,
-  setSelectedIngredient,
-  handleOpenModal,
-}) => {
+const BurgerIngredients = ({ setSelectedIngredient, handleOpenModal }) => {
+  const { data } = React.useContext(IngredientContext);
   const [current, setCurrent] = React.useState("Булки");
-  
+
   const bunItem = data.filter((item) => item.type === "bun");
   const mainItem = data.filter((item) => item.type === "main");
   const sauceItem = data.filter((item) => item.type === "sauce");
@@ -97,7 +95,6 @@ const BurgerIngredients = ({
 };
 
 BurgerIngredients.propTypes = {
-  data: PropTypes.array.isRequired,
   setSelectedIngredient: PropTypes.func,
   handleOpenModal: PropTypes.func,
 };
