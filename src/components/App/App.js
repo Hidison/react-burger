@@ -8,6 +8,7 @@ import OrderDetails from "../OrderDetails/OrderDetails";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import { IngredientContext } from "../../contexts/ingredientsContext";
 import { OrderContext } from "../../contexts/orderContext";
+import Modal from "../Modal/Modal";
 
 function App() {
   const [orderModalVisible, setOrderModalVisible] = useState(false);
@@ -57,7 +58,6 @@ function App() {
           {data !== null && (
             <main className={AppStyles.main}>
               <BurgerIngredients
-                data={data}
                 setSelectedIngredient={setSelectedIngredient}
                 handleOpenModal={openIngredientModal}
               />
@@ -67,16 +67,19 @@ function App() {
               />
             </main>
           )}
-          <OrderDetails
+          <Modal
             modalVisible={orderModalVisible}
             handleCloseModal={closeAllModal}
-          />
-          <IngredientDetails
+          >
+            <OrderDetails />
+          </Modal>
+          <Modal
             title={"Детали ингредиента"}
             modalVisible={ingredientModalVisible}
             handleCloseModal={closeAllModal}
-            selectedIngredient={selectedIngredient}
-          />
+          >
+            <IngredientDetails selectedIngredient={selectedIngredient} />
+          </Modal>
         </OrderContext.Provider>
       </IngredientContext.Provider>
     </div>

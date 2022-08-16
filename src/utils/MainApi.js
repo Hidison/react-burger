@@ -1,14 +1,17 @@
 export const baseUrl = "https://norma.nomoreparties.space/api";
 
+const checkResponse = (res) => {
+  if (res.ok) {
+    return res.json();
+  }
+
+  return Promise.reject(`Ошибка: ${res.status}`);
+};
+
 export const getIngredients = () => {
   return fetch(`${baseUrl}/ingredients`, {
     method: "GET",
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка ${res.status}`);
-  });
+  }).then(checkResponse);
 };
 
 export const postOrder = (id) => {
@@ -20,10 +23,5 @@ export const postOrder = (id) => {
     body: JSON.stringify({
       ingredients: id,
     }),
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка ${res.status}`);
-  });
+  }).then(checkResponse);
 };

@@ -56,10 +56,10 @@ const Modal = ({ handleCloseModal, ...props }) => {
 };
 
 Modal.propTypes = {
+  title: PropTypes.string,
   handleCloseModal: PropTypes.func,
   modalVisible: PropTypes.bool,
-  ingredientModalVisible: PropTypes.bool,
-  children: PropTypes.array.isRequired,
+  children: PropTypes.object.isRequired,
 };
 
 export default Modal;

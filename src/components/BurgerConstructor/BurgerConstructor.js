@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useReducer } from "react";
+import React, { useEffect, useState, useReducer, useMemo } from "react";
 import BurgerConstructorStyles from "./BurgerConstructor.module.css";
 import {
   ConstructorElement,
@@ -32,13 +32,21 @@ const BurgerConstructor = (props) => {
     initialTotalPrice,
     undefined
   );
-  const ingredientsWithoutBun = randomSixIngredients.filter((item) => {
-    return item.type !== "bun";
-  });
+  const ingredientsWithoutBun = useMemo(
+    () =>
+      randomSixIngredients.filter((item) => {
+        return item.type !== "bun";
+      }),
+    [randomSixIngredients]
+  );
 
-  const ingredientsBun = data.filter((item) => {
-    return item.type === "bun";
-  });
+  const ingredientsBun = useMemo(
+    () =>
+      data.filter((item) => {
+        return item.type === "bun";
+      }),
+    [data]
+  );
 
   var bunsPrice;
 
@@ -60,11 +68,18 @@ const BurgerConstructor = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const ingredientsPrice = ingredientsWithoutBun.reduce(function (tot, arr) {
-    return tot + arr.price;
-  }, 0);
+  const ingredientsPrice = useMemo(
+    () =>
+      ingredientsWithoutBun.reduce(function (tot, arr) {
+        return tot + arr.price;
+      }, 0),
+    [ingredientsWithoutBun]
+  );
 
-  const ingredientsWithBun = ingredientsWithoutBun.concat(randomBun);
+  const ingredientsWithBun = useMemo(
+    () => ingredientsWithoutBun.concat(randomBun),
+    [ingredientsWithoutBun, randomBun]
+  );
 
   useEffect(() => {
     if (bunsPrice) {
@@ -153,7 +168,7 @@ const BurgerConstructor = (props) => {
 
 BurgerConstructor.propTypes = {
   handleOpenModal: PropTypes.func,
-  handleOrder: PropTypes.func,
+  getOrderNumber: PropTypes.func,
 };
 
 export default BurgerConstructor;

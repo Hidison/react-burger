@@ -1,15 +1,10 @@
 import React from "react";
-import Modal from "../Modal/Modal";
 import IngredientDetailsStyles from "./IngredientDetails.module.css";
 import PropTypes from "prop-types";
 
 const IngredientDetails = (props) => {
   return (
-    <Modal
-      title={props.title}
-      modalVisible={props.modalVisible}
-      handleCloseModal={props.handleCloseModal}
-    >
+    <>
       <figure className={IngredientDetailsStyles.modal__imageBlock}>
         <img
           src={props.selectedIngredient.image}
@@ -58,13 +53,11 @@ const IngredientDetails = (props) => {
           </p>
         </li>
       </ul>
-    </Modal>
+    </>
   );
 };
 
 IngredientDetails.propTypes = {
-  modalVisible: PropTypes.bool,
-  handleCloseModal: PropTypes.func,
   selectedIngredient: PropTypes.object.isRequired,
 };
 
