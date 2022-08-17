@@ -1,0 +1,14 @@
+.burgerItem__countBlock {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.burgerItem__count {
+  margin-right: 9px;
+}
+
+.burgerItem__text {
+  height: 48px;
+  text-align: center;
+}

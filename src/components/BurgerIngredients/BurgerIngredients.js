@@ -1,46 +1,83 @@
-import React from "react";
+import React, { useRef, useMemo, useContext, useState } from "react";
 import BurgerIngredientsStyles from "./BurgerIngredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import MyScrollbar from "../UI/myScrollbar/MyScrollbar";
 import PropTypes from "prop-types";
 import Ingredient from "../Ingredient/Ingredient";
+import { IngredientContext } from "../../contexts/ingredientsContext";
 
-const BurgerIngredients = ({
-  data,
-  setSelectedIngredient,
-  handleOpenModal,
-}) => {
-  const [current, setCurrent] = React.useState("Булки");
-  
-  const bunItem = data.filter((item) => item.type === "bun");
-  const mainItem = data.filter((item) => item.type === "main");
-  const sauceItem = data.filter((item) => item.type === "sauce");
+const BurgerIngredients = ({ setSelectedIngredient, handleOpenModal }) => {
+  const { data } = useContext(IngredientContext);
+  const [current, setCurrent] = useState("Булки");
+
+  const bunItem = useMemo(
+    () => data.filter((item) => item.type === "bun"),
+    [data]
+  );
+
+  const mainItem = useMemo(
+    () => data.filter((item) => item.type === "main"),
+    [data]
+  );
+
+  const sauceItem = useMemo(
+    () => data.filter((item) => item.type === "sauce"),
+    [data]
+  );
+
+  const bunRef = useRef(null);
+  const sauceRef = useRef(null);
+  const fillingRef = useRef(null);
+
+  const handleBunClick = (e) => {
+    setCurrent(e);
+    bunRef.current.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleSauceClick = (e) => {
+    setCurrent(e);
+    sauceRef.current.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleFillingClick = (e) => {
+    setCurrent(e);
+    fillingRef.current.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
-    <section
-      style={{ overflow: "hidden" }}
-      className={BurgerIngredientsStyles.BurgerIngredients}
-    >
+    <section className={BurgerIngredientsStyles.BurgerIngredients}>
       <h1 className="pb-5 pt-10 text text_type_main-large">Соберите бургер</h1>
-      <div className="pb-10" style={{ display: "flex" }}>
-        <Tab value="Булки" active={current === "Булки"} onClick={setCurrent}>
+      <div
+        className={`${BurgerIngredientsStyles.BurgerIngredients__tab} pb-10`}
+      >
+        <Tab
+          value="Булки"
+          active={current === "Булки"}
+          onClick={handleBunClick}
+        >
           Булки
         </Tab>
-        <Tab value="Соусы" active={current === "Соусы"} onClick={setCurrent}>
+        <Tab
+          value="Соусы"
+          active={current === "Соусы"}
+          onClick={handleSauceClick}
+        >
           Соусы
         </Tab>
         <Tab
           value="Начинки"
           active={current === "Начинки"}
-          onClick={setCurrent}
+          onClick={handleFillingClick}
         >
           Начинки
         </Tab>
       </div>
       <MyScrollbar height={"716px"}>
-        <h2 className="pb-6 text text_type_main-medium">Булки</h2>
+        <h2 className="pb-6 text text_type_main-medium" ref={bunRef}>
+          Булки
+        </h2>
         <ul
-          className={`${BurgerIngredientsStyles.burgerItem__list} pt-6 pl-4 pr-4`}
+          className={`${BurgerIngredientsStyles.burgerItem__list} pt-6 pb-10 pl-4 pr-4`}
         >
           {bunItem.map((item) => (
             <li
@@ -56,9 +93,11 @@ const BurgerIngredients = ({
             </li>
           ))}
         </ul>
-        <h2 className="pb-6 pt-10 text text_type_main-medium">Соусы</h2>
+        <h2 className="pb-6 text text_type_main-medium" ref={sauceRef}>
+          Соусы
+        </h2>
         <ul
-          className={`${BurgerIngredientsStyles.burgerItem__list} pt-6 pl-4 pr-4`}
+          className={`${BurgerIngredientsStyles.burgerItem__list} pt-6 pb-10 pl-4 pr-4`}
         >
           {sauceItem.map((item) => (
             <li
@@ -74,7 +113,9 @@ const BurgerIngredients = ({
           ))}
         </ul>
 
-        <h2 className="pb-6 pt-10 text text_type_main-medium">Начинки</h2>
+        <h2 className="pb-6 text text_type_main-medium" ref={fillingRef}>
+          Начинки
+        </h2>
         <ul
           className={`${BurgerIngredientsStyles.burgerItem__list} pt-6 pl-4 pr-4`}
         >
@@ -97,7 +138,6 @@ const BurgerIngredients = ({
 };
 
 BurgerIngredients.propTypes = {
-  data: PropTypes.array.isRequired,
   setSelectedIngredient: PropTypes.func,
   handleOpenModal: PropTypes.func,
 };
