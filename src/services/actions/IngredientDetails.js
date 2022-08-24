@@ -1,0 +1,1 @@
+export const SEL_INGREDIENT = "SEL_INGREDIENT";

@@ -1,9 +1,9 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import OrderDoneImage from "../../images/order-done-image.svg";
-import { OrderContext } from "../../contexts/orderContext";
 
 const OrderDetails = () => {
-  const { orderNumber } = React.useContext(OrderContext);
+  const { orderNumber } = useSelector((state) => state.order);
 
   return (
     <>

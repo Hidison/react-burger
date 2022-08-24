@@ -14,10 +14,9 @@
   justify-items: stretch;
   align-items: center;
   row-gap: 16px;
-  margin-bottom: 16px;
 }
 
-.BurgerConstructor__listItem:last-child {
+.BurgerConstructor__listItem_main:last-child {
   margin-bottom: 0;
 }
 
@@ -28,5 +27,23 @@
 }
 
 .BurgerConstructor__totalPrice {
-    margin-right: 10px;
+  margin-right: 10px;
+}
+
+.BurgerConstructor__element {
+  width: 536px;
+  height: 80px;
+  border-radius: 40px;
+  background: #2f2f37;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.BurgerConstructor__element_top {
+  border-radius: 88px 88px 40px 40px;
+}
+
+.BurgerConstructor__element_bottom {
+  border-radius: 40px 40px 88px 88px;
 }

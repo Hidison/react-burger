@@ -29,3 +29,7 @@
   flex-wrap: wrap;
   margin: 0;
 }
+
+.BurgerIngredients__load {
+  font-size: 32px;
+}

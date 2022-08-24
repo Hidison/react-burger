@@ -1,167 +1,215 @@
-import React, { useEffect, useState, useReducer, useMemo } from "react";
+import React, { useCallback, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useDrop } from "react-dnd";
+import uuid from "react-uuid";
 import BurgerConstructorStyles from "./BurgerConstructor.module.css";
 import {
-  ConstructorElement,
-  DragIcon,
   Button,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import MyScrollbar from "../UI/myScrollbar/MyScrollbar";
 import PropTypes from "prop-types";
-import { IngredientContext } from "../../contexts/ingredientsContext";
+import { sendOrder } from "../../services/actions/OrderDetails";
+import {
+  SET_INGREDIENTS_BUN,
+  ADD_INGREDIENTS_MAIN,
+  SET_TOTAL_PRICE,
+  SET_INGREDIENTS_ID,
+  UPDATE_SELECTED_INGREDIENTS,
+} from "../../services/actions/BurgerConstructor";
+import ConstructorElementWrapper from "../ConstructorElementWrapper/ConstructorElement";
 
-const initialTotalPrice = { price: 0 };
+const BurgerConstructor = ({ handleOpenModal }) => {
+  const dispatch = useDispatch();
 
-function reducer(state, action) {
-  switch (action.type) {
-    case "set":
-      return { price: action.payload };
-    case "reset":
-      return initialTotalPrice;
-    default:
-      throw new Error(`Wrong type of action: ${action.type}`);
-  }
-}
+  const { selectedIngredientsBun, selectedIngredientsMain, totalPrice, ID } =
+    useSelector((state) => state.selectedIngredients);
 
-const BurgerConstructor = (props) => {
-  const { data } = React.useContext(IngredientContext);
-  const [randomSixIngredients, setRandomSixIngredients] = useState([]);
-  const [randomBun, setRandomBun] = useState(null);
-  const [totalPriceState, totalPriceDispatcher] = useReducer(
-    reducer,
-    initialTotalPrice,
-    undefined
-  );
-  const ingredientsWithoutBun = useMemo(
-    () =>
-      randomSixIngredients.filter((item) => {
-        return item.type !== "bun";
-      }),
-    [randomSixIngredients]
-  );
-
-  const ingredientsBun = useMemo(
-    () =>
-      data.filter((item) => {
-        return item.type === "bun";
-      }),
-    [data]
-  );
-
-  var bunsPrice;
-
-  if (randomBun !== null) {
-    bunsPrice = randomBun.price * 2;
-  }
-
-  useEffect(() => {
-    setRandomSixIngredients(
-      data
-        .map((i) => [Math.random(), i])
-        .sort()
-        .map((i) => i[1])
-        .slice(0, 7)
-    );
-    setRandomBun(
-      ingredientsBun[Math.floor(Math.random() * ingredientsBun.length)]
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const ingredientsPrice = useMemo(
-    () =>
-      ingredientsWithoutBun.reduce(function (tot, arr) {
-        return tot + arr.price;
-      }, 0),
-    [ingredientsWithoutBun]
-  );
-
-  const ingredientsWithBun = useMemo(
-    () => ingredientsWithoutBun.concat(randomBun),
-    [ingredientsWithoutBun, randomBun]
-  );
-
-  useEffect(() => {
-    if (bunsPrice) {
-      totalPriceDispatcher({
-        type: "set",
-        payload: bunsPrice + ingredientsPrice,
+  const [{ isHoverBun }, dropTarget] = useDrop({
+    accept: "ingredientBun",
+    collect: (monitor) => ({
+      isHoverBun: monitor.isOver(),
+    }),
+    drop(item) {
+      dispatch({
+        type: SET_INGREDIENTS_BUN,
+        item: { ...item, count: 2 },
       });
-    }
-  }, [bunsPrice, ingredientsPrice]);
+    },
+  });
+
+  const [{ isHoverDownBun }, dropTargetDown] = useDrop({
+    accept: "ingredientBun",
+    collect: (monitor) => ({
+      isHoverDownBun: monitor.isOver(),
+    }),
+    drop(item) {
+      dispatch({
+        type: SET_INGREDIENTS_BUN,
+        item: { ...item, count: 2 },
+      });
+    },
+  });
+
+  const [{ isHoverMain }, dropTargetMain] = useDrop({
+    accept: "ingredientMain",
+    collect: (monitor) => ({
+      isHoverMain: monitor.isOver(),
+    }),
+    drop(item) {
+      dispatch({
+        type: ADD_INGREDIENTS_MAIN,
+        item: { ...item, dragId: uuid() },
+      });
+    },
+  });
+
+  const opacityBun = isHoverBun || isHoverDownBun ? "0.5" : "1";
+  const opacityMain = isHoverMain ? "0.5" : "1";
 
   const handleOrder = () => {
-    const ingredientsId = ingredientsWithBun.map((ingredient) => {
-      return ingredient._id;
+    dispatch({
+      type: SET_INGREDIENTS_BUN,
+      item: { price: 0 },
     });
-    props.getOrderNumber(ingredientsId);
-    props.handleOpenModal();
+    dispatch({
+      type: UPDATE_SELECTED_INGREDIENTS,
+      sortedIngredients: [],
+    });
+    dispatch(sendOrder(ID));
+    handleOpenModal();
   };
+
+  useEffect(() => {
+    dispatch({
+      type: SET_TOTAL_PRICE,
+    });
+    dispatch({
+      type: SET_INGREDIENTS_ID,
+    });
+  }, [dispatch, selectedIngredientsBun, selectedIngredientsMain]);
+
+  const moveIngredient = useCallback(
+    (dragIndex, hoverIndex) => {
+      const dragIngredient = selectedIngredientsMain[dragIndex];
+      const newIngredients = [...selectedIngredientsMain];
+      newIngredients.splice(dragIndex, 1);
+      newIngredients.splice(hoverIndex, 0, dragIngredient);
+      dispatch({
+        type: UPDATE_SELECTED_INGREDIENTS,
+        sortedIngredients: newIngredients,
+      });
+    },
+    [selectedIngredientsMain, dispatch]
+  );
 
   return (
     <section className={`${BurgerConstructorStyles.BurgerConstructor} mt-25`}>
-      {randomBun !== null && (
-        <>
-          <ul className={`${BurgerConstructorStyles.BurgerConstructor__list}`}>
+      <>
+        <ul
+          className={`${BurgerConstructorStyles.BurgerConstructor__list}`}
+          ref={dropTarget}
+          style={{ opacity: opacityBun }}
+        >
+          {selectedIngredientsBun.price !== 0 ? (
+            <ConstructorElementWrapper
+              item={selectedIngredientsBun}
+              type={"top"}
+            />
+          ) : (
             <li
               className={`${BurgerConstructorStyles.BurgerConstructor__listItem} mb-4 pl-4 pr-4`}
             >
               <div></div>
-
-              <ConstructorElement
-                type={"top"}
-                isLocked={true}
-                text={`${randomBun.name} (верх)`}
-                price={randomBun.price}
-                thumbnail={randomBun.image}
-              />
+              <div
+                style={{ opacity: opacityBun }}
+                className={`${BurgerConstructorStyles.BurgerConstructor__element} ${BurgerConstructorStyles.BurgerConstructor__element_top}`}
+              >
+                Выберите булку (верх)
+              </div>
             </li>
-            <MyScrollbar height={"464px"}>
-              {ingredientsWithoutBun.map((item) => (
-                <li
-                  className={`${BurgerConstructorStyles.BurgerConstructor__listItem} pl-4 pr-4`}
-                  key={item._id}
+          )}
+        </ul>
+        <MyScrollbar height={"464px"}>
+          <ul
+            ref={dropTargetMain}
+            className={`${BurgerConstructorStyles.BurgerConstructor__list}`}
+            style={{ opacity: opacityMain, padding: "0" }}
+          >
+            {selectedIngredientsMain.length !== 0 ? (
+              selectedIngredientsMain.map((item, index) => (
+                <ConstructorElementWrapper
+                  key={item.dragId}
+                  id={item.dragId}
+                  item={item}
+                  index={index}
+                  moveIngredient={moveIngredient}
+                />
+              ))
+            ) : (
+              <li
+                className={`${BurgerConstructorStyles.BurgerConstructor__listItem} pl-4 pr-4`}
+              >
+                <div></div>
+                <div
+                  className={BurgerConstructorStyles.BurgerConstructor__element}
                 >
-                  <DragIcon type="primary" />
-                  <ConstructorElement
-                    isLocked={false}
-                    text={item.name}
-                    price={item.price}
-                    thumbnail={item.image}
-                  />
-                </li>
-              ))}
-            </MyScrollbar>
+                  Выберите ингредиент
+                </div>
+              </li>
+            )}
+          </ul>
+        </MyScrollbar>
+        <ul
+          className={`${BurgerConstructorStyles.BurgerConstructor__list}`}
+          ref={dropTargetDown}
+          style={{ opacity: opacityBun }}
+        >
+          {selectedIngredientsBun.price !== 0 ? (
+            <ConstructorElementWrapper
+              item={selectedIngredientsBun}
+              type={"bottom"}
+            />
+          ) : (
             <li
               className={`${BurgerConstructorStyles.BurgerConstructor__listItem} mt-4 pl-4 pr-4`}
             >
               <div></div>
-              <ConstructorElement
-                type={"bottom"}
-                isLocked={true}
-                text={`${randomBun.name} (них)`}
-                price={randomBun.price}
-                thumbnail={randomBun.image}
-              />
-            </li>
-          </ul>
-          <div
-            className={`${BurgerConstructorStyles.BurgerConstructor__result} mt-10`}
-          >
-            <div className="mr-10">
-              <span
-                className={`${BurgerConstructorStyles.BurgerConstructor__totalPrice} text text_type_digits-medium`}
+              <div
+                style={{ opacity: opacityBun }}
+                className={`${BurgerConstructorStyles.BurgerConstructor__element} ${BurgerConstructorStyles.BurgerConstructor__element_bottom}`}
               >
-                {totalPriceState.price}
-              </span>
-              <CurrencyIcon type="primary" />
-            </div>
-            <Button type="primary" size="large" onClick={handleOrder}>
-              Оформить заказ
-            </Button>
+                Выберите булку (низ)
+              </div>
+            </li>
+          )}
+        </ul>
+        <div
+          className={`${BurgerConstructorStyles.BurgerConstructor__result} mt-10`}
+        >
+          <div className="mr-10">
+            <span
+              className={`${BurgerConstructorStyles.BurgerConstructor__totalPrice} text text_type_digits-medium`}
+            >
+              {totalPrice}
+            </span>
+            <CurrencyIcon type="primary" />
           </div>
-        </>
-      )}
+          <Button
+            type="primary"
+            size="large"
+            disabled={
+              !selectedIngredientsBun.name ||
+              selectedIngredientsMain.length === 0
+                ? true
+                : false
+            }
+            onClick={handleOrder}
+          >
+            Оформить заказ
+          </Button>
+        </div>
+      </>
     </section>
   );
 };
