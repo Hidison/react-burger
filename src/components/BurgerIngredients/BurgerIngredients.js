@@ -6,6 +6,7 @@ import MyScrollbar from "../UI/myScrollbar/MyScrollbar";
 import PropTypes from "prop-types";
 import Ingredient from "../Ingredient/Ingredient";
 import { getIngredients } from "../../services/actions/BurgerIngredients";
+import Loader from "../UI/Loader/Loader";
 
 const BurgerIngredients = ({ handleOpenModal }) => {
   const [current, setCurrent] = useState("Булки");
@@ -79,11 +80,7 @@ const BurgerIngredients = ({ handleOpenModal }) => {
       </p>
     );
   } else if (ingredientsRequest) {
-    return (
-      <p className={`${BurgerIngredientsStyles.BurgerIngredients__load} mt-25`}>
-        Загрузка...
-      </p>
-    );
+    return <Loader />;
   } else {
     return (
       <section className={BurgerIngredientsStyles.BurgerIngredients}>
@@ -176,7 +173,6 @@ const BurgerIngredients = ({ handleOpenModal }) => {
 };
 
 BurgerIngredients.propTypes = {
-  setSelectedIngredient: PropTypes.func,
   handleOpenModal: PropTypes.func,
 };
 

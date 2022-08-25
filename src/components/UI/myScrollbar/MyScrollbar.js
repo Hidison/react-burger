@@ -1,5 +1,6 @@
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import React from "react";
+import PropTypes from "prop-types";
 import "./MyScrollbar.css";
 
 const MyScrollbar = React.forwardRef(({ children, height }, ref) => {
@@ -21,5 +22,10 @@ const MyScrollbar = React.forwardRef(({ children, height }, ref) => {
     </div>
   );
 });
+
+MyScrollbar.propTypes = {
+  children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+  height: PropTypes.string,
+};
 
 export default MyScrollbar;

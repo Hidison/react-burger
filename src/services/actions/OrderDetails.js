@@ -4,6 +4,12 @@ export const SEND_ORDER = "SEND_ORDER";
 export const SEND_ORDER_FAILED = "SEND_ORDER_FAILED";
 export const SEND_ORDER_SUCCESS = "SEND_ORDER_SUCCESS";
 
+function sendOrderFailed() {
+  return {
+    type: SEND_ORDER_FAILED,
+  };
+}
+
 export function sendOrder(id) {
   return function (dispatch) {
     dispatch({
@@ -17,15 +23,11 @@ export function sendOrder(id) {
             orderNumber: res.order.number,
           });
         } else {
-          dispatch({
-            type: SEND_ORDER_FAILED,
-          });
+          dispatch(sendOrderFailed());
         }
       })
       .catch((err) => {
-        dispatch({
-          type: SEND_ORDER_FAILED,
-        });
+        dispatch(sendOrderFailed());
       });
   };
 }

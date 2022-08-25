@@ -4,6 +4,12 @@ export const GET_INGREDIENTS = "GET_INGREDIENTS";
 export const GET_INGREDIENTS_FAILED = "GET_INGREDIENTS_FAILED";
 export const GET_INGREDIENTS_SUCCESS = "GET_INGREDIENTS_SUCCESS";
 
+function getIngredientsFailed() {
+  return {
+    type: GET_INGREDIENTS_FAILED,
+  };
+}
+
 export function getIngredients() {
   return function (dispatch) {
     dispatch({
@@ -17,15 +23,11 @@ export function getIngredients() {
             ingredients: res.data,
           });
         } else {
-          dispatch({
-            type: GET_INGREDIENTS_FAILED,
-          });
+          dispatch(getIngredientsFailed());
         }
       })
       .catch((err) => {
-        dispatch({
-          type: GET_INGREDIENTS_FAILED,
-        });
+        dispatch(getIngredientsFailed());
       });
   };
 }

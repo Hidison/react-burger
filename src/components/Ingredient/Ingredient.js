@@ -5,14 +5,18 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import IngredientStyles from "./Ingredient.module.css";
 import PropTypes from "prop-types";
-import { SEL_INGREDIENT } from "../../services/actions/IngredientDetails";
+import { SET_INGREDIENT } from "../../services/actions/IngredientDetails";
 import { useDrag } from "react-dnd";
+import { useMemo } from "react";
 
 const Ingredient = ({ item, handleOpenModal }) => {
   const dispatch = useDispatch();
   const { ID } = useSelector((state) => state.selectedIngredients);
 
-  const countIngredients = ID.filter((el) => item._id.indexOf(el) > -1);
+  const countIngredients = useMemo(
+    () => ID.filter((el) => item._id.indexOf(el) > -1),
+    [ID, item._id]
+  );
 
   const [{ isHover }, bunRef] = useDrag({
     type: "ingredientBun",
@@ -31,7 +35,7 @@ const Ingredient = ({ item, handleOpenModal }) => {
 
   const handleIngredientClick = () => {
     dispatch({
-      type: SEL_INGREDIENT,
+      type: SET_INGREDIENT,
       item,
     });
     handleOpenModal();
@@ -71,6 +75,7 @@ const Ingredient = ({ item, handleOpenModal }) => {
 
 Ingredient.propTypes = {
   item: PropTypes.object.isRequired,
+  handleOpenModal: PropTypes.func,
 };
 
 export default Ingredient;

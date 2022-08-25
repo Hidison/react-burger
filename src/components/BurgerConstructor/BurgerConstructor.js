@@ -17,7 +17,7 @@ import {
   SET_INGREDIENTS_ID,
   UPDATE_SELECTED_INGREDIENTS,
 } from "../../services/actions/BurgerConstructor";
-import ConstructorElementWrapper from "../ConstructorElementWrapper/ConstructorElement";
+import ConstructorElementWrapper from "../ConstructorElementWrapper/ConstructorElementWrapper";
 
 const BurgerConstructor = ({ handleOpenModal }) => {
   const dispatch = useDispatch();
@@ -216,7 +216,6 @@ const BurgerConstructor = ({ handleOpenModal }) => {
 
 BurgerConstructor.propTypes = {
   handleOpenModal: PropTypes.func,
-  getOrderNumber: PropTypes.func,
 };
 
 export default BurgerConstructor;

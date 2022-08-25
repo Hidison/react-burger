@@ -2,13 +2,14 @@ import {
   ConstructorElement,
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import React, { useRef } from "react";
+import React, { useMemo, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useDrag, useDrop } from "react-dnd";
+import PropTypes from "prop-types";
 import { DEL_INGREDIENTS_MAIN } from "../../services/actions/BurgerConstructor";
 import BurgerConstructorStyles from "../BurgerConstructor/BurgerConstructor.module.css";
 
-const SelectedIngredientWrapper = ({
+const ConstructorElementWrapper = ({
   item,
   id,
   index,
@@ -19,6 +20,14 @@ const SelectedIngredientWrapper = ({
   const dispatch = useDispatch();
   const { selectedIngredientsMain } = useSelector(
     (state) => state.selectedIngredients
+  );
+
+  const delSelectedIngredient = useMemo(
+    () =>
+      selectedIngredientsMain.filter(
+        (ingredient) => ingredient.dragId !== item.dragId
+      ),
+    [item.dragId, selectedIngredientsMain]
   );
 
   const [, drop] = useDrop({
@@ -84,15 +93,19 @@ const SelectedIngredientWrapper = ({
       <ConstructorElement
         type={type}
         isLocked={item.type === "bun" ? true : false}
-        text={item.name}
+        text={
+          item.type === "bun"
+            ? type === "top"
+              ? `${item.name} (верх)`
+              : `${item.name} (низ)`
+            : item.name
+        }
         price={item.price}
         thumbnail={item.image}
         handleClose={() =>
           dispatch({
             type: DEL_INGREDIENTS_MAIN,
-            item: selectedIngredientsMain.filter(
-              (ingredient) => ingredient.dragId !== item.dragId
-            ),
+            item: delSelectedIngredient,
           })
         }
       />
@@ -100,4 +113,12 @@ const SelectedIngredientWrapper = ({
   );
 };
 
-export default SelectedIngredientWrapper;
+ConstructorElementWrapper.propTypes = {
+  item: PropTypes.object.isRequired,
+  id: PropTypes.string,
+  index: PropTypes.number,
+  moveIngredient: PropTypes.func,
+  type: PropTypes.string,
+};
+
+export default ConstructorElementWrapper;

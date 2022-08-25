@@ -1,1 +1,1 @@
-export const SEL_INGREDIENT = "SEL_INGREDIENT";
+export const SET_INGREDIENT = "SET_INGREDIENT";
