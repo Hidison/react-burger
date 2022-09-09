@@ -11,5 +11,21 @@
 }
 
 .headerButton__content {
+  border: none;
   display: flex;
+  align-items: center;
+  padding: 0 32px;
+  background: transparent;
+  color: #f2f2f3;
+  text-decoration: none;
+}
+
+.headerButton__content {
+  cursor: default;
+}
+
+.active:hover {
+  opacity: 0.6;
+  cursor: pointer;
+  transition: all 0.2s linear;
 }

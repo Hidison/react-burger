@@ -25,3 +25,28 @@ export const postOrder = (id) => {
     }),
   }).then(checkResponse);
 };
+
+export const recoveryPassword = (email) => {
+  return fetch(`${baseUrl}/password-reset`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email: email,
+    }),
+  }).then(checkResponse);
+};
+
+export const changePassword = (password, token) => {
+  return fetch(`${baseUrl}/password-reset/reset`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      password: password,
+      token: token,
+    }),
+  }).then(checkResponse);
+};

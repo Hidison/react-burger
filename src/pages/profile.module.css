@@ -1,0 +1,55 @@
+.main {
+  display: flex;
+  flex-direction: row;
+  margin-top: 120px;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+}
+
+.link {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  text-decoration: none;
+  border: none;
+  background: transparent;
+}
+
+.linkActive {
+  color: #f2f2f3;
+  cursor: default;
+}
+
+.linkDisabled:hover {
+  opacity: 0.6;
+  cursor: pointer;
+  transition: all 0.2s linear;
+}
+
+.linkBlock {
+  width: 320px;
+  height: 64px;
+}
+
+.text {
+  width: 320px;
+  opacity: 0.4;
+}
+
+.inputsContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.buttonsContainer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.error {
+  color: #e52b1a;
+}

@@ -1,0 +1,44 @@
+.login {
+  display: flex;
+  width: 480px;
+  height: auto;
+  margin: 180px auto 0 auto;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.login__moveBlock {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login__moveRegisterText {
+  color: #4c4cff;
+  cursor: pointer;
+  margin-left: 8px;
+  text-decoration: none;
+}
+
+.errorMessage {
+  padding-left: 24px;
+  margin-top: 2px;
+  color: #e52b1a;
+  font-size: 14px;
+  position: absolute;
+  box-sizing: border-box;
+}
+
+.errorMessage_type_submit {
+  width: 400px;
+  text-align: center;
+  top: 70px;
+  padding-left: 0;
+}
+
+.ButtonSubmitContainer {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}

@@ -18,12 +18,15 @@ import {
   UPDATE_SELECTED_INGREDIENTS,
 } from "../../services/actions/BurgerConstructor";
 import ConstructorElementWrapper from "../ConstructorElementWrapper/ConstructorElementWrapper";
+import { useHistory } from "react-router-dom";
 
 const BurgerConstructor = ({ handleOpenModal }) => {
   const dispatch = useDispatch();
 
   const { selectedIngredientsBun, selectedIngredientsMain, totalPrice, ID } =
     useSelector((state) => state.selectedIngredients);
+  const { auth } = useSelector((state) => state.auth);
+  const history = useHistory();
 
   const [{ isHoverBun }, dropTarget] = useDrop({
     accept: "ingredientBun",
@@ -68,16 +71,20 @@ const BurgerConstructor = ({ handleOpenModal }) => {
   const opacityMain = isHoverMain ? "0.5" : "1";
 
   const handleOrder = () => {
-    dispatch({
-      type: SET_INGREDIENTS_BUN,
-      item: { price: 0 },
-    });
-    dispatch({
-      type: UPDATE_SELECTED_INGREDIENTS,
-      sortedIngredients: [],
-    });
-    dispatch(sendOrder(ID));
-    handleOpenModal();
+    if (auth) {
+      dispatch({
+        type: SET_INGREDIENTS_BUN,
+        item: { price: 0 },
+      });
+      dispatch({
+        type: UPDATE_SELECTED_INGREDIENTS,
+        sortedIngredients: [],
+      });
+      dispatch(sendOrder(ID));
+      handleOpenModal();
+    } else {
+      history.replace({ pathname: "/login" });
+    }
   };
 
   useEffect(() => {
