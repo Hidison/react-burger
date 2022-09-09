@@ -1,14 +1,26 @@
 import React from "react";
+import { useSelector } from "react-redux";
+import OrderDetailsStyles from "./OrderDetails.module.css";
 import OrderDoneImage from "../../images/order-done-image.svg";
-import { OrderContext } from "../../contexts/orderContext";
+import Loader from "../UI/Loader/Loader";
 
 const OrderDetails = () => {
-  const { orderNumber } = React.useContext(OrderContext);
+  const { orderRequest, orderFailed, orderNumber } = useSelector(
+    (state) => state.order
+  );
 
   return (
     <>
       <span className="text text_type_digits-large mt-30 mb-8">
-        {orderNumber}
+        {orderFailed ? (
+          <p className={OrderDetailsStyles.orderDetails__load}>
+            Ошибка заказа.
+          </p>
+        ) : orderRequest ? (
+          <Loader />
+        ) : (
+          orderNumber
+        )}
       </span>
       <p className="text text_type_main-medium mb-15">идентификатор заказа</p>
       <img src={OrderDoneImage} className="mb-15" alt="заказ принят" />

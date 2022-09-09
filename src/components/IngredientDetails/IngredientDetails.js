@@ -1,20 +1,22 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import IngredientDetailsStyles from "./IngredientDetails.module.css";
-import PropTypes from "prop-types";
 
-const IngredientDetails = (props) => {
+const IngredientDetails = () => {
+  const { ingredient } = useSelector((state) => state.ingredient);
+
   return (
     <>
       <figure className={IngredientDetailsStyles.modal__imageBlock}>
         <img
-          src={props.selectedIngredient.image}
-          alt={props.selectedIngredient.name}
+          src={ingredient.image}
+          alt={ingredient.name}
           className={IngredientDetailsStyles.modal__image}
         />
         <figcaption
           className={`${IngredientDetailsStyles.modal__imageText} text text_type_main-medium mt-4 mb-8`}
         >
-          {props.selectedIngredient.name}
+          {ingredient.name}
         </figcaption>
       </figure>
       <ul className={`${IngredientDetailsStyles.modal__list} mb-15`}>
@@ -25,7 +27,7 @@ const IngredientDetails = (props) => {
             Калории,ккал
           </span>
           <p className="text text_type_digits-default">
-            {props.selectedIngredient.calories}
+            {ingredient.calories}
           </p>
         </li>
         <li
@@ -33,7 +35,7 @@ const IngredientDetails = (props) => {
         >
           <span>Белки, г</span>
           <p className="text text_type_digits-default">
-            {props.selectedIngredient.proteins}
+            {ingredient.proteins}
           </p>
         </li>
         <li
@@ -41,7 +43,7 @@ const IngredientDetails = (props) => {
         >
           <span>Жиры, г</span>
           <p className="text text_type_digits-default">
-            {props.selectedIngredient.fat}
+            {ingredient.fat}
           </p>
         </li>
         <li
@@ -49,16 +51,12 @@ const IngredientDetails = (props) => {
         >
           <span>Углеводы, г</span>
           <p className="text text_type_digits-default">
-            {props.selectedIngredient.carbohydrates}
+            {ingredient.carbohydrates}
           </p>
         </li>
       </ul>
     </>
   );
-};
-
-IngredientDetails.propTypes = {
-  selectedIngredient: PropTypes.object.isRequired,
 };
 
 export default IngredientDetails;

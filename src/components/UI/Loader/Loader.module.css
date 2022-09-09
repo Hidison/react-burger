@@ -1,0 +1,17 @@
+.loader {
+  min-width: 113px;
+  min-height: 113px;
+  border-radius: 100px;
+  border: 3px dashed #ffffff;
+  margin: auto;
+  animation: rotate 4s infinite linear;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
