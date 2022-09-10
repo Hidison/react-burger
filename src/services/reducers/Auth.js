@@ -7,17 +7,9 @@ import {
   CHANGE_PASSWORD_SUCCESS,
   SET_AUTH,
   HIDE_PASSWORD,
-  SET_NAME,
-  SET_EMAIL,
-  SET_PASSWORD,
-  SET_CODE,
-  SET_NAME_VALID,
-  SET_EMAIL_VALID,
-  SET_PASSWORD_VALID,
-  SET_NAME_ERROR,
-  SET_EMAIL_ERROR,
-  SET_PASSWORD_ERROR,
-  SET_SUBMIT_ERROR,
+  SET_VALUES,
+  SET_VALID,
+  SET_ERRORS,
 } from "../actions/Auth";
 
 const initialStateRecovery = {
@@ -35,17 +27,9 @@ const initialStateChangePasswordRecovery = {
 const initialStateAuth = {
   auth: false,
   hidePassword: true,
-  name: "",
-  email: "",
-  password: "",
-  code: "",
-  nameValid: false,
-  emailValid: false,
-  passwordValid: false,
-  nameError: "",
-  emailError: "",
-  passwordError: "",
-  submitError: "",
+  values: { name: "", email: "", password: "", code: "" },
+  errors: { name: "", email: "", password: "", submit: "" },
+  valid: { name: false, email: false, password: false },
 };
 
 export const recoveryReducer = (state = initialStateRecovery, action) => {
@@ -123,70 +107,22 @@ export const authReducer = (state = initialStateAuth, action) => {
         hidePassword: action.hidePassword,
       };
     }
-    case SET_NAME: {
+    case SET_VALUES: {
       return {
         ...state,
-        name: action.name,
+        values: action.values,
       };
     }
-    case SET_EMAIL: {
+    case SET_ERRORS: {
       return {
         ...state,
-        email: action.email,
+        errors: action.errors,
       };
     }
-    case SET_PASSWORD: {
+    case SET_VALID: {
       return {
         ...state,
-        password: action.password,
-      };
-    }
-    case SET_CODE: {
-      return {
-        ...state,
-        code: action.code,
-      };
-    }
-    case SET_NAME_VALID: {
-      return {
-        ...state,
-        nameValid: action.nameValid,
-      };
-    }
-    case SET_EMAIL_VALID: {
-      return {
-        ...state,
-        emailValid: action.emailValid,
-      };
-    }
-    case SET_PASSWORD_VALID: {
-      return {
-        ...state,
-        passwordValid: action.passwordValid,
-      };
-    }
-    case SET_NAME_ERROR: {
-      return {
-        ...state,
-        nameError: action.nameError,
-      };
-    }
-    case SET_EMAIL_ERROR: {
-      return {
-        ...state,
-        emailError: action.emailError,
-      };
-    }
-    case SET_PASSWORD_ERROR: {
-      return {
-        ...state,
-        passwordError: action.passwordError,
-      };
-    }
-    case SET_SUBMIT_ERROR: {
-      return {
-        ...state,
-        submitError: action.submitError,
+        valid: action.valid,
       };
     }
     default: {

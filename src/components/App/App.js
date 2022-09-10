@@ -5,6 +5,8 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { SET_AUTH } from "../../services/actions/Auth";
 import ModalSwitch from "../ModalSwitch/ModalSwitch";
+import AppHeader from "../AppHeader/AppHeader";
+import { getIngredients } from "../../services/actions/BurgerIngredients";
 
 function App() {
   const dispatch = useDispatch();
@@ -25,9 +27,14 @@ function App() {
     }
   }, [aToken, dispatch, rToken]);
 
+  useEffect(() => {
+    dispatch(getIngredients());
+  }, [dispatch]);
+
   return (
     <div className={AppStyles.App}>
       <Router>
+        <AppHeader />
         <ModalSwitch />
       </Router>
     </div>

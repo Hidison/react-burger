@@ -7,21 +7,16 @@ import ProfileStyles from "./profile.module.css";
 import LoginStyles from "../components/Auth/Auth.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
-import AppHeader from "../components/AppHeader/AppHeader";
 import {
-  SET_NAME,
-  SET_EMAIL,
-  validateEmail,
-  validateName,
-  SET_NAME_ERROR,
-  SET_EMAIL_ERROR,
-  SET_NAME_VALID,
-  SET_EMAIL_VALID,
   SET_AUTH,
+  SET_ERRORS,
+  SET_VALID,
+  SET_VALUES,
 } from "../services/actions/Auth";
 import { getUser, logout, updateUser } from "../services/actions/Profile";
 import { deleteCookie, getCookie } from "../utils/utils";
 import Loader from "../components/UI/Loader/Loader";
+import { useFormAndValidation } from "../hooks/useFormAndValidation";
 
 const ProfilePage = () => {
   const [disabledName, setDisabledName] = useState(true);
@@ -32,14 +27,14 @@ const ProfilePage = () => {
 
   const location = useLocation();
 
-  const { name, email, nameValid, emailValid, nameError, emailError } =
-    useSelector((state) => state.auth);
+  const { values, errors, valid } = useSelector((state) => state.auth);
   const { user } = useSelector((state) => state.user);
   const { updateUserRequest, updateUserFailed } = useSelector(
     (state) => state.updatedUser
   );
   const nameRef = useRef(null);
   const emailRef = useRef(null);
+  const { handleChange } = useFormAndValidation();
 
   useEffect(() => {
     if (!disabledName) {
@@ -56,45 +51,30 @@ const ProfilePage = () => {
   useEffect(() => {
     if (user) {
       dispatch({
-        type: SET_NAME,
-        name: user.name,
-      });
-      dispatch({
-        type: SET_EMAIL,
-        email: user.email,
+        type: SET_VALUES,
+        values: { ...values, name: user.name, email: user.email },
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, user]);
-
-  const changeName = (e) => {
-    dispatch({
-      type: SET_NAME,
-      name: e.target.value,
-    });
-    dispatch(validateName(e));
-  };
-
-  const changeEmail = (e) => {
-    dispatch({
-      type: SET_EMAIL,
-      email: e.target.value,
-    });
-    dispatch(validateEmail(e));
-  };
 
   useEffect(() => {
     dispatch({
-      type: SET_NAME_VALID,
-      nameValid: true,
+      type: SET_VALID,
+      valid: { ...valid, name: true, email: true },
     });
-    dispatch({
-      type: SET_EMAIL_VALID,
-      emailValid: true,
-    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
-  const updateUserInfo = () => {
-    dispatch(updateUser(aToken, email, name));
+  const updateUserInfo = (e) => {
+    e.preventDefault();
+    dispatch(updateUser(aToken, values.email, values.name));
+    if (!disabledName) {
+      nameRef.current.blur();
+    }
+    if (!disabledEmail) {
+      emailRef.current.blur();
+    }
   };
 
   useEffect(() => {
@@ -110,21 +90,18 @@ const ProfilePage = () => {
 
   const cancelUpdateUserInfo = () => {
     dispatch({
-      type: SET_NAME,
-      name: user.name,
+      type: SET_VALUES,
+      values: { name: user.name, email: user.email },
     });
     dispatch({
-      type: SET_EMAIL,
-      email: user.email,
+      type: SET_ERRORS,
+      errors: {
+        ...errors,
+        name: "",
+        email: "",
+      },
     });
-    dispatch({
-      type: SET_NAME_ERROR,
-      nameError: "",
-    });
-    dispatch({
-      type: SET_EMAIL_ERROR,
-      emailError: "",
-    });
+    setSuccessfulUpdateMsg("");
   };
 
   const logoutSistem = () => {
@@ -139,69 +116,72 @@ const ProfilePage = () => {
     }
   };
 
+  const resetError = () => {
+    setSuccessfulUpdateMsg("");
+  };
+
   useEffect(() => {
     if (user === null) {
       setSaveButtonDisabled(true);
-    } else if (name === user.name && email === user.email) {
+    } else if (values.name === user.name && values.email === user.email) {
       setSaveButtonDisabled(true);
-    } else if (!nameValid || !emailValid) {
+    } else if (!valid.name || !valid.email) {
       setSaveButtonDisabled(true);
     } else {
       setSaveButtonDisabled(false);
     }
-  }, [email, emailValid, name, nameValid, user]);
+  }, [user, valid.email, valid.name, values.email, values.name]);
 
   return (
-    <>
-      <AppHeader />
-      <main className={ProfileStyles.main}>
-        <section>
-          <nav className={ProfileStyles.nav}>
-            <span className={ProfileStyles.linkBlock}>
-              <Link
-                to="/profile"
-                className={
-                  location.pathname === "/profile"
-                    ? `${ProfileStyles.link} ${ProfileStyles.linkActive} text text_type_main-medium`
-                    : `${ProfileStyles.link} ${ProfileStyles.linkDisabled} text text_type_main-medium text_color_inactive`
-                }
-              >
-                Профиль
-              </Link>
-            </span>
-            <span className={ProfileStyles.linkBlock}>
-              <Link
-                to="/profile/orders"
-                className={
-                  location.pathname === "/profile/orders"
-                    ? `${ProfileStyles.link} ${ProfileStyles.linkActive} text text_type_main-medium`
-                    : `${ProfileStyles.link} ${ProfileStyles.linkDisabled} text text_type_main-medium text_color_inactive`
-                }
-              >
-                История заказов
-              </Link>
-            </span>
-            <span className={ProfileStyles.linkBlock}>
-              <button
-                onClick={logoutSistem}
-                to="/"
-                className={
-                  location.pathname === "/profile/orders/:id"
-                    ? `${ProfileStyles.link} ${ProfileStyles.linkActive} text text_type_main-medium`
-                    : `${ProfileStyles.link} ${ProfileStyles.linkDisabled} text text_type_main-medium text_color_inactive`
-                }
-              >
-                Выход
-              </button>
-            </span>
-            <p
-              className={`${ProfileStyles.text} text text_type_main-default text_color_inactive mt-20`}
+    <main className={ProfileStyles.main}>
+      <section>
+        <nav className={ProfileStyles.nav}>
+          <span className={ProfileStyles.linkBlock}>
+            <Link
+              to="/profile"
+              className={
+                location.pathname === "/profile"
+                  ? `${ProfileStyles.link} ${ProfileStyles.linkActive} text text_type_main-medium`
+                  : `${ProfileStyles.link} ${ProfileStyles.linkDisabled} text text_type_main-medium text_color_inactive`
+              }
             >
-              В этом разделе вы можете изменить свои персональные данные
-            </p>
-          </nav>
-        </section>
-        <section className={`${ProfileStyles.inputsContainer} ml-15`}>
+              Профиль
+            </Link>
+          </span>
+          <span className={ProfileStyles.linkBlock}>
+            <Link
+              to="/profile/orders"
+              className={
+                location.pathname === "/profile/orders"
+                  ? `${ProfileStyles.link} ${ProfileStyles.linkActive} text text_type_main-medium`
+                  : `${ProfileStyles.link} ${ProfileStyles.linkDisabled} text text_type_main-medium text_color_inactive`
+              }
+            >
+              История заказов
+            </Link>
+          </span>
+          <span className={ProfileStyles.linkBlock}>
+            <button
+              onClick={logoutSistem}
+              to="/"
+              className={
+                location.pathname === "/profile/orders/:id"
+                  ? `${ProfileStyles.link} ${ProfileStyles.linkActive} text text_type_main-medium`
+                  : `${ProfileStyles.link} ${ProfileStyles.linkDisabled} text text_type_main-medium text_color_inactive`
+              }
+            >
+              Выход
+            </button>
+          </span>
+          <p
+            className={`${ProfileStyles.text} text text_type_main-default text_color_inactive mt-20`}
+          >
+            В этом разделе вы можете изменить свои персональные данные
+          </p>
+        </nav>
+      </section>
+      <section className={`${ProfileStyles.inputsContainer} ml-15`}>
+        <form onSubmit={updateUserInfo} autoComplete="off">
           <div>
             <Input
               disabled={disabledName}
@@ -211,18 +191,20 @@ const ProfilePage = () => {
               onBlur={() => {
                 setDisabledName(true);
               }}
+              onFocus={resetError}
               ref={nameRef}
               type={"text"}
+              name={"name"}
               placeholder={"Имя"}
-              onChange={changeName}
-              value={name || ""}
+              onChange={handleChange}
+              value={values.name || ""}
               size={"default"}
               icon={"EditIcon"}
             />
             <div
               className={`${LoginStyles.errorMessage} text_type_main-default`}
             >
-              {nameError}
+              {errors.name}
             </div>
           </div>
           <div>
@@ -234,18 +216,20 @@ const ProfilePage = () => {
               onBlur={() => {
                 setDisabledEmail(true);
               }}
+              onFocus={resetError}
               ref={emailRef}
               type={"email"}
+              name={"email"}
               placeholder={"Логин"}
-              onChange={changeEmail}
-              value={email || ""}
+              onChange={handleChange}
+              value={values.email || ""}
               size={"default"}
               icon={"EditIcon"}
             />
             <div
               className={`${LoginStyles.errorMessage} text_type_main-default`}
             >
-              {emailError}
+              {errors.email}
             </div>
           </div>
 
@@ -258,6 +242,23 @@ const ProfilePage = () => {
             icon={"EditIcon"}
           />
           <div className={`${ProfileStyles.buttonsContainer} mt-6`}>
+            <Button type="primary" size="medium" disabled={saveButtonDisabled}>
+              Сохранить
+            </Button>
+            <Button
+              type="secondary"
+              size="medium"
+              onClick={cancelUpdateUserInfo}
+              disabled={
+                user === null
+                  ? true
+                  : values.name === user.name && values.email === user.email
+                  ? true
+                  : false
+              }
+            >
+              Отмена
+            </Button>
             <div className={ProfileStyles.error}>
               {updateUserFailed ? (
                 successfulUpdateMsg
@@ -267,32 +268,10 @@ const ProfilePage = () => {
                 <></>
               )}
             </div>
-            <Button
-              type="secondary"
-              size="medium"
-              onClick={cancelUpdateUserInfo}
-              disabled={
-                user === null
-                  ? true
-                  : name === user.name && email === user.email
-                  ? true
-                  : false
-              }
-            >
-              Отмена
-            </Button>
-            <Button
-              type="primary"
-              size="medium"
-              onClick={updateUserInfo}
-              disabled={saveButtonDisabled}
-            >
-              Сохранить
-            </Button>
           </div>
-        </section>
-      </main>
-    </>
+        </form>
+      </section>
+    </main>
   );
 };
 

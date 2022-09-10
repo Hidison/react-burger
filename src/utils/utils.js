@@ -41,3 +41,15 @@ export function deleteCookie(name) {
 export function getIngIdFromLocation(pathname) {
   return pathname.replace(/ingredients/, "").replace(/[^a-zа-яё0-9\s]/gi, "");
 }
+
+export const checkResponse = (res) => {
+  if (res.ok) {
+    return res.json();
+  } else {
+    return res.json().then((err) => Promise.reject(err));
+  }
+};
+
+export function request(url, options) {
+  return fetch(url, options).then(checkResponse);
+}

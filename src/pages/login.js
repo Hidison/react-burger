@@ -2,38 +2,42 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, useLocation } from "react-router-dom";
 import Auth from "../components/Auth/Auth";
-import { SET_SUBMIT_ERROR } from "../services/actions/Auth";
+import { SET_ERRORS } from "../services/actions/Auth";
 import { login } from "../services/actions/Login";
 import { REGISTER_SUCCESS } from "../services/actions/Register";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
-  const { auth, email, password } = useSelector((state) => state.auth);
+  const { auth, values, errors } = useSelector((state) => state.auth);
   const { loginFailed } = useSelector((state) => state.login);
 
   const location = useLocation();
 
   const handleLogin = () => {
-    dispatch(login(email, password));
+    dispatch(login(values.email, values.password));
   };
 
   useEffect(() => {
     if (loginFailed) {
       dispatch({
-        type: SET_SUBMIT_ERROR,
-        submitError: "Ошибка авторизации!",
+        type: SET_ERRORS,
+        errors: {
+          ...errors,
+          submit: "Ошибка авторизации!",
+        },
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, loginFailed]);
 
   useEffect(() => {
-    if (email !== "" || password !== "" || (email === "" && password === "")) {
+    if (values.email === "" && values.password === "") {
       dispatch({
-        type: SET_SUBMIT_ERROR,
-        submitError: "",
+        type: SET_ERRORS,
+        errors: { name: "", email: "", password: "", submit: "" },
       });
     }
-  }, [dispatch, email, password]);
+  }, [dispatch, values.email, values.password]);
 
   useEffect(() => {
     dispatch({
@@ -50,9 +54,7 @@ const LoginPage = () => {
   }
 
   return (
-    <>
-      <Auth title={"Вход"} buttonTitle={"Войти"} handleClick={handleLogin} />
-    </>
+    <Auth title={"Вход"} buttonTitle={"Войти"} handleClick={handleLogin} />
   );
 };
 

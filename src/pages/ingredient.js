@@ -1,9 +1,7 @@
 import React, { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import IngredientsPageStyles from "./ingredient.module.css";
-import AppHeader from "../components/AppHeader/AppHeader";
 import IngredientDetails from "../components/IngredientDetails/IngredientDetails";
-import { getIngredients } from "../services/actions/BurgerIngredients";
 import { useHistory } from "react-router-dom";
 import NotFound404 from "./not-found";
 import { SET_INGREDIENT } from "../services/actions/IngredientDetails";
@@ -26,10 +24,6 @@ const IngredientPage = () => {
   );
 
   useEffect(() => {
-    dispatch(getIngredients());
-  }, [dispatch]);
-
-  useEffect(() => {
     dispatch({
       type: SET_INGREDIENT,
       item: ingredient,
@@ -42,17 +36,14 @@ const IngredientPage = () => {
     return <NotFound404 />;
   } else {
     return (
-      <>
-        <AppHeader />
-        <div className={IngredientsPageStyles.ingredientContainer}>
-          <h2
-            className={`${IngredientsPageStyles.title} text text_type_main-large mt-30`}
-          >
-            Детали ингредиента
-          </h2>
-          <IngredientDetails />
-        </div>
-      </>
+      <div className={IngredientsPageStyles.ingredientContainer}>
+        <h2
+          className={`${IngredientsPageStyles.title} text text_type_main-large mt-30`}
+        >
+          Детали ингредиента
+        </h2>
+        <IngredientDetails />
+      </div>
     );
   }
 };

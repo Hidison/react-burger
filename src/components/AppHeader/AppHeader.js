@@ -6,10 +6,12 @@ import {
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import AppHeaderStyles from "./AppHeader.module.css";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 
 const AppHeader = () => {
   const location = useLocation();
+  const history = useHistory();
+
   const handleClickConstructor = (e) => {
     if (location.pathname === "/") {
       e.preventDefault();
@@ -25,6 +27,10 @@ const AppHeader = () => {
     if (location.pathname === "/profile/orders") {
       e.preventDefault();
     }
+  };
+
+  const onLogoClick = () => {
+    history.replace({ pathname: "/" });
   };
 
   return (
@@ -77,7 +83,9 @@ const AppHeader = () => {
           </span>
         </Link>
       </div>
-      <Logo />
+      <div className={AppHeaderStyles.logo} onClick={onLogoClick}>
+        <Logo />
+      </div>
       <Link
         to="/profile"
         className={

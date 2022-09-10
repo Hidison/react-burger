@@ -112,111 +112,108 @@ const BurgerConstructor = ({ handleOpenModal }) => {
 
   return (
     <section className={`${BurgerConstructorStyles.BurgerConstructor} mt-25`}>
-      <>
+      <ul
+        className={`${BurgerConstructorStyles.BurgerConstructor__list}`}
+        ref={dropTarget}
+        style={{ opacity: opacityBun }}
+      >
+        {selectedIngredientsBun.price !== 0 ? (
+          <ConstructorElementWrapper
+            item={selectedIngredientsBun}
+            type={"top"}
+          />
+        ) : (
+          <li
+            className={`${BurgerConstructorStyles.BurgerConstructor__listItem} mb-4 pl-4 pr-4`}
+          >
+            <div></div>
+            <div
+              style={{ opacity: opacityBun }}
+              className={`${BurgerConstructorStyles.BurgerConstructor__element} ${BurgerConstructorStyles.BurgerConstructor__element_top}`}
+            >
+              Выберите булку (верх)
+            </div>
+          </li>
+        )}
+      </ul>
+      <MyScrollbar height={"464px"}>
         <ul
+          ref={dropTargetMain}
           className={`${BurgerConstructorStyles.BurgerConstructor__list}`}
-          ref={dropTarget}
-          style={{ opacity: opacityBun }}
+          style={{ opacity: opacityMain, padding: "0" }}
         >
-          {selectedIngredientsBun.price !== 0 ? (
-            <ConstructorElementWrapper
-              item={selectedIngredientsBun}
-              type={"top"}
-            />
+          {selectedIngredientsMain.length !== 0 ? (
+            selectedIngredientsMain.map((item, index) => (
+              <ConstructorElementWrapper
+                key={item.dragId}
+                id={item.dragId}
+                item={item}
+                index={index}
+                moveIngredient={moveIngredient}
+              />
+            ))
           ) : (
             <li
-              className={`${BurgerConstructorStyles.BurgerConstructor__listItem} mb-4 pl-4 pr-4`}
+              className={`${BurgerConstructorStyles.BurgerConstructor__listItem} pl-4 pr-4`}
             >
               <div></div>
               <div
-                style={{ opacity: opacityBun }}
-                className={`${BurgerConstructorStyles.BurgerConstructor__element} ${BurgerConstructorStyles.BurgerConstructor__element_top}`}
+                className={BurgerConstructorStyles.BurgerConstructor__element}
               >
-                Выберите булку (верх)
+                Выберите ингредиент
               </div>
             </li>
           )}
         </ul>
-        <MyScrollbar height={"464px"}>
-          <ul
-            ref={dropTargetMain}
-            className={`${BurgerConstructorStyles.BurgerConstructor__list}`}
-            style={{ opacity: opacityMain, padding: "0" }}
+      </MyScrollbar>
+      <ul
+        className={`${BurgerConstructorStyles.BurgerConstructor__list}`}
+        ref={dropTargetDown}
+        style={{ opacity: opacityBun }}
+      >
+        {selectedIngredientsBun.price !== 0 ? (
+          <ConstructorElementWrapper
+            item={selectedIngredientsBun}
+            type={"bottom"}
+          />
+        ) : (
+          <li
+            className={`${BurgerConstructorStyles.BurgerConstructor__listItem} mt-4 pl-4 pr-4`}
           >
-            {selectedIngredientsMain.length !== 0 ? (
-              selectedIngredientsMain.map((item, index) => (
-                <ConstructorElementWrapper
-                  key={item.dragId}
-                  id={item.dragId}
-                  item={item}
-                  index={index}
-                  moveIngredient={moveIngredient}
-                />
-              ))
-            ) : (
-              <li
-                className={`${BurgerConstructorStyles.BurgerConstructor__listItem} pl-4 pr-4`}
-              >
-                <div></div>
-                <div
-                  className={BurgerConstructorStyles.BurgerConstructor__element}
-                >
-                  Выберите ингредиент
-                </div>
-              </li>
-            )}
-          </ul>
-        </MyScrollbar>
-        <ul
-          className={`${BurgerConstructorStyles.BurgerConstructor__list}`}
-          ref={dropTargetDown}
-          style={{ opacity: opacityBun }}
-        >
-          {selectedIngredientsBun.price !== 0 ? (
-            <ConstructorElementWrapper
-              item={selectedIngredientsBun}
-              type={"bottom"}
-            />
-          ) : (
-            <li
-              className={`${BurgerConstructorStyles.BurgerConstructor__listItem} mt-4 pl-4 pr-4`}
+            <div></div>
+            <div
+              style={{ opacity: opacityBun }}
+              className={`${BurgerConstructorStyles.BurgerConstructor__element} ${BurgerConstructorStyles.BurgerConstructor__element_bottom}`}
             >
-              <div></div>
-              <div
-                style={{ opacity: opacityBun }}
-                className={`${BurgerConstructorStyles.BurgerConstructor__element} ${BurgerConstructorStyles.BurgerConstructor__element_bottom}`}
-              >
-                Выберите булку (низ)
-              </div>
-            </li>
-          )}
-        </ul>
-        <div
-          className={`${BurgerConstructorStyles.BurgerConstructor__result} mt-10`}
-        >
-          <div className="mr-10">
-            <span
-              className={`${BurgerConstructorStyles.BurgerConstructor__totalPrice} text text_type_digits-medium`}
-            >
-              {totalPrice}
-            </span>
-            <CurrencyIcon type="primary" />
-          </div>
-          <Button
-            type="primary"
-            size="large"
-            disabled={
-              !selectedIngredientsBun.name ||
-              selectedIngredientsMain.length === 0
-                ? true
-                : false
-            }
-            onClick={handleOrder}
+              Выберите булку (низ)
+            </div>
+          </li>
+        )}
+      </ul>
+      <div
+        className={`${BurgerConstructorStyles.BurgerConstructor__result} mt-10`}
+      >
+        <div className="mr-10">
+          <span
+            className={`${BurgerConstructorStyles.BurgerConstructor__totalPrice} text text_type_digits-medium`}
           >
-            Оформить заказ
-          </Button>
+            {totalPrice}
+          </span>
+          <CurrencyIcon type="primary" />
         </div>
-      </>
+        <Button
+          type="primary"
+          size="large"
+          disabled={
+            !selectedIngredientsBun.name || selectedIngredientsMain.length === 0
+              ? true
+              : false
+          }
+          onClick={handleOrder}
+        >
+          Оформить заказ
+        </Button>
+      </div>
     </section>
   );
 };

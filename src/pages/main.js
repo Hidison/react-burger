@@ -3,7 +3,6 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import MainStyles from "./main.module.css";
 import PropTypes from "prop-types";
-import AppHeader from "../components/AppHeader/AppHeader";
 import BurgerConstructor from "../components/BurgerConstructor/BurgerConstructor";
 import BurgerIngredients from "../components/BurgerIngredients/BurgerIngredients";
 import Modal from "../components/Modal/Modal";
@@ -25,7 +24,6 @@ const MainPage = ({ setIngredientModalVisible }) => {
   };
   return (
     <>
-      <AppHeader />
       <DndProvider backend={HTML5Backend}>
         <main className={MainStyles.main}>
           <BurgerIngredients handleOpenModal={openIngredientModal} />
