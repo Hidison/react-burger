@@ -1,50 +1,42 @@
-import { useState } from "react";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import AppHeader from "../AppHeader/AppHeader";
-import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
-import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
+import { BrowserRouter as Router } from "react-router-dom";
 import AppStyles from "./App.module.css";
-import OrderDetails from "../OrderDetails/OrderDetails";
-import IngredientDetails from "../IngredientDetails/IngredientDetails";
-import Modal from "../Modal/Modal";
+import { getCookie } from "../../utils/utils";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { SET_AUTH } from "../../services/actions/Auth";
+import ModalSwitch from "../ModalSwitch/ModalSwitch";
+import AppHeader from "../AppHeader/AppHeader";
+import { getIngredients } from "../../services/actions/BurgerIngredients";
 
 function App() {
-  const [orderModalVisible, setOrderModalVisible] = useState(false);
-  const [ingredientModalVisible, setIngredientModalVisible] = useState(false);
+  const dispatch = useDispatch();
+  const aToken = getCookie("accessToken");
+  const rToken = localStorage.getItem("refreshToken");
 
-  const closeAllModal = () => {
-    setOrderModalVisible(false);
-    setIngredientModalVisible(false);
-  };
+  useEffect(() => {
+    if (aToken && rToken) {
+      dispatch({
+        type: SET_AUTH,
+        auth: true,
+      });
+    } else {
+      dispatch({
+        type: SET_AUTH,
+        auth: false,
+      });
+    }
+  }, [aToken, dispatch, rToken]);
 
-  const openOrderModal = () => {
-    setOrderModalVisible(true);
-  };
-
-  const openIngredientModal = () => {
-    setIngredientModalVisible(true);
-  };
+  useEffect(() => {
+    dispatch(getIngredients());
+  }, [dispatch]);
 
   return (
     <div className={AppStyles.App}>
-      <AppHeader />
-      <DndProvider backend={HTML5Backend}>
-        <main className={AppStyles.main}>
-          <BurgerIngredients handleOpenModal={openIngredientModal} />
-          <BurgerConstructor handleOpenModal={openOrderModal} />
-        </main>
-      </DndProvider>
-      <Modal modalVisible={orderModalVisible} handleCloseModal={closeAllModal}>
-        <OrderDetails />
-      </Modal>
-      <Modal
-        title={"Детали ингредиента"}
-        modalVisible={ingredientModalVisible}
-        handleCloseModal={closeAllModal}
-      >
-        <IngredientDetails />
-      </Modal>
+      <Router>
+        <AppHeader />
+        <ModalSwitch />
+      </Router>
     </div>
   );
 }

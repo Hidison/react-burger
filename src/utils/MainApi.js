@@ -1,21 +1,15 @@
+import { request } from "./utils";
+
 export const baseUrl = "https://norma.nomoreparties.space/api";
 
-const checkResponse = (res) => {
-  if (res.ok) {
-    return res.json();
-  }
-
-  return Promise.reject(`Ошибка: ${res.status}`);
-};
-
 export const getIngredients = () => {
-  return fetch(`${baseUrl}/ingredients`, {
+  return request(`${baseUrl}/ingredients`, {
     method: "GET",
-  }).then(checkResponse);
+  });
 };
 
 export const postOrder = (id) => {
-  return fetch(`${baseUrl}/orders`, {
+  return request(`${baseUrl}/orders`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -23,5 +17,30 @@ export const postOrder = (id) => {
     body: JSON.stringify({
       ingredients: id,
     }),
-  }).then(checkResponse);
+  });
+};
+
+export const recoveryPassword = (email) => {
+  return request(`${baseUrl}/password-reset`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email: email,
+    }),
+  });
+};
+
+export const changePassword = (password, token) => {
+  return request(`${baseUrl}/password-reset/reset`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      password: password,
+      token: token,
+    }),
+  });
 };

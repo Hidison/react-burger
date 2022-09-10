@@ -1,17 +1,15 @@
 import React, { useRef, useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import BurgerIngredientsStyles from "./BurgerIngredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import MyScrollbar from "../UI/myScrollbar/MyScrollbar";
 import PropTypes from "prop-types";
 import Ingredient from "../Ingredient/Ingredient";
-import { getIngredients } from "../../services/actions/BurgerIngredients";
 import Loader from "../UI/Loader/Loader";
 
 const BurgerIngredients = ({ handleOpenModal }) => {
   const [current, setCurrent] = useState("Булки");
 
-  const dispatch = useDispatch();
   const {
     ingredientsRequest,
     ingredientsFailed,
@@ -19,10 +17,6 @@ const BurgerIngredients = ({ handleOpenModal }) => {
     mainIngredients,
     sauceIngredients,
   } = useSelector((state) => state.ingredients);
-
-  useEffect(() => {
-    dispatch(getIngredients());
-  }, [dispatch]);
 
   const scrollRef = useRef(null);
   const bunRef = useRef(null);
