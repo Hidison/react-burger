@@ -9,8 +9,7 @@
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.2",
     "@types/node": "^16.11.47",
-    "@types/react": "^16.8.6",
-    "@types/react-dom": "^16.8.6",
+    "@types/overlayscrollbars": "^1.12.1",
     "@ya.praktikum/react-developer-burger-ui-components": "^1.13.1",
     "axios": "^0.27.2",
     "crypto-browserify": "^3.12.0",
@@ -55,5 +54,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.21",
+    "@types/react-dom": "^18.0.6",
+    "@types/react-router-dom": "^5.3.3",
+    "@types/uuid": "^8.3.4"
   }
 }
