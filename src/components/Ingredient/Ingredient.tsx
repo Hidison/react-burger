@@ -2,7 +2,7 @@ import {
   Counter,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "../../services/hooks";
 import IngredientStyles from "./Ingredient.module.css";
 import { useDrag } from "react-dnd";
 import { FC, MouseEventHandler, useEffect, useMemo } from "react";
@@ -18,8 +18,8 @@ interface IIngredient {
 
 const Ingredient: FC<IIngredient> = ({ item, handleOpenModal }) => {
   const dispatch = useDispatch();
-  const { ID } = useSelector((state: any) => state.selectedIngredients);
-  const { ingredients } = useSelector((state: any) => state.ingredients);
+  const { ID } = useSelector((state) => state.selectedIngredients);
+  const { ingredients } = useSelector((state) => state.ingredients);
   const ingredientId = item["_id"];
 
   const location = useLocation();
@@ -35,7 +35,7 @@ const Ingredient: FC<IIngredient> = ({ item, handleOpenModal }) => {
   );
 
   const countIngredients = useMemo(
-    () => ID.filter((el: string) => item._id.indexOf(el) > -1),
+    () => (ID as string[]).filter((el: string) => item._id.indexOf(el) > -1),
     [ID, item._id]
   );
 
@@ -57,7 +57,7 @@ const Ingredient: FC<IIngredient> = ({ item, handleOpenModal }) => {
   useEffect(() => {
     dispatch({
       type: SET_INGREDIENT,
-      item: ingredient,
+      payload: ingredient as TItem,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ingredientIdFromlocation]);

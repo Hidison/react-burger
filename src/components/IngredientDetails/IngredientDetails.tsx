@@ -1,9 +1,9 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector } from "../../services/hooks";
 import IngredientDetailsStyles from "./IngredientDetails.module.css";
 
 const IngredientDetails = () => {
-  const { ingredient } = useSelector((state: any) => state.ingredient);
+  const { ingredient } = useSelector((state) => state.ingredient);
 
   if (!ingredient) {
     return null;

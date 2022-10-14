@@ -3,7 +3,10 @@ import {
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import React, { FC, useMemo, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import {
+  useDispatch,
+  useSelector,
+} from "../../services/hooks";
 import { useDrag, useDrop, XYCoord } from "react-dnd";
 import { DEL_INGREDIENTS_MAIN } from "../../services/actions/BurgerConstructor";
 import BurgerConstructorStyles from "../BurgerConstructor/BurgerConstructor.module.css";
@@ -27,7 +30,7 @@ const ConstructorElementWrapper: FC<IConstructorElementWrapper> = ({
   const ref = useRef<HTMLLIElement>(null);
   const dispatch = useDispatch();
   const { selectedIngredientsMain } = useSelector(
-    (state: any) => state.selectedIngredients
+    (state) => state.selectedIngredients
   );
 
   const delSelectedIngredient = useMemo(
@@ -116,7 +119,7 @@ const ConstructorElementWrapper: FC<IConstructorElementWrapper> = ({
         handleClose={() =>
           dispatch({
             type: DEL_INGREDIENTS_MAIN,
-            item: delSelectedIngredient,
+            payload: delSelectedIngredient,
           })
         }
       />

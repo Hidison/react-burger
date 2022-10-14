@@ -9,11 +9,15 @@ export const getIngredients = (): Promise<CustomResponse> => {
   });
 };
 
-export const postOrder = (id: string): Promise<CustomResponse> => {
+export const postOrder = (
+  id: string,
+  accessToken: string
+): Promise<CustomResponse> => {
   return request(`${baseUrl}/orders`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: accessToken,
     },
     body: JSON.stringify({
       ingredients: id,

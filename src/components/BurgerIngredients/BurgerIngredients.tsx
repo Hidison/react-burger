@@ -1,5 +1,5 @@
 import React, { FC, useRef, useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector } from "../../services/hooks";
 import BurgerIngredientsStyles from "./BurgerIngredients.module.css";
 import { Tab as TabUI } from "@ya.praktikum/react-developer-burger-ui-components";
 import MyScrollbar from "../UI/myScrollbar/MyScrollbar";
@@ -26,7 +26,7 @@ const BurgerIngredients: FC<IBurgerIngredients> = ({ handleOpenModal }) => {
     bunIngredients,
     mainIngredients,
     sauceIngredients,
-  } = useSelector((state: any) => state.ingredients);
+  } = useSelector((state) => state.ingredients);
 
   const scrollRef = useRef(null);
   const bunRef = useRef<HTMLHeadingElement>(null);

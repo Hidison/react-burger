@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "../services/hooks";
 import { Redirect, useLocation } from "react-router-dom";
 import Auth from "../components/Auth/Auth";
 import { login } from "../services/actions/Login";
@@ -7,8 +7,8 @@ import { REGISTER_SUCCESS } from "../services/actions/Register";
 import { Location } from "history";
 
 const LoginPage = () => {
-  const dispatch: any = useDispatch();
-  const { auth, values } = useSelector((state: any) => state.auth);
+  const dispatch = useDispatch();
+  const { auth, values } = useSelector((state) => state.auth);
 
   const location = useLocation<{ from: Location }>();
   const handleLogin = () => {

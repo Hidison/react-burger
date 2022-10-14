@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "../../services/hooks";
 import { useDrop } from "react-dnd";
 import uuid from "react-uuid";
 import BurgerConstructorStyles from "./BurgerConstructor.module.css";
@@ -19,25 +19,28 @@ import {
 import ConstructorElementWrapper from "../ConstructorElementWrapper/ConstructorElementWrapper";
 import { useHistory } from "react-router-dom";
 import { TItem } from "../../types";
+import { getCookie } from "../../utils/utils";
 
 interface IBurgerConstructor {
   handleOpenModal: Function;
 }
 
 const BurgerConstructor: FC<IBurgerConstructor> = ({ handleOpenModal }) => {
-  const dispatch: any = useDispatch();
+  const dispatch = useDispatch();
 
   const { selectedIngredientsBun, selectedIngredientsMain, totalPrice, ID } =
-    useSelector((state: any) => state.selectedIngredients);
-  const { auth } = useSelector((state: any) => state.auth);
+    useSelector((state) => state.selectedIngredients);
+  const { auth } = useSelector((state) => state.auth); 
   const history = useHistory();
+
+  const aToken: string | undefined = getCookie("accessToken");
 
   const [{ isHoverBun }, dropTarget] = useDrop({
     accept: "ingredientBun",
     drop(item: TItem) {
       dispatch({
         type: SET_INGREDIENTS_BUN,
-        item: { ...item, count: 2 },
+        payload: { ...item, count: 2 },
       });
     },
     collect: (monitor) => ({
@@ -50,7 +53,7 @@ const BurgerConstructor: FC<IBurgerConstructor> = ({ handleOpenModal }) => {
     drop(item: TItem) {
       dispatch({
         type: SET_INGREDIENTS_BUN,
-        item: { ...item, count: 2 },
+        payload: { ...item, count: 2 },
       });
     },
     collect: (monitor) => ({
@@ -63,7 +66,7 @@ const BurgerConstructor: FC<IBurgerConstructor> = ({ handleOpenModal }) => {
     drop(item: TItem) {
       dispatch({
         type: ADD_INGREDIENTS_MAIN,
-        item: { ...item, dragId: uuid() },
+        payload: { ...item, dragId: uuid() },
       });
     },
     collect: (monitor) => ({
@@ -76,15 +79,7 @@ const BurgerConstructor: FC<IBurgerConstructor> = ({ handleOpenModal }) => {
 
   const handleOrder = () => {
     if (auth) {
-      dispatch({
-        type: SET_INGREDIENTS_BUN,
-        item: { price: 0 },
-      });
-      dispatch({
-        type: UPDATE_SELECTED_INGREDIENTS,
-        sortedIngredients: [],
-      });
-      dispatch(sendOrder(ID));
+      dispatch(sendOrder(ID as string, aToken));
       handleOpenModal();
     } else {
       history.replace({ pathname: "/login" });
@@ -108,7 +103,7 @@ const BurgerConstructor: FC<IBurgerConstructor> = ({ handleOpenModal }) => {
       newIngredients.splice(hoverIndex, 0, dragIngredient);
       dispatch({
         type: UPDATE_SELECTED_INGREDIENTS,
-        sortedIngredients: newIngredients,
+        payload: newIngredients,
       });
     },
     [selectedIngredientsMain, dispatch]
@@ -123,7 +118,7 @@ const BurgerConstructor: FC<IBurgerConstructor> = ({ handleOpenModal }) => {
       >
         {selectedIngredientsBun.price !== 0 ? (
           <ConstructorElementWrapper
-            item={selectedIngredientsBun}
+            item={selectedIngredientsBun as TItem}
             type={"top"}
           />
         ) : (
@@ -177,7 +172,7 @@ const BurgerConstructor: FC<IBurgerConstructor> = ({ handleOpenModal }) => {
       >
         {selectedIngredientsBun.price !== 0 ? (
           <ConstructorElementWrapper
-            item={selectedIngredientsBun}
+            item={selectedIngredientsBun as TItem}
             type={"bottom"}
           />
         ) : (

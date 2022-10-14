@@ -1,3 +1,5 @@
+import { TAuthActions } from "../actions/Auth";
+
 import {
   RECOVERY_PASSWORD,
   RECOVERY_PASSWORD_FAILED,
@@ -12,19 +14,39 @@ import {
   SET_ERRORS,
 } from "../actions/Auth";
 
-const initialStateRecovery = {
+type TRecoveryListState = {
+  recoveryRequest: boolean;
+  recoveryFailed: boolean;
+  success: boolean;
+};
+
+type TChangePasswordRecoveryListState = {
+  changePasswordRequest: boolean;
+  changePasswordFailed: boolean;
+  data: { message: string; success: boolean } | null;
+};
+
+type TAuthListState = {
+  auth: boolean;
+  hidePassword: boolean;
+  values: { name: string; email: string; password: string; code: string };
+  errors: { name: string; email: string; password: string; submit: string };
+  valid: { name: boolean; email: boolean; password: boolean };
+};
+
+const initialStateRecovery: TRecoveryListState = {
   recoveryRequest: false,
   recoveryFailed: false,
   success: false,
 };
 
-const initialStateChangePasswordRecovery = {
+const initialStateChangePasswordRecovery: TChangePasswordRecoveryListState = {
   changePasswordRequest: false,
   changePasswordFailed: false,
   data: null,
 };
 
-const initialStateAuth = {
+const initialStateAuth: TAuthListState = {
   auth: false,
   hidePassword: true,
   values: { name: "", email: "", password: "", code: "" },
@@ -32,7 +54,10 @@ const initialStateAuth = {
   valid: { name: false, email: false, password: false },
 };
 
-export const recoveryReducer = (state = initialStateRecovery, action: any) => {
+export const recoveryReducer = (
+  state = initialStateRecovery,
+  action: TAuthActions
+): TRecoveryListState => {
   switch (action.type) {
     case RECOVERY_PASSWORD: {
       return {
@@ -45,7 +70,7 @@ export const recoveryReducer = (state = initialStateRecovery, action: any) => {
       return {
         ...state,
         recoveryRequest: false,
-        success: action.success,
+        success: action.payload,
       };
     }
     case RECOVERY_PASSWORD_FAILED: {
@@ -63,8 +88,8 @@ export const recoveryReducer = (state = initialStateRecovery, action: any) => {
 
 export const changePasswordReducer = (
   state = initialStateChangePasswordRecovery,
-  action: any
-) => {
+  action: TAuthActions
+): TChangePasswordRecoveryListState => {
   switch (action.type) {
     case CHANGE_PASSWORD: {
       return {
@@ -77,7 +102,7 @@ export const changePasswordReducer = (
       return {
         ...state,
         changePasswordRequest: false,
-        data: action.data,
+        data: action.payload,
       };
     }
     case CHANGE_PASSWORD_FAILED: {
@@ -93,36 +118,39 @@ export const changePasswordReducer = (
   }
 };
 
-export const authReducer = (state = initialStateAuth, action: any) => {
+export const authReducer = (
+  state = initialStateAuth,
+  action: TAuthActions
+): TAuthListState => {
   switch (action.type) {
     case SET_AUTH: {
       return {
         ...state,
-        auth: action.auth,
+        auth: action.payload,
       };
     }
     case HIDE_PASSWORD: {
       return {
         ...state,
-        hidePassword: action.hidePassword,
+        hidePassword: action.payload,
       };
     }
     case SET_VALUES: {
       return {
         ...state,
-        values: action.values,
+        values: action.payload,
       };
     }
     case SET_ERRORS: {
       return {
         ...state,
-        errors: action.errors,
+        errors: action.payload,
       };
     }
     case SET_VALID: {
       return {
         ...state,
-        valid: action.valid,
+        valid: action.payload,
       };
     }
     default: {

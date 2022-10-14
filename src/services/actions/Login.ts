@@ -1,23 +1,56 @@
 import * as AuthApi from "../../utils/AuthApi";
 import { setCookie } from "../../utils/utils";
-import { SET_ERRORS } from "./Auth";
+import { AppDispatch, AppThunk } from "../types";
+import { SET_AUTH, SET_ERRORS } from "./Auth";
+import { sendOrder } from "./OrderDetails";
 import { getUser } from "./Profile";
+import { WS_CONNECTION_START_AUTH } from "./wsActionTypes";
 
-export const UPDATE_TOKEN = "UPDATE_TOKEN";
-export const UPDATE_TOKEN_FAILED = "UPDATE_TOKEN_FAILED";
-export const UPDATE_TOKEN_SUCCESS = "UPDATE_TOKEN_SUCCESS";
+export const UPDATE_TOKEN: "UPDATE_TOKEN" = "UPDATE_TOKEN";
+export const UPDATE_TOKEN_FAILED: "UPDATE_TOKEN_FAILED" = "UPDATE_TOKEN_FAILED";
+export const UPDATE_TOKEN_SUCCESS: "UPDATE_TOKEN_SUCCESS" =
+  "UPDATE_TOKEN_SUCCESS";
 
-export const LOGIN = "LOGIN";
-export const LOGIN_FAILED = "LOGIN_FAILED";
-export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
+export const LOGIN: "LOGIN" = "LOGIN";
+export const LOGIN_FAILED: "LOGIN_FAILED" = "LOGIN_FAILED";
+export const LOGIN_SUCCESS: "LOGIN_SUCCESS" = "LOGIN_SUCCESS";
 
-function loginFailed(dispatch: any) {
+export interface IUpdateTokenAction {
+  readonly type: typeof UPDATE_TOKEN;
+}
+export interface IUpdateTokenFailedAction {
+  readonly type: typeof UPDATE_TOKEN_FAILED;
+}
+export interface IUpdateTokenSuccessAction {
+  readonly type: typeof UPDATE_TOKEN_SUCCESS;
+}
+
+export interface ILoginAction {
+  readonly type: typeof LOGIN;
+}
+export interface ILoginFailedAction {
+  readonly type: typeof LOGIN_FAILED;
+}
+export interface ILoginSuccessAction {
+  readonly type: typeof LOGIN_SUCCESS;
+  payload: { email: string; name: string };
+}
+
+export type TLoginActions =
+  | IUpdateTokenAction
+  | IUpdateTokenFailedAction
+  | IUpdateTokenSuccessAction
+  | ILoginAction
+  | ILoginFailedAction
+  | ILoginSuccessAction;
+
+function loginFailed(dispatch: AppDispatch) {
   dispatch({
     type: LOGIN_FAILED,
   });
   dispatch({
     type: SET_ERRORS,
-    errors: {
+    payload: {
       name: "",
       email: "",
       password: "",
@@ -26,14 +59,14 @@ function loginFailed(dispatch: any) {
   });
 }
 
-function updateTokenFailed() {
+function updateTokenFailed(): IUpdateTokenFailedAction {
   return {
     type: UPDATE_TOKEN_FAILED,
   };
 }
 
-export function login(email: string, password: string) {
-  return function (dispatch: any) {
+export const login: AppThunk = (email: string, password: string) => {
+  return function (dispatch: AppDispatch) {
     dispatch({
       type: LOGIN,
     });
@@ -51,7 +84,7 @@ export function login(email: string, password: string) {
           }
           dispatch({
             type: LOGIN_SUCCESS,
-            user: data.user,
+            payload: data.user,
           });
         } else {
           loginFailed(dispatch);
@@ -61,10 +94,10 @@ export function login(email: string, password: string) {
         loginFailed(dispatch);
       });
   };
-}
+};
 
-export function updateToken(token: string) {
-  return function (dispatch: any) {
+export const updateToken: AppThunk = (token: string, target?, id?) => {
+  return function (dispatch: AppDispatch) {
     dispatch({
       type: UPDATE_TOKEN,
     });
@@ -76,12 +109,25 @@ export function updateToken(token: string) {
             "max-age": 86400,
           });
           dispatch(getUser(data.accessToken));
+          target === "postOrder" && dispatch(sendOrder(id, data.accessToken));
+          target === "getOrder" &&
+            dispatch({
+              type: WS_CONNECTION_START_AUTH,
+            });
         } else {
+          dispatch({
+            type: SET_AUTH,
+            payload: false,
+          });
           dispatch(updateTokenFailed());
         }
       })
       .catch((err) => {
+        dispatch({
+          type: SET_AUTH,
+          payload: false,
+        });
         dispatch(updateTokenFailed());
       });
   };
-}
+};

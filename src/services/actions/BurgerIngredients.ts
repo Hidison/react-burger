@@ -1,17 +1,37 @@
+import { TItem } from "../../types";
 import * as MainApi from "../../utils/MainApi";
+import { AppDispatch, AppThunk } from "../types"; 
 
-export const GET_INGREDIENTS = "GET_INGREDIENTS";
-export const GET_INGREDIENTS_FAILED = "GET_INGREDIENTS_FAILED";
-export const GET_INGREDIENTS_SUCCESS = "GET_INGREDIENTS_SUCCESS";
+export const GET_INGREDIENTS: "GET_INGREDIENTS" = "GET_INGREDIENTS";
+export const GET_INGREDIENTS_FAILED: "GET_INGREDIENTS_FAILED" =
+  "GET_INGREDIENTS_FAILED";
+export const GET_INGREDIENTS_SUCCESS: "GET_INGREDIENTS_SUCCESS" =
+  "GET_INGREDIENTS_SUCCESS";
 
-function getIngredientsFailed() {
+export interface IGetIngredientsAction {
+  readonly type: typeof GET_INGREDIENTS;
+}
+export interface IGetIngredientsFailedAction {
+  readonly type: typeof GET_INGREDIENTS_FAILED;
+} 
+export interface IGetIngredientsSuccessAction {
+  readonly type: typeof GET_INGREDIENTS_SUCCESS;
+  payload: TItem[];
+}
+
+export type TBurgerIngredientsActions =
+  | IGetIngredientsAction
+  | IGetIngredientsFailedAction
+  | IGetIngredientsSuccessAction;
+
+function getIngredientsFailed(): IGetIngredientsFailedAction {
   return {
     type: GET_INGREDIENTS_FAILED,
   };
 }
 
-export function getIngredients() {
-  return function (dispatch: any) {
+export const getIngredients: AppThunk = () => {
+  return function (dispatch: AppDispatch) {
     dispatch({
       type: GET_INGREDIENTS,
     });
@@ -20,7 +40,7 @@ export function getIngredients() {
         if (res && res.success) {
           dispatch({
             type: GET_INGREDIENTS_SUCCESS,
-            ingredients: res.data,
+            payload: res.data,
           });
         } else {
           dispatch(getIngredientsFailed());
@@ -30,4 +50,4 @@ export function getIngredients() {
         dispatch(getIngredientsFailed());
       });
   };
-}
+};

@@ -13,6 +13,24 @@ export type TItem = {
   _id: string;
   dragId?: string;
   index?: number;
+  count?: number;
+};
+
+export type TMessageOrder = {
+  ingredients: string[];
+  _id: string;
+  status: string;
+  number: number;
+  createdAt: string;
+  updatedAt: string;
+  name?: string;
+};
+
+export type TMessage = {
+  success: boolean;
+  orders: TMessageOrder[];
+  total: number;
+  totalToday: number;
 };
 
 export interface SyntheticEvent {

@@ -5,7 +5,7 @@ import {
 import LoginStyles from "./Auth.module.css";
 import React, { FC, useEffect } from "react";
 import { Link, Redirect, useLocation } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "../../services/hooks";
 import {
   HIDE_PASSWORD,
   SET_AUTH,
@@ -24,26 +24,24 @@ interface IAuthProps {
 }
 
 const Auth: FC<IAuthProps> = ({ title, buttonTitle, handleClick }) => {
-  const dispatch: any = useDispatch();
+  const dispatch = useDispatch();
   const { handleChange, resetForm } = useFormAndValidation();
 
   const { auth, hidePassword, values, errors, valid } = useSelector(
-    (state: any) => state.auth
+    (state) => state.auth
   );
 
   const { recoveryRequest, recoveryFailed } = useSelector(
-    (state: any) => state.recovery
+    (state) => state.recovery
   );
-  const { loginRequest, loginFailed } = useSelector(
-    (state: any) => state.login
-  );
+  const { loginRequest, loginFailed } = useSelector((state) => state.login);
 
   const { registerRequest, registerFailed } = useSelector(
-    (state: any) => state.register
+    (state) => state.register
   );
 
   const { changePasswordRequest, changePasswordFailed } = useSelector(
-    (state: any) => state.changePassword
+    (state) => state.changePassword
   );
 
   const aToken = getCookie("accessToken");
@@ -52,7 +50,7 @@ const Auth: FC<IAuthProps> = ({ title, buttonTitle, handleClick }) => {
     if (aToken) {
       dispatch({
         type: SET_AUTH,
-        auth: true,
+        payload: true,
       });
     }
   }, [aToken, dispatch]);
@@ -68,7 +66,7 @@ const Auth: FC<IAuthProps> = ({ title, buttonTitle, handleClick }) => {
   const onIconClick = () => {
     dispatch({
       type: HIDE_PASSWORD,
-      hidePassword: hidePassword ? false : true,
+      payload: hidePassword ? false : true,
     });
   };
 
@@ -76,7 +74,7 @@ const Auth: FC<IAuthProps> = ({ title, buttonTitle, handleClick }) => {
     if (location.pathname === "/reset-password") {
       dispatch({
         type: RECOVERY_PASSWORD_SUCCESS,
-        success: false,
+        payload: false,
       });
     }
   };
@@ -89,7 +87,7 @@ const Auth: FC<IAuthProps> = ({ title, buttonTitle, handleClick }) => {
   const resetError = () => {
     dispatch({
       type: SET_ERRORS,
-      errors: {
+      payload: {
         ...errors,
         submit: "",
       },
@@ -101,7 +99,7 @@ const Auth: FC<IAuthProps> = ({ title, buttonTitle, handleClick }) => {
   } else {
     return (
       <div className={LoginStyles.login}>
-        <h1 className="text text_type_main-medium">{title}</h1>
+        <h1 className="text text_type_main-medium mb-6">{title}</h1>
         <form onSubmit={onClick} autoComplete="off">
           {location.pathname === "/register" && (
             <div>

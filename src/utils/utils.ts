@@ -42,6 +42,14 @@ export function getIngIdFromLocation(pathname: string) {
   return pathname.replace(/ingredients/, "").replace(/[^a-zа-яё0-9\s]/gi, "");
 }
 
+export function getOrderFromLocation(pathname: string) {
+  return pathname
+    .replace(/feed/, "")
+    .replace(/profile/, "")
+    .replace(/orders/, "")
+    .replace(/[^a-zа-яё0-9\s]/gi, "");
+}
+
 export const checkResponse = (res: any) => {
   if (res.ok) {
     return res.json();

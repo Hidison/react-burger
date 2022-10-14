@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "../services/hooks";
 import IngredientsPageStyles from "./ingredient.module.css";
 import IngredientDetails from "../components/IngredientDetails/IngredientDetails";
 import { useHistory } from "react-router-dom";
@@ -11,8 +11,8 @@ import { TItem } from "../types";
 const IngredientPage = () => {
   const dispatch = useDispatch();
   const { ingredientsRequest, ingredients } = useSelector(
-    (state: any) => state.ingredients
-  );
+    (state) => state.ingredients
+  ); 
   const history = useHistory();
 
   const ingredientIdFromlocation: string = getIngIdFromLocation(
@@ -28,7 +28,7 @@ const IngredientPage = () => {
   useEffect(() => {
     dispatch({
       type: SET_INGREDIENT,
-      item: ingredient,
+      payload: ingredient as TItem,
     });
   }, [dispatch, ingredient]);
 

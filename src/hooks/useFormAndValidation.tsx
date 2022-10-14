@@ -1,18 +1,18 @@
 import { useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { SET_VALUES, SET_ERRORS, SET_VALID } from "../services/actions/Auth";
+import { useDispatch, useSelector } from "../services/hooks";
 import { SyntheticEvent } from "../types";
 
 export function useFormAndValidation() {
   const dispatch = useDispatch();
-  const { values, errors, valid } = useSelector((state: any) => state.auth);
+  const { values, errors, valid } = useSelector((state) => state.auth);
   const email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   const validate = (name: string, value: string) => {
     function resetError() {
       dispatch({
         type: SET_ERRORS,
-        errors: {
+        payload: {
           ...errors,
           [name]: "",
         },
@@ -23,7 +23,7 @@ export function useFormAndValidation() {
         if (value.length < 2) {
           dispatch({
             type: SET_ERRORS,
-            errors: {
+            payload: {
               ...errors,
               [name]: "Имя должно состоять минимум из 2-ух символов",
             },
@@ -38,7 +38,7 @@ export function useFormAndValidation() {
         if (!email.test(String(value))) {
           dispatch({
             type: SET_ERRORS,
-            errors: {
+            payload: {
               ...errors,
               [name]: "Введите корректный email",
             },
@@ -53,7 +53,7 @@ export function useFormAndValidation() {
         if (value.length < 6 || value.length > 20) {
           dispatch({
             type: SET_ERRORS,
-            errors: {
+            payload: {
               ...errors,
               [name]: "Пароль должен быть от 6 до 20 символов",
             },
@@ -73,11 +73,11 @@ export function useFormAndValidation() {
     const { name, value } = e.target as HTMLInputElement;
     dispatch({
       type: SET_VALUES,
-      values: { ...values, [name]: value },
+      payload: { ...values, [name]: value },
     });
     dispatch({
       type: SET_VALID,
-      valid: { ...valid, [name]: validate(name, value) },
+      payload: { ...valid, [name]: validate(name, value) },
     });
   };
 
@@ -89,15 +89,15 @@ export function useFormAndValidation() {
     ) => {
       dispatch({
         type: SET_ERRORS,
-        errors: newErrors,
+        payload: newErrors,
       });
       dispatch({
         type: SET_VALUES,
-        values: newValues,
+        payload: newValues,
       });
       dispatch({
         type: SET_VALID,
-        valid: newIsValid,
+        payload: newIsValid,
       });
     },
     [dispatch]

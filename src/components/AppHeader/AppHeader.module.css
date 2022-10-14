@@ -1,8 +1,14 @@
 .header {
+  width: 100%;
+  background-color: #1c1c21;
+}
+
+.header__container {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #1c1c21;
+  max-width: 1240px;
+  margin: 0 auto;
 }
 
 .headerButton {
@@ -14,7 +20,6 @@
   border: none;
   display: flex;
   align-items: center;
-  padding: 0 32px;
   background: transparent;
   color: #f2f2f3;
   text-decoration: none;

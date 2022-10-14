@@ -1,0 +1,11 @@
+.orders__list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-right: 16px;
+  width: 844px;
+}
+
+.orders__container {
+  width: 844px;
+}

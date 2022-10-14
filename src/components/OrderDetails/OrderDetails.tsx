@@ -1,12 +1,12 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector } from "../../services/hooks";
 import OrderDetailsStyles from "./OrderDetails.module.css";
 import OrderDoneImage from "../../images/order-done-image.svg";
 import Loader from "../UI/Loader/Loader";
 
 const OrderDetails = () => {
   const { orderRequest, orderFailed, orderNumber } = useSelector(
-    (state: any) => state.order
+    (state) => state.order
   );
 
   return (

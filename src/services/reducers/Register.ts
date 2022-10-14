@@ -2,16 +2,34 @@ import {
   REGISTER,
   REGISTER_FAILED,
   REGISTER_SUCCESS,
+  TRegisterActions,
 } from "../actions/Register";
 
-const initialStateRegister = {
+type TRegisterListState = {
+  registerRequest: boolean;
+  registerFailed: boolean;
+  registerSuccess: boolean;
+  data?:
+    | {
+        accessToken: string;
+        refreshToken: string;
+        success: boolean;
+        user: { email: string; name: string };
+      }
+    | {};
+};
+
+const initialStateRegister: TRegisterListState = {
   registerRequest: false,
   registerFailed: false,
   registerSuccess: false,
   data: {},
 };
 
-export const registerReducer = (state = initialStateRegister, action: any) => {
+export const registerReducer = (
+  state = initialStateRegister,
+  action: TRegisterActions
+): TRegisterListState => {
   switch (action.type) {
     case REGISTER: {
       return {
@@ -24,7 +42,7 @@ export const registerReducer = (state = initialStateRegister, action: any) => {
       return {
         ...state,
         registerRequest: false,
-        data: action.data,
+        data: action.payload,
         registerSuccess: action.registerSuccess,
       };
     }
