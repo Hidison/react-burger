@@ -19,7 +19,7 @@ import FeedPage from "../../pages/feed";
 import FeedPageID from "../../pages/feed-id";
 import { useDispatch, useSelector } from "../../services/hooks";
 import {
-  WS_CONNECTION_CLOSED,
+  WS_CONNECTION_CLOSE,
   WS_CONNECTION_START,
   WS_CONNECTION_START_AUTH,
 } from "../../services/actions/wsActionTypes";
@@ -47,12 +47,15 @@ const ModalSwitch = () => {
     history.goBack();
   };
 
+  const feedLocation = location.pathname.includes("feed");
+  const ordersLocation = location.pathname.includes("orders");
+
   useEffect(() => {
-    if (location.pathname.includes("feed")) {
+    if (feedLocation) {
       dispatch({
         type: WS_CONNECTION_START,
       });
-    } else if (location.pathname.includes("orders")) {
+    } else if (ordersLocation) {
       dispatch({
         type: WS_CONNECTION_START_AUTH,
       });
@@ -60,10 +63,10 @@ const ModalSwitch = () => {
 
     return () => {
       dispatch({
-        type: WS_CONNECTION_CLOSED,
+        type: WS_CONNECTION_CLOSE,
       });
     };
-  }, [dispatch, location.pathname]);
+  }, [dispatch, feedLocation, ordersLocation]);
 
   return (
     <main className={ModalSwitchStyles.main}>

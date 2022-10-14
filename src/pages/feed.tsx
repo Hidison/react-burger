@@ -3,7 +3,7 @@ import FeedPageStyles from "./feed.module.css";
 import MyScrollbar from "../components/UI/myScrollbar/MyScrollbar";
 import { Redirect, useHistory } from "react-router-dom";
 import { useSelector } from "../services/hooks";
-import { getMessages, getWsConnected } from "../services/selectors";
+import { getMessages } from "../services/selectors";
 import OrderData from "../components/OrderData/OrderData";
 import Loader from "../components/UI/Loader/Loader";
 import { TMessage } from "../types";
@@ -22,7 +22,6 @@ const FeedPage: FC<IFeedPage> = ({ setOrderModalVisible, modalVisible }) => {
   const isWsClosed = useSelector(getWsClosed);
   const { heightApp } = useSelector((state) => state.app);
   const { heightHeader } = useSelector((state) => state.appHeader);
-  const wsConnected: boolean = useSelector(getWsConnected);
   const ordersListHeight = heightApp - heightHeader - 108;
 
   const ordersCreated = useMemo(
@@ -60,7 +59,7 @@ const FeedPage: FC<IFeedPage> = ({ setOrderModalVisible, modalVisible }) => {
       </h1>
       {isWsError && isWsClosed ? (
         <WsConnectedError />
-      ) : messages && wsConnected ? (
+      ) : messages ? (
         <>
           {" "}
           <section>

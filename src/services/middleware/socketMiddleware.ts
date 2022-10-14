@@ -43,9 +43,11 @@ export const socketMiddleware = (wsUrl: string, auth: boolean): Middleware => {
                 payload: JSON.parse(data),
               });
         };
+
         socket.onclose = (event) => {
+          console.log(event.code);
           dispatch({ type: "WS_CONNECTION_CLOSED", payload: event });
-          if (event) {
+          if (event.code !== 1000) {
             setTimeout(() => {
               if (auth) {
                 dispatch({
@@ -59,6 +61,10 @@ export const socketMiddleware = (wsUrl: string, auth: boolean): Middleware => {
             }, 5000);
           }
         };
+
+        if (type === "WS_CONNECTION_CLOSE") {
+          socket.close(1000, "Работа закончена");
+        }
 
         if (type === "WS_SEND_MESSAGE") {
           const message = action.payload;

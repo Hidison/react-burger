@@ -2,6 +2,7 @@ export const WS_CONNECTION_START: "WS_CONNECTION_START" = "WS_CONNECTION_START";
 export const WS_CONNECTION_START_AUTH: "WS_CONNECTION_START_AUTH" = "WS_CONNECTION_START_AUTH";
 export const WS_CONNECTION_SUCCESS: "WS_CONNECTION_SUCCESS" = "WS_CONNECTION_SUCCESS";
 export const WS_CONNECTION_ERROR: "WS_CONNECTION_ERROR" = "WS_CONNECTION_ERROR";
+export const WS_CONNECTION_CLOSE: "WS_CONNECTION_CLOSE" = "WS_CONNECTION_CLOSE";
 export const WS_CONNECTION_CLOSED: "WS_CONNECTION_CLOSED" = "WS_CONNECTION_CLOSED";
 export const WS_GET_MESSAGE: "WS_GET_MESSAGE" = "WS_GET_MESSAGE";
 export const WS_GET_MESSAGE_AUTH: "WS_GET_MESSAGE_AUTH" = "WS_GET_MESSAGE_AUTH";
@@ -19,6 +20,9 @@ export interface IWSConnectionSuccessAction {
 export interface IWSConnectionErrorAction {
   readonly type: typeof WS_CONNECTION_ERROR;
   payload: any;
+}
+export interface IWSConnectionCloseAction {
+  readonly type: typeof WS_CONNECTION_CLOSE;
 }
 export interface IWSConnectionClosedAction {
   readonly type: typeof WS_CONNECTION_CLOSED;
@@ -41,6 +45,7 @@ export type TWSActions =
   | IWSConnectionStartAuthAction
   | IWSConnectionSuccessAction
   | IWSConnectionErrorAction
+  | IWSConnectionCloseAction
   | IWSConnectionClosedAction
   | IWSGetMessageAction
   | IWSGetMessageAuthAction
