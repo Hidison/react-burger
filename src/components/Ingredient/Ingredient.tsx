@@ -1,7 +1,4 @@
-import {
-  Counter,
-  CurrencyIcon,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import { Counter, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch, useSelector } from "../../services/hooks";
 import IngredientStyles from "./Ingredient.module.css";
 import { useDrag } from "react-dnd";
@@ -24,13 +21,10 @@ const Ingredient: FC<IIngredient> = ({ item, handleOpenModal }) => {
 
   const location = useLocation();
   const history = useHistory();
-  const ingredientIdFromlocation: string = getIngIdFromLocation(
-    history.location.pathname
-  );
+  const ingredientIdFromlocation: string = getIngIdFromLocation(history.location.pathname);
 
   const ingredient = useMemo(
-    () =>
-      ingredients.find((item: TItem) => item._id === ingredientIdFromlocation),
+    () => ingredients.find((item: TItem) => item._id === ingredientIdFromlocation),
     [ingredientIdFromlocation, ingredients]
   );
 
@@ -82,24 +76,16 @@ const Ingredient: FC<IIngredient> = ({ item, handleOpenModal }) => {
       >
         <img src={item.image} alt="иконка карточки" className="ml-4 mr-4" />
         <Counter
-          count={
-            item.type === "bun"
-              ? countIngredients.length * 2
-              : countIngredients.length
-          }
+          count={item.type === "bun" ? countIngredients.length * 2 : countIngredients.length}
           size="default"
         />
         <div className={`${IngredientStyles.burgerItem__countBlock} mt-1 mb-1`}>
-          <span
-            className={`${IngredientStyles.burgerItem__count} text text_type_digits-default`}
-          >
+          <span className={`${IngredientStyles.burgerItem__count} text text_type_digits-default`}>
             {item.price}
           </span>
           <CurrencyIcon type="primary" />
         </div>
-        <p
-          className={`${IngredientStyles.burgerItem__text} text text_type_main-default`}
-        >
+        <p className={`${IngredientStyles.burgerItem__text} text text_type_main-default`}>
           {item.name}
         </p>
       </div>

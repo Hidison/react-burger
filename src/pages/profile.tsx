@@ -1,7 +1,4 @@
-import {
-  Button,
-  Input,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
 import React, { useEffect, useRef, useState } from "react";
 import ProfileStyles from "./profile.module.css";
 import LoginStyles from "../components/Auth/Auth.module.css";
@@ -22,9 +19,7 @@ const ProfilePage = () => {
 
   const { values, errors, valid } = useSelector((state) => state.auth);
   const { user } = useSelector((state) => state.user);
-  const { updateUserRequest, updateUserFailed } = useSelector(
-    (state) => state.updatedUser
-  );
+  const { updateUserRequest, updateUserFailed } = useSelector((state) => state.updatedUser);
   const nameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const { handleChange } = useFormAndValidation();
@@ -146,9 +141,7 @@ const ProfilePage = () => {
               size={"default"}
               icon={"EditIcon"}
             />
-            <div
-              className={`${LoginStyles.errorMessage} text_type_main-default`}
-            >
+            <div className={`${LoginStyles.errorMessage} text_type_main-default`}>
               {errors.name}
             </div>
           </div>
@@ -171,9 +164,7 @@ const ProfilePage = () => {
               size={"default"}
               icon={"EditIcon"}
             />
-            <div
-              className={`${LoginStyles.errorMessage} text_type_main-default`}
-            >
+            <div className={`${LoginStyles.errorMessage} text_type_main-default`}>
               {errors.email}
             </div>
           </div>

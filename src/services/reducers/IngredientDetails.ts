@@ -1,8 +1,5 @@
 import { TItem } from "../../types";
-import {
-  SET_INGREDIENT,
-  TIngredientDetailsActions,
-} from "../actions/IngredientDetails";
+import { SET_INGREDIENT, TIngredientDetailsActions } from "../actions/IngredientDetails";
 
 type TIngredientListState = {
   ingredient: TItem | null;

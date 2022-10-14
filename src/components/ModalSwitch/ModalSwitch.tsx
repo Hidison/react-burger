@@ -19,14 +19,11 @@ import FeedPage from "../../pages/feed";
 import FeedPageID from "../../pages/feed-id";
 import { useDispatch, useSelector } from "../../services/hooks";
 import {
+  WS_CONNECTION_CLOSED,
   WS_CONNECTION_START,
   WS_CONNECTION_START_AUTH,
 } from "../../services/actions/wsActionTypes";
-import {
-  getMessages,
-  getMessagesAuth,
-  getWsConnected,
-} from "../../services/selectors";
+import { getMessages, getMessagesAuth, getWsConnected } from "../../services/selectors";
 import OrderDataDetails from "../OrderDataDetails/OrderDataDetails";
 import Loader from "../UI/Loader/Loader";
 import { getWsError } from "../../services/selectors/getWsError";
@@ -39,8 +36,7 @@ const ModalSwitch = () => {
   const wsConnected: boolean = useSelector(getWsConnected);
   const isWsError = useSelector(getWsError);
 
-  const [ingredientModalVisible, setIngredientModalVisible] =
-    useState<boolean>(true);
+  const [ingredientModalVisible, setIngredientModalVisible] = useState<boolean>(true);
   const [orderModalVisible, setOrderModalVisible] = useState<boolean>(false);
   const location = useLocation<{ background: Location }>();
   const history = useHistory();
@@ -61,6 +57,12 @@ const ModalSwitch = () => {
         type: WS_CONNECTION_START_AUTH,
       });
     }
+
+    return () => {
+      dispatch({
+        type: WS_CONNECTION_CLOSED,
+      });
+    };
   }, [dispatch, location.pathname]);
 
   return (
@@ -113,10 +115,7 @@ const ModalSwitch = () => {
           )}
         </Route>
         <Route path="/feed" exact={true}>
-          <FeedPage
-            setOrderModalVisible={setOrderModalVisible}
-            modalVisible={orderModalVisible}
-          />
+          <FeedPage setOrderModalVisible={setOrderModalVisible} modalVisible={orderModalVisible} />
         </Route>
         <Route path="/" exact={true}>
           <MainPage setIngredientModalVisible={setIngredientModalVisible} />
@@ -139,22 +138,14 @@ const ModalSwitch = () => {
       )}
       {background && (
         <Route path="/feed/:id">
-          <Modal
-            title={""}
-            modalVisible={orderModalVisible}
-            handleCloseModal={handleModalClose}
-          >
+          <Modal title={""} modalVisible={orderModalVisible} handleCloseModal={handleModalClose}>
             <OrderDataDetails modalVisible={orderModalVisible} />
           </Modal>
         </Route>
       )}
       {background && (
         <Route path="/profile/orders/:id">
-          <Modal
-            title={""}
-            modalVisible={orderModalVisible}
-            handleCloseModal={handleModalClose}
-          >
+          <Modal title={""} modalVisible={orderModalVisible} handleCloseModal={handleModalClose}>
             <OrderDataDetails modalVisible={orderModalVisible} />
           </Modal>
         </Route>

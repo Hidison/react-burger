@@ -41,15 +41,9 @@ export const ingredientsReducer = (
         ...state,
         ingredients: action.payload,
         ingredientsRequest: false,
-        bunIngredients: action.payload.filter(
-          (item: TItem) => item.type === "bun"
-        ),
-        mainIngredients: action.payload.filter(
-          (item: TItem) => item.type === "main"
-        ),
-        sauceIngredients: action.payload.filter(
-          (item: TItem) => item.type === "sauce"
-        ),
+        bunIngredients: action.payload.filter((item: TItem) => item.type === "bun"),
+        mainIngredients: action.payload.filter((item: TItem) => item.type === "main"),
+        sauceIngredients: action.payload.filter((item: TItem) => item.type === "sauce"),
       };
     }
     case GET_INGREDIENTS_FAILED: {

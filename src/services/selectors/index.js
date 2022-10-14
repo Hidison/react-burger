@@ -1,2 +1,2 @@
-export * from './wsSelectors';
-export * from './getWsConnected';
+export * from "./wsSelectors";
+export * from "./getWsConnected";

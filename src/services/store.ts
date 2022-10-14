@@ -15,17 +15,12 @@ declare global {
 }
 
 const composeEnhancers =
-  typeof window === "object" &&
-  (window as any).window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+  typeof window === "object" && (window as any).window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
     ? (window as any).window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
     : compose;
 
 const enhancer = composeEnhancers(
-  applyMiddleware(
-    thunk,
-    socketMiddleware(urlAuth, true),
-    socketMiddleware(urlAll, false)
-  )
+  applyMiddleware(thunk, socketMiddleware(urlAuth, true), socketMiddleware(urlAll, false))
 );
 
 export const store = createStore(rootReducer, enhancer);

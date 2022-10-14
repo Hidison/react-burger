@@ -38,18 +38,15 @@ const BurgerIngredients: FC<IBurgerIngredients> = ({ handleOpenModal }) => {
   const fillingContainerRef = useRef<HTMLUListElement>(null);
 
   const handleBunClick = (e: SyntheticEvent) => {
-    bunRef.current !== null &&
-      bunRef.current.scrollIntoView({ behavior: "smooth" });
+    bunRef.current !== null && bunRef.current.scrollIntoView({ behavior: "smooth" });
   };
 
   const handleSauceClick = (e: SyntheticEvent) => {
-    sauceRef.current !== null &&
-      sauceRef.current.scrollIntoView({ behavior: "smooth" });
+    sauceRef.current !== null && sauceRef.current.scrollIntoView({ behavior: "smooth" });
   };
 
   const handleFillingClick = (e: SyntheticEvent) => {
-    fillingRef.current !== null &&
-      fillingRef.current.scrollIntoView({ behavior: "smooth" });
+    fillingRef.current !== null && fillingRef.current.scrollIntoView({ behavior: "smooth" });
   };
 
   useEffect(() => {
@@ -92,31 +89,15 @@ const BurgerIngredients: FC<IBurgerIngredients> = ({ handleOpenModal }) => {
   } else {
     return (
       <section className={BurgerIngredientsStyles.BurgerIngredients}>
-        <h1 className="pb-5 pt-10 text text_type_main-large">
-          Соберите бургер
-        </h1>
-        <div
-          className={`${BurgerIngredientsStyles.BurgerIngredients__tab} pb-10`}
-        >
-          <Tab
-            value="Булки"
-            active={current === "Булки"}
-            onClick={handleBunClick}
-          >
+        <h1 className="pb-5 pt-10 text text_type_main-large">Соберите бургер</h1>
+        <div className={`${BurgerIngredientsStyles.BurgerIngredients__tab} pb-10`}>
+          <Tab value="Булки" active={current === "Булки"} onClick={handleBunClick}>
             Булки
           </Tab>
-          <Tab
-            value="Соусы"
-            active={current === "Соусы"}
-            onClick={handleSauceClick}
-          >
+          <Tab value="Соусы" active={current === "Соусы"} onClick={handleSauceClick}>
             Соусы
           </Tab>
-          <Tab
-            value="Начинки"
-            active={current === "Начинки"}
-            onClick={handleFillingClick}
-          >
+          <Tab value="Начинки" active={current === "Начинки"} onClick={handleFillingClick}>
             Начинки
           </Tab>
         </div>
@@ -148,10 +129,7 @@ const BurgerIngredients: FC<IBurgerIngredients> = ({ handleOpenModal }) => {
             ref={sauceContainerRef}
           >
             {sauceIngredients.map((item: TItem) => (
-              <li
-                className={`${BurgerIngredientsStyles.burgerItem} mb-8`}
-                key={item._id}
-              >
+              <li className={`${BurgerIngredientsStyles.burgerItem} mb-8`} key={item._id}>
                 <Ingredient handleOpenModal={handleOpenModal} item={item} />
               </li>
             ))}
@@ -166,10 +144,7 @@ const BurgerIngredients: FC<IBurgerIngredients> = ({ handleOpenModal }) => {
             text={"Начинки"}
           >
             {mainIngredients.map((item: TItem) => (
-              <li
-                className={`${BurgerIngredientsStyles.burgerItem} mb-8`}
-                key={item._id}
-              >
+              <li className={`${BurgerIngredientsStyles.burgerItem} mb-8`} key={item._id}>
                 <Ingredient handleOpenModal={handleOpenModal} item={item} />
               </li>
             ))}

@@ -8,10 +8,7 @@ const initialStateApp: TAppListState = {
   heightApp: 0,
 };
 
-export const AppReducer = (
-  state = initialStateApp,
-  action: TAppActions
-): TAppListState => {
+export const AppReducer = (state = initialStateApp, action: TAppActions): TAppListState => {
   switch (action.type) {
     case SET_APP_HEIGHT: {
       return {

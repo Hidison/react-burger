@@ -9,13 +9,14 @@ import { useDispatch, useSelector } from "../services/hooks";
 import { getMessagesAuth } from "../services/selectors";
 import Loader from "../components/UI/Loader/Loader";
 import { updateToken } from "../services/actions/Login";
-import { getWsError } from "../services/selectors/getWsError";
+import { getWsClosed, getWsError } from "../services/selectors/getWsError";
 import WsConnectedError from "../components/WsConnectedError/WsConnectedError";
 
 const OrdersPage = ({ setOrderModalVisible, modalVisible }: any) => {
   const dispatch = useDispatch();
 
   const isWsError = useSelector(getWsError);
+  const isWsClosed = useSelector(getWsClosed);
   const messagesAuth = useSelector(getMessagesAuth);
 
   const { heightApp } = useSelector((state) => state.app);
@@ -54,18 +55,14 @@ const OrdersPage = ({ setOrderModalVisible, modalVisible }: any) => {
       <section>
         <ProfileNav />
       </section>
-      {isWsError ? (
+      {isWsError && isWsClosed ? (
         <WsConnectedError />
       ) : messagesAuth && messagesAuth.success ? (
         <section className=" ml-15 mt-10">
           <MyScrollbar height={ordersListHeight}>
             <div className={`${OrdersStyles.orders__list}`}>
               {messagesAuthReverse.map((item: any) => (
-                <OrderData
-                  key={item._id}
-                  item={item}
-                  setOrderModalVisible={setOrderModalVisible}
-                />
+                <OrderData key={item._id} item={item} setOrderModalVisible={setOrderModalVisible} />
               ))}
             </div>
           </MyScrollbar>

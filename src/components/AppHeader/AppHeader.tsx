@@ -40,8 +40,7 @@ const AppHeader = () => {
   const HeaderRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const height =
-      HeaderRef && HeaderRef.current && HeaderRef.current.offsetHeight;
+    const height = HeaderRef && HeaderRef.current && HeaderRef.current.offsetHeight;
     dispatch({
       type: SET_APP_HEADER_HEIGHT,
       payload: height,
@@ -50,10 +49,7 @@ const AppHeader = () => {
 
   return (
     <header className={`${AppHeaderStyles.header}`}>
-      <div
-        ref={HeaderRef}
-        className={`${AppHeaderStyles.header__container} pt-4 pb-4`}
-      >
+      <div ref={HeaderRef} className={`${AppHeaderStyles.header__container} pt-4 pb-4`}>
         <div className={AppHeaderStyles.headerButton}>
           <Link
             to="/"
@@ -64,9 +60,7 @@ const AppHeader = () => {
             }
             onClick={handleClickConstructor}
           >
-            <BurgerIcon
-              type={location.pathname === "/" ? "primary" : "secondary"}
-            />
+            <BurgerIcon type={location.pathname === "/" ? "primary" : "secondary"} />
             <span
               className={
                 location.pathname === "/"
@@ -86,9 +80,7 @@ const AppHeader = () => {
             }
             onClick={handleClickOrders}
           >
-            <ListIcon
-              type={location.pathname === "/feed" ? "primary" : "secondary"}
-            />
+            <ListIcon type={location.pathname === "/feed" ? "primary" : "secondary"} />
             <span
               className={
                 location.pathname === "/feed"
@@ -112,9 +104,7 @@ const AppHeader = () => {
           }
           onClick={handleClickPrifile}
         >
-          <ProfileIcon
-            type={location.pathname === "/profile" ? "primary" : "secondary"}
-          />
+          <ProfileIcon type={location.pathname === "/profile" ? "primary" : "secondary"} />
           <span
             className={
               location.pathname === "/profile"

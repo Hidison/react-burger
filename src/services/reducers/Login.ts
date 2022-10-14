@@ -25,10 +25,7 @@ const initialStateUpdateToken = {
   updateTokenFailed: false,
 };
 
-export const loginReducer = (
-  state = initialStateLogin,
-  action: TLoginActions
-): TLoginListState => {
+export const loginReducer = (state = initialStateLogin, action: TLoginActions): TLoginListState => {
   switch (action.type) {
     case LOGIN: {
       return {
@@ -57,10 +54,7 @@ export const loginReducer = (
   }
 };
 
-export const updateTokenReducer = (
-  state = initialStateUpdateToken,
-  action: any
-) => {
+export const updateTokenReducer = (state = initialStateUpdateToken, action: any) => {
   switch (action.type) {
     case UPDATE_TOKEN: {
       return {

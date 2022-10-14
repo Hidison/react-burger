@@ -1,5 +1,6 @@
 import type { Middleware, MiddlewareAPI } from "redux";
 import { getCookie } from "../../utils/utils";
+import { WS_CONNECTION_START, WS_CONNECTION_START_AUTH } from "../actions/wsActionTypes";
 
 import type { TApplicationActions, AppDispatch, RootState } from "../types";
 
@@ -10,6 +11,7 @@ export const socketMiddleware = (wsUrl: string, auth: boolean): Middleware => {
     return (next) => (action: TApplicationActions) => {
       const { dispatch } = store;
       const { type } = action;
+      console.log(action);
 
       const aToken: string | undefined = getCookie("accessToken") as string;
 
@@ -20,9 +22,7 @@ export const socketMiddleware = (wsUrl: string, auth: boolean): Middleware => {
       }
 
       if (type === "WS_CONNECTION_START_AUTH") {
-        auth
-          ? (socket = new WebSocket(`${wsUrl}?token=${aTokenWithoutBearer}`))
-          : (socket = null);
+        auth ? (socket = new WebSocket(`${wsUrl}?token=${aTokenWithoutBearer}`)) : (socket = null);
       }
 
       if (socket) {
@@ -45,6 +45,19 @@ export const socketMiddleware = (wsUrl: string, auth: boolean): Middleware => {
         };
         socket.onclose = (event) => {
           dispatch({ type: "WS_CONNECTION_CLOSED", payload: event });
+          if (event) {
+            setTimeout(() => {
+              if (auth) {
+                dispatch({
+                  type: WS_CONNECTION_START_AUTH,
+                });
+              } else if (!auth) {
+                dispatch({
+                  type: WS_CONNECTION_START,
+                });
+              }
+            }, 5000);
+          }
         };
 
         if (type === "WS_SEND_MESSAGE") {

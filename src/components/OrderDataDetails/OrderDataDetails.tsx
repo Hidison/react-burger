@@ -19,9 +19,7 @@ const OrderDataDetails: FC<IOrderDataDetails> = ({ modalVisible }) => {
   const result = useMemo(
     () =>
       orderData &&
-      ingredients.filter((ingredient) =>
-        orderData.ingredients.includes(ingredient._id)
-      ),
+      ingredients.filter((ingredient) => orderData.ingredients.includes(ingredient._id)),
     [ingredients, orderData]
   );
 
@@ -30,9 +28,7 @@ const OrderDataDetails: FC<IOrderDataDetails> = ({ modalVisible }) => {
       return item.type === "bun"
         ? (item.count = 2)
         : orderData &&
-            (item.count = orderData.ingredients.filter(
-              (ing) => ing === item._id
-            ).length);
+            (item.count = orderData.ingredients.filter((ing) => ing === item._id).length);
     });
 
   if (!orderData || !ingredients) {
@@ -52,12 +48,8 @@ const OrderDataDetails: FC<IOrderDataDetails> = ({ modalVisible }) => {
         >
           #{orderData.number}
         </span>
-        <h1 className="text text_type_main-medium mt-10 mb-3">
-          {orderData.name}
-        </h1>
-        <span
-          className={`${FeedPageIDStyles.order_status} text text_type_main-default`}
-        >
+        <h1 className="text text_type_main-medium mt-10 mb-3">{orderData.name}</h1>
+        <span className={`${FeedPageIDStyles.order_status} text text_type_main-default`}>
           {orderData.status === "done"
             ? "Выполнен"
             : orderData.status === "created"
@@ -73,21 +65,12 @@ const OrderDataDetails: FC<IOrderDataDetails> = ({ modalVisible }) => {
           <div className={`${OrderDataDetailsStyles.ingredients_container}`}>
             {result &&
               result.map((item) => (
-                <div
-                  key={item._id}
-                  className={`${FeedPageIDStyles.ingredients_container}`}
-                >
-                  <div
-                    className={`${FeedPageIDStyles.ingredients_info_container}`}
-                  >
+                <div key={item._id} className={`${FeedPageIDStyles.ingredients_container}`}>
+                  <div className={`${FeedPageIDStyles.ingredients_info_container}`}>
                     <div
                       className={`${OrderStyles.feed__img_container} ${FeedPageIDStyles.ingredient_container}`}
                     >
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        className={OrderStyles.feed__img}
-                      />
+                      <img src={item.image} alt={item.name} className={OrderStyles.feed__img} />
                     </div>
                     <h2
                       className={`${FeedPageIDStyles.ingredient_title} text text_type_main-default ml-4`}
@@ -97,9 +80,7 @@ const OrderDataDetails: FC<IOrderDataDetails> = ({ modalVisible }) => {
                   </div>
 
                   <div className={`${FeedPageIDStyles.price_container}`}>
-                    <p
-                      className={`${OrderStyles.feed__price} text text_type_digits-default`}
-                    >
+                    <p className={`${OrderStyles.feed__price} text text_type_digits-default`}>
                       {item.count} x {item.price}
                     </p>
                     <CurrencyIcon type="primary" />
@@ -113,9 +94,7 @@ const OrderDataDetails: FC<IOrderDataDetails> = ({ modalVisible }) => {
             {setDate(orderData.createdAt)}
           </span>
           <div className={`${FeedPageIDStyles.price_container}`}>
-            <p
-              className={`${OrderStyles.feed__price} text text_type_digits-default`}
-            >
+            <p className={`${OrderStyles.feed__price} text text_type_digits-default`}>
               {result &&
                 result.reduce((acc, curr) => {
                   return acc + curr.price * (curr.count ? curr.count : 0);

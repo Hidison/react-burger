@@ -23,10 +23,7 @@ export interface IRegisterSuccessAction {
   registerSuccess: boolean;
 }
 
-export type TRegisterActions =
-  | IRegisterAction
-  | IRegisterFailedAction
-  | IRegisterSuccessAction;
+export type TRegisterActions = IRegisterAction | IRegisterFailedAction | IRegisterSuccessAction;
 
 function registerFailed(dispatch: AppDispatch) {
   dispatch({
@@ -43,11 +40,7 @@ function registerFailed(dispatch: AppDispatch) {
   });
 }
 
-export const register: AppThunk = (
-  email: string,
-  password: string,
-  name: string
-) => {
+export const register: AppThunk = (email: string, password: string, name: string) => {
   return function (dispatch: AppDispatch) {
     dispatch({
       type: REGISTER,

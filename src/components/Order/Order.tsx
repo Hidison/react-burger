@@ -18,17 +18,14 @@ interface IOrder {
 const Order: FC<IOrder> = ({ number, date, title, ingredientss, status }) => {
   const { ingredients } = useSelector((state) => state.ingredients);
 
-  const result: TItem[] = ingredients.filter((ingredient) =>
-    ingredientss.includes(ingredient._id)
-  );
+  const result: TItem[] = ingredients.filter((ingredient) => ingredientss.includes(ingredient._id));
 
   result &&
     result.forEach(function (item) {
       return item.type === "bun"
         ? (item.count = 2)
         : (item.count =
-            ingredientss &&
-            ingredientss.filter((ing: string) => ing === item._id).length);
+            ingredientss && ingredientss.filter((ing: string) => ing === item._id).length);
     });
 
   const newIngredients: TItem[] = result.slice(0, 5);
@@ -39,15 +36,9 @@ const Order: FC<IOrder> = ({ number, date, title, ingredientss, status }) => {
     <>
       <div className={`${OrderStyles.feed__info}`}>
         <span className="text text_type_digits-default">{number}</span>
-        <span className="text text_type_main-default text_color_inactive">
-          {setDate(date)}
-        </span>
+        <span className="text text_type_main-default text_color_inactive">{setDate(date)}</span>
       </div>
-      <h2
-        className={`${OrderStyles.feed__info_title} text text_type_main-medium mt-6`}
-      >
-        {title}
-      </h2>
+      <h2 className={`${OrderStyles.feed__info_title} text text_type_main-medium mt-6`}>{title}</h2>
       {location.pathname === "/profile/orders" && (
         <p
           className={
@@ -56,11 +47,7 @@ const Order: FC<IOrder> = ({ number, date, title, ingredientss, status }) => {
               : `${OrderStyles.feed__info} text text_type_main-default mt-2`
           }
         >
-          {status === "done"
-            ? "Выполнен"
-            : status === "created"
-            ? "Создан"
-            : "Готовится"}
+          {status === "done" ? "Выполнен" : status === "created" ? "Создан" : "Готовится"}
         </p>
       )}
       <div className={`${OrderStyles.feed__ing_container} mt-6`}>
@@ -94,9 +81,7 @@ const Order: FC<IOrder> = ({ number, date, title, ingredientss, status }) => {
                 }
               />
               {result.length > 6 && (
-                <span
-                  className={`${OrderStyles.feed__img_count} text text_type_main-default`}
-                >
+                <span className={`${OrderStyles.feed__img_count} text text_type_main-default`}>
                   +{counterRestIngredients}
                 </span>
               )}
@@ -104,9 +89,7 @@ const Order: FC<IOrder> = ({ number, date, title, ingredientss, status }) => {
           )}
         </div>
         <div className={`${OrderStyles.feed__price_container} ml-6`}>
-          <span
-            className={`${OrderStyles.feed__price} text text_type_digits-default`}
-          >
+          <span className={`${OrderStyles.feed__price} text text_type_digits-default`}>
             {result.reduce((acc: number, curr: TItem) => {
               return acc + curr.price * (curr.count ? curr.count : 0);
             }, 0)}

@@ -17,11 +17,7 @@ const RegisterPage = () => {
     return <Redirect to="/login" />;
   } else {
     return (
-      <Auth
-        title={"Регистрация"}
-        buttonTitle={"Зарегистрироваться"}
-        handleClick={handleRegister}
-      />
+      <Auth title={"Регистрация"} buttonTitle={"Зарегистрироваться"} handleClick={handleRegister} />
     );
   }
 };

@@ -15,6 +15,7 @@ type TWSState = {
   messages: TMessage[] | null;
   messagesAuth: TMessage[] | null;
   isError: boolean;
+  isClosed: boolean;
   error?: Event;
 };
 
@@ -24,17 +25,17 @@ const initialState: TWSState = {
   messages: null,
   messagesAuth: null,
   isError: false,
+  isClosed: true,
 };
 
-export const wsReducer = (
-  state = initialState,
-  action: TWSActions
-): TWSState => {
+export const wsReducer = (state = initialState, action: TWSActions): TWSState => {
   switch (action.type) {
     case WS_CONNECTION_SUCCESS:
       return {
         ...state,
         wsConnected: true,
+        isError: false,
+        isClosed: false,
       };
 
     case WS_CONNECTION_ERROR:
@@ -50,7 +51,7 @@ export const wsReducer = (
         ...state,
         error: undefined,
         wsConnected: false,
-        isError: true,
+        isClosed: true,
       };
 
     case WS_GET_MESSAGE:

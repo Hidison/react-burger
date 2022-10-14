@@ -106,10 +106,7 @@ export const getUserReducer = (
   }
 };
 
-export const updateUserReducer = (
-  state = initialStateUser,
-  action: TProfileActions
-) => {
+export const updateUserReducer = (state = initialStateUser, action: TProfileActions) => {
   switch (action.type) {
     case UPDATE_USER: {
       return {

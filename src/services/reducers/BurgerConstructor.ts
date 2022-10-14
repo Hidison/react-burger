@@ -10,9 +10,7 @@ import {
 } from "../actions/BurgerConstructor";
 
 type TSelIngredientsListState = {
-  selectedIngredientsBun:
-    | TItem
-    | { price: number; _id: string | null; name: string };
+  selectedIngredientsBun: TItem | { price: number; _id: string | null; name: string };
   selectedIngredientsMain: TItem[];
   totalPrice: number;
   ID: string[] | string;
@@ -39,9 +37,7 @@ export const selectedIngredientReducer = (
     case ADD_INGREDIENTS_MAIN: {
       return {
         ...state,
-        selectedIngredientsMain: state.selectedIngredientsMain.concat([
-          action.payload,
-        ]),
+        selectedIngredientsMain: state.selectedIngredientsMain.concat([action.payload]),
       };
     }
     case DEL_INGREDIENTS_MAIN: {
@@ -54,13 +50,9 @@ export const selectedIngredientReducer = (
       return {
         ...state,
         totalPrice:
-          state.selectedIngredientsMain.reduce(function (
-            tot: number,
-            arr: { price: number }
-          ) {
+          state.selectedIngredientsMain.reduce(function (tot: number, arr: { price: number }) {
             return tot + arr.price;
-          },
-          0) +
+          }, 0) +
           state.selectedIngredientsBun.price * 2,
       };
     }

@@ -1,9 +1,4 @@
-import {
-  REGISTER,
-  REGISTER_FAILED,
-  REGISTER_SUCCESS,
-  TRegisterActions,
-} from "../actions/Register";
+import { REGISTER, REGISTER_FAILED, REGISTER_SUCCESS, TRegisterActions } from "../actions/Register";
 
 type TRegisterListState = {
   registerRequest: boolean;

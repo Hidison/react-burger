@@ -135,11 +135,7 @@ export const getUser: AppThunk = (accessToken: string) => {
   };
 };
 
-export const updateUser: AppThunk = (
-  accessToken: string,
-  email: string,
-  name: string
-) => {
+export const updateUser: AppThunk = (accessToken: string, email: string, name: string) => {
   return function (dispatch: AppDispatch) {
     dispatch({
       type: UPDATE_USER,

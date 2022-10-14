@@ -118,10 +118,7 @@ export const changePasswordReducer = (
   }
 };
 
-export const authReducer = (
-  state = initialStateAuth,
-  action: TAuthActions
-): TAuthListState => {
+export const authReducer = (state = initialStateAuth, action: TAuthActions): TAuthListState => {
   switch (action.type) {
     case SET_AUTH: {
       return {

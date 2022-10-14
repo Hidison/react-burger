@@ -39,15 +39,10 @@ const Modal: FC<IModal> = ({ handleCloseModal, ...props }) => {
   };
 
   return ReactDOM.createPortal(
-    <ModalOverlay
-      handleCloseModal={handleCloseModal}
-      modalVisible={props.modalVisible}
-    >
+    <ModalOverlay handleCloseModal={handleCloseModal} modalVisible={props.modalVisible}>
       <div className={`${ModalStyles.modal}`} onClick={stopCloseOnModal}>
         {props.title && (
-          <h2
-            className={`${ModalStyles.modalTitle} text text_type_main-large mt-10 ml-10 mr-10`}
-          >
+          <h2 className={`${ModalStyles.modalTitle} text text_type_main-large mt-10 ml-10 mr-10`}>
             {props.title}
           </h2>
         )}

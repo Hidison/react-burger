@@ -10,18 +10,13 @@ import { TItem } from "../types";
 
 const IngredientPage = () => {
   const dispatch = useDispatch();
-  const { ingredientsRequest, ingredients } = useSelector(
-    (state) => state.ingredients
-  ); 
+  const { ingredientsRequest, ingredients } = useSelector((state) => state.ingredients);
   const history = useHistory();
 
-  const ingredientIdFromlocation: string = getIngIdFromLocation(
-    history.location.pathname
-  );
+  const ingredientIdFromlocation: string = getIngIdFromLocation(history.location.pathname);
 
   const ingredient = useMemo(
-    () =>
-      ingredients.find((item: TItem) => item._id === ingredientIdFromlocation),
+    () => ingredients.find((item: TItem) => item._id === ingredientIdFromlocation),
     [ingredientIdFromlocation, ingredients]
   );
 
@@ -39,9 +34,7 @@ const IngredientPage = () => {
   } else {
     return (
       <div className={IngredientsPageStyles.ingredientContainer}>
-        <h2
-          className={`${IngredientsPageStyles.title} text text_type_main-large mt-30`}
-        >
+        <h2 className={`${IngredientsPageStyles.title} text text_type_main-large mt-30`}>
           Детали ингредиента
         </h2>
         <IngredientDetails />

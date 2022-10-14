@@ -8,7 +8,7 @@ import { SET_ORDER_DATA } from "../../services/actions/OrderData";
 interface IOrderData {
   item: any;
   setOrderModalVisible: Function;
-} 
+}
 
 const OrderData: FC<IOrderData> = ({ item, setOrderModalVisible }) => {
   const dispatch = useDispatch();

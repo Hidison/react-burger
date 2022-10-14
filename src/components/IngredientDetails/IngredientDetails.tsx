@@ -26,20 +26,14 @@ const IngredientDetails = () => {
           <li
             className={`${IngredientDetailsStyles.modal__listItem} text text_type_main-default text_color_inactive mr-5`}
           >
-            <span className={IngredientDetailsStyles.modal__listItemTitle}>
-              Калории,ккал
-            </span>
-            <p className="text text_type_digits-default">
-              {ingredient.calories}
-            </p>
+            <span className={IngredientDetailsStyles.modal__listItemTitle}>Калории,ккал</span>
+            <p className="text text_type_digits-default">{ingredient.calories}</p>
           </li>
           <li
             className={`${IngredientDetailsStyles.modal__listItem} text text_type_main-default text_color_inactive mr-5`}
           >
             <span>Белки, г</span>
-            <p className="text text_type_digits-default">
-              {ingredient.proteins}
-            </p>
+            <p className="text text_type_digits-default">{ingredient.proteins}</p>
           </li>
           <li
             className={`${IngredientDetailsStyles.modal__listItem} text text_type_main-default text_color_inactive mr-5`}
@@ -51,9 +45,7 @@ const IngredientDetails = () => {
             className={`${IngredientDetailsStyles.modal__listItem} text text_type_main-default text_color_inactive`}
           >
             <span>Углеводы, г</span>
-            <p className="text text_type_digits-default">
-              {ingredient.carbohydrates}
-            </p>
+            <p className="text text_type_digits-default">{ingredient.carbohydrates}</p>
           </li>
         </ul>
       </>

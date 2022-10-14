@@ -3,10 +3,7 @@ import { useDispatch, useSelector } from "../../services/hooks";
 import { useDrop } from "react-dnd";
 import uuid from "react-uuid";
 import BurgerConstructorStyles from "./BurgerConstructor.module.css";
-import {
-  Button,
-  CurrencyIcon,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import { Button, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import MyScrollbar from "../UI/myScrollbar/MyScrollbar";
 import { sendOrder } from "../../services/actions/OrderDetails";
 import {
@@ -28,8 +25,9 @@ interface IBurgerConstructor {
 const BurgerConstructor: FC<IBurgerConstructor> = ({ handleOpenModal }) => {
   const dispatch = useDispatch();
 
-  const { selectedIngredientsBun, selectedIngredientsMain, totalPrice, ID } =
-    useSelector((state) => state.selectedIngredients);
+  const { selectedIngredientsBun, selectedIngredientsMain, totalPrice, ID } = useSelector(
+    (state) => state.selectedIngredients
+  );
   const { auth } = useSelector((state) => state.auth);
   const history = useHistory();
 
@@ -117,14 +115,9 @@ const BurgerConstructor: FC<IBurgerConstructor> = ({ handleOpenModal }) => {
         style={{ opacity: opacityBun }}
       >
         {selectedIngredientsBun.price !== 0 ? (
-          <ConstructorElementWrapper
-            item={selectedIngredientsBun as TItem}
-            type={"top"}
-          />
+          <ConstructorElementWrapper item={selectedIngredientsBun as TItem} type={"top"} />
         ) : (
-          <li
-            className={`${BurgerConstructorStyles.BurgerConstructor__listItem} mb-4 pl-4 pr-4`}
-          >
+          <li className={`${BurgerConstructorStyles.BurgerConstructor__listItem} mb-4 pl-4 pr-4`}>
             <div></div>
             <div
               style={{ opacity: opacityBun }}
@@ -152,13 +145,9 @@ const BurgerConstructor: FC<IBurgerConstructor> = ({ handleOpenModal }) => {
               />
             ))
           ) : (
-            <li
-              className={`${BurgerConstructorStyles.BurgerConstructor__listItem} pl-4 pr-4`}
-            >
+            <li className={`${BurgerConstructorStyles.BurgerConstructor__listItem} pl-4 pr-4`}>
               <div></div>
-              <div
-                className={BurgerConstructorStyles.BurgerConstructor__element}
-              >
+              <div className={BurgerConstructorStyles.BurgerConstructor__element}>
                 Выберите ингредиент
               </div>
             </li>
@@ -171,14 +160,9 @@ const BurgerConstructor: FC<IBurgerConstructor> = ({ handleOpenModal }) => {
         style={{ opacity: opacityBun }}
       >
         {selectedIngredientsBun.price !== 0 ? (
-          <ConstructorElementWrapper
-            item={selectedIngredientsBun as TItem}
-            type={"bottom"}
-          />
+          <ConstructorElementWrapper item={selectedIngredientsBun as TItem} type={"bottom"} />
         ) : (
-          <li
-            className={`${BurgerConstructorStyles.BurgerConstructor__listItem} mt-4 pl-4 pr-4`}
-          >
+          <li className={`${BurgerConstructorStyles.BurgerConstructor__listItem} mt-4 pl-4 pr-4`}>
             <div></div>
             <div
               style={{ opacity: opacityBun }}
@@ -189,9 +173,7 @@ const BurgerConstructor: FC<IBurgerConstructor> = ({ handleOpenModal }) => {
           </li>
         )}
       </ul>
-      <div
-        className={`${BurgerConstructorStyles.BurgerConstructor__result} mt-10`}
-      >
+      <div className={`${BurgerConstructorStyles.BurgerConstructor__result} mt-10`}>
         <div className="mr-10">
           <span
             className={`${BurgerConstructorStyles.BurgerConstructor__totalPrice} text text_type_digits-medium`}
@@ -204,9 +186,7 @@ const BurgerConstructor: FC<IBurgerConstructor> = ({ handleOpenModal }) => {
           type="primary"
           size="large"
           disabled={
-            !selectedIngredientsBun.name || selectedIngredientsMain.length === 0
-              ? true
-              : false
+            !selectedIngredientsBun.name || selectedIngredientsMain.length === 0 ? true : false
           }
           onClick={handleOrder}
         >

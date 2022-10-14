@@ -24,14 +24,10 @@ const LoginPage = () => {
   }, []);
 
   if (auth) {
-    return (
-      <Redirect to={location.state ? location.state.from.pathname : "/"} />
-    );
+    return <Redirect to={location.state ? location.state.from.pathname : "/"} />;
   }
 
-  return (
-    <Auth title={"Вход"} buttonTitle={"Войти"} handleClick={handleLogin} />
-  );
+  return <Auth title={"Вход"} buttonTitle={"Войти"} handleClick={handleLogin} />;
 };
 
 export default LoginPage;

@@ -8,11 +8,7 @@ interface IModalOverlay {
   children?: React.ReactNode;
 }
 
-const ModalOverlay: FC<IModalOverlay> = ({
-  handleCloseModal,
-  modalVisible,
-  children,
-}) => {
+const ModalOverlay: FC<IModalOverlay> = ({ handleCloseModal, modalVisible, children }) => {
   const { orderRequest } = useSelector((state) => state.order);
   const modalClasses: string[] = [ModalOverlayStyles.modalOverlay];
 

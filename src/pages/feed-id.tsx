@@ -20,21 +20,14 @@ const FeedPageID: FC<IFeedPageID> = ({ modalVisible }) => {
   const location = useLocation();
   const messages: TMessage = useSelector(getMessages);
   const messagesAuth: TMessage = useSelector(getMessagesAuth);
-  const orderFromlocation: string = getOrderFromLocation(
-    history.location.pathname
-  );
+  const orderFromlocation: string = getOrderFromLocation(history.location.pathname);
 
   const orderDetail = useMemo(
     () =>
       location.pathname.includes("feed")
-        ? messages &&
-          messages.orders.find(
-            (item) => String(item.number) === orderFromlocation
-          )
+        ? messages && messages.orders.find((item) => String(item.number) === orderFromlocation)
         : messagesAuth &&
-          messagesAuth.orders.find(
-            (item) => String(item.number) === orderFromlocation
-          ),
+          messagesAuth.orders.find((item) => String(item.number) === orderFromlocation),
     [location.pathname, messages, messagesAuth, orderFromlocation]
   );
 

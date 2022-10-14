@@ -7,7 +7,7 @@ import { getMessages, getWsConnected } from "../services/selectors";
 import OrderData from "../components/OrderData/OrderData";
 import Loader from "../components/UI/Loader/Loader";
 import { TMessage } from "../types";
-import { getWsError } from "../services/selectors/getWsError";
+import { getWsClosed, getWsError } from "../services/selectors/getWsError";
 import WsConnectedError from "../components/WsConnectedError/WsConnectedError";
 
 interface IFeedPage {
@@ -19,22 +19,19 @@ const FeedPage: FC<IFeedPage> = ({ setOrderModalVisible, modalVisible }) => {
   const history = useHistory();
   const messages: TMessage = useSelector(getMessages);
   const isWsError = useSelector(getWsError);
+  const isWsClosed = useSelector(getWsClosed);
   const { heightApp } = useSelector((state) => state.app);
   const { heightHeader } = useSelector((state) => state.appHeader);
   const wsConnected: boolean = useSelector(getWsConnected);
   const ordersListHeight = heightApp - heightHeader - 108;
 
   const ordersCreated = useMemo(
-    () =>
-      messages &&
-      messages.orders.filter((item) => item.status === "pending").slice(0, 20),
+    () => messages && messages.orders.filter((item) => item.status === "pending").slice(0, 20),
     [messages]
   );
 
   const ordersDone = useMemo(
-    () =>
-      messages &&
-      messages.orders.filter((item) => item.status === "done").slice(0, 20),
+    () => messages && messages.orders.filter((item) => item.status === "done").slice(0, 20),
     [messages]
   );
 
@@ -61,7 +58,7 @@ const FeedPage: FC<IFeedPage> = ({ setOrderModalVisible, modalVisible }) => {
       <h1 ref={titleRef} className={`${FeedPageStyles.feed__title}`}>
         Лента заказов
       </h1>
-      {isWsError ? (
+      {isWsError && isWsClosed ? (
         <WsConnectedError />
       ) : messages && wsConnected ? (
         <>
@@ -81,17 +78,13 @@ const FeedPage: FC<IFeedPage> = ({ setOrderModalVisible, modalVisible }) => {
           </section>
           <section className={`${FeedPageStyles.feed__order_info} ml-15`}>
             <div className={`${FeedPageStyles.feed__order_info_container}`}>
-              <div
-                className={`${FeedPageStyles.feed__order_info_subcontainer}`}
-              >
+              <div className={`${FeedPageStyles.feed__order_info_subcontainer}`}>
                 <span
                   className={`${FeedPageStyles.feed__order_info_status_title} text text_type_main-medium mb-6`}
                 >
                   Готовы:
                 </span>
-                <ul
-                  className={`${FeedPageStyles.feed__order_info_container_list}`}
-                >
+                <ul className={`${FeedPageStyles.feed__order_info_container_list}`}>
                   {ordersDone.map((item) => (
                     <li
                       key={item._id}
@@ -102,17 +95,13 @@ const FeedPage: FC<IFeedPage> = ({ setOrderModalVisible, modalVisible }) => {
                   ))}
                 </ul>
               </div>
-              <div
-                className={`${FeedPageStyles.feed__order_info_subcontainer}`}
-              >
+              <div className={`${FeedPageStyles.feed__order_info_subcontainer}`}>
                 <span
                   className={`${FeedPageStyles.feed__order_info_status_title} text text_type_main-medium mb-6`}
                 >
                   В работе:
                 </span>
-                <ul
-                  className={`${FeedPageStyles.feed__order_info_container_list}`}
-                >
+                <ul className={`${FeedPageStyles.feed__order_info_container_list}`}>
                   {ordersCreated.map((item) => (
                     <li
                       key={item._id}
@@ -124,24 +113,16 @@ const FeedPage: FC<IFeedPage> = ({ setOrderModalVisible, modalVisible }) => {
                 </ul>
               </div>
             </div>
-            <div
-              className={`${FeedPageStyles.feed__order_all_time_container} mt-15`}
-            >
-              <span className="text text_type_main-medium">
-                Выполнено за все время:
-              </span>
+            <div className={`${FeedPageStyles.feed__order_all_time_container} mt-15`}>
+              <span className="text text_type_main-medium">Выполнено за все время:</span>
               <p
                 className={`${FeedPageStyles.feed__order_all_time_container_value} text text_type_digits-large`}
               >
                 {messages.total}
               </p>
             </div>
-            <div
-              className={`${FeedPageStyles.feed__order_today_container} mt-15`}
-            >
-              <span className="text text_type_main-medium">
-                Выполнено за сегодня:
-              </span>
+            <div className={`${FeedPageStyles.feed__order_today_container} mt-15`}>
+              <span className="text text_type_main-medium">Выполнено за сегодня:</span>
               <p
                 className={`${FeedPageStyles.feed__order_all_time_container_value} text text_type_digits-large`}
               >

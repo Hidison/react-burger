@@ -1,10 +1,7 @@
 import { TItem } from "../../types";
 import * as MainApi from "../../utils/MainApi";
 import { AppDispatch, AppThunk } from "../types";
-import {
-  SET_INGREDIENTS_BUN,
-  UPDATE_SELECTED_INGREDIENTS,
-} from "./BurgerConstructor";
+import { SET_INGREDIENTS_BUN, UPDATE_SELECTED_INGREDIENTS } from "./BurgerConstructor";
 import { updateToken } from "./Login";
 
 export const SEND_ORDER: "SEND_ORDER" = "SEND_ORDER";

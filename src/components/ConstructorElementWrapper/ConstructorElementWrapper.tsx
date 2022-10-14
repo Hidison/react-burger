@@ -1,12 +1,6 @@
-import {
-  ConstructorElement,
-  DragIcon,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import { ConstructorElement, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import React, { FC, useMemo, useRef } from "react";
-import {
-  useDispatch,
-  useSelector,
-} from "../../services/hooks";
+import { useDispatch, useSelector } from "../../services/hooks";
 import { useDrag, useDrop, XYCoord } from "react-dnd";
 import { DEL_INGREDIENTS_MAIN } from "../../services/actions/BurgerConstructor";
 import BurgerConstructorStyles from "../BurgerConstructor/BurgerConstructor.module.css";
@@ -29,15 +23,10 @@ const ConstructorElementWrapper: FC<IConstructorElementWrapper> = ({
 }) => {
   const ref = useRef<HTMLLIElement>(null);
   const dispatch = useDispatch();
-  const { selectedIngredientsMain } = useSelector(
-    (state) => state.selectedIngredients
-  );
+  const { selectedIngredientsMain } = useSelector((state) => state.selectedIngredients);
 
   const delSelectedIngredient = useMemo(
-    () =>
-      selectedIngredientsMain.filter(
-        (ingredient: TItem) => ingredient.dragId !== item.dragId
-      ),
+    () => selectedIngredientsMain.filter((ingredient: TItem) => ingredient.dragId !== item.dragId),
     [item.dragId, selectedIngredientsMain]
   );
 
@@ -56,11 +45,9 @@ const ConstructorElementWrapper: FC<IConstructorElementWrapper> = ({
       }
 
       const hoverBoundingRect = ref.current?.getBoundingClientRect();
-      const hoverMiddleY =
-        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
       const clientOffset: XYCoord | null = monitor.getClientOffset();
-      const hoverClientY =
-        clientOffset && clientOffset.y - hoverBoundingRect.top;
+      const hoverClientY = clientOffset && clientOffset.y - hoverBoundingRect.top;
       if (hoverClientY) {
         if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
           return;
