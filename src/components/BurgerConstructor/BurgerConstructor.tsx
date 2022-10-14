@@ -30,7 +30,7 @@ const BurgerConstructor: FC<IBurgerConstructor> = ({ handleOpenModal }) => {
 
   const { selectedIngredientsBun, selectedIngredientsMain, totalPrice, ID } =
     useSelector((state) => state.selectedIngredients);
-  const { auth } = useSelector((state) => state.auth); 
+  const { auth } = useSelector((state) => state.auth);
   const history = useHistory();
 
   const aToken: string | undefined = getCookie("accessToken");
@@ -142,7 +142,7 @@ const BurgerConstructor: FC<IBurgerConstructor> = ({ handleOpenModal }) => {
           style={{ opacity: opacityMain, padding: "0" }}
         >
           {selectedIngredientsMain.length !== 0 ? (
-            selectedIngredientsMain.map((item: any, index: any) => (
+            selectedIngredientsMain.map((item: TItem, index: number) => (
               <ConstructorElementWrapper
                 key={item.dragId}
                 id={item.dragId}
