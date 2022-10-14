@@ -11,7 +11,6 @@ export const socketMiddleware = (wsUrl: string, auth: boolean): Middleware => {
     return (next) => (action: TApplicationActions) => {
       const { dispatch } = store;
       const { type } = action;
-      console.log(action);
 
       const aToken: string | undefined = getCookie("accessToken") as string;
 
@@ -45,7 +44,6 @@ export const socketMiddleware = (wsUrl: string, auth: boolean): Middleware => {
         };
 
         socket.onclose = (event) => {
-          console.log(event.code);
           dispatch({ type: "WS_CONNECTION_CLOSED", payload: event });
           if (event.code !== 1000) {
             setTimeout(() => {
