@@ -46,7 +46,7 @@ export const socketMiddleware = (wsUrl: string, auth: boolean): Middleware => {
 
         socket.onclose = (event) => {
           dispatch({ type: "WS_CONNECTION_CLOSED", payload: event });
-          if (!closedByAuth) {
+          if (!closedByAuth && event.code !== 1000) {
             setTimeout(() => {
               if (auth) {
                 dispatch({
