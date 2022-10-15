@@ -25,6 +25,7 @@ export const socketMiddleware = (wsUrl: string, auth: boolean): Middleware => {
       }
 
       if (socket) {
+        let closedByAuth = false;
         socket.onopen = (event) => {
           dispatch({ type: "WS_CONNECTION_SUCCESS", payload: event });
         };
@@ -45,7 +46,7 @@ export const socketMiddleware = (wsUrl: string, auth: boolean): Middleware => {
 
         socket.onclose = (event) => {
           dispatch({ type: "WS_CONNECTION_CLOSED", payload: event });
-          if (event.code !== 1000) {
+          if (!closedByAuth) {
             setTimeout(() => {
               if (auth) {
                 dispatch({
@@ -60,8 +61,9 @@ export const socketMiddleware = (wsUrl: string, auth: boolean): Middleware => {
           }
         };
 
-        if (type === "WS_CONNECTION_CLOSE") {
-          socket.close(1000, "Работа закончена");
+        if ("WS_CONNECTION_CLOSE" && type === "WS_CONNECTION_CLOSE" && socket) {
+          socket.close(1000, "Сокет закрыт");
+          closedByAuth = true;
         }
 
         if (type === "WS_SEND_MESSAGE") {
