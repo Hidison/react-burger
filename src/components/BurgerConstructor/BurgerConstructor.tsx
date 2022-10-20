@@ -1,12 +1,9 @@
 import React, { FC, useCallback, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "../../services/hooks";
 import { useDrop } from "react-dnd";
 import uuid from "react-uuid";
 import BurgerConstructorStyles from "./BurgerConstructor.module.css";
-import {
-  Button,
-  CurrencyIcon,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import { Button, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import MyScrollbar from "../UI/myScrollbar/MyScrollbar";
 import { sendOrder } from "../../services/actions/OrderDetails";
 import {
@@ -19,25 +16,29 @@ import {
 import ConstructorElementWrapper from "../ConstructorElementWrapper/ConstructorElementWrapper";
 import { useHistory } from "react-router-dom";
 import { TItem } from "../../types";
+import { getCookie } from "../../utils/utils";
 
 interface IBurgerConstructor {
   handleOpenModal: Function;
 }
 
 const BurgerConstructor: FC<IBurgerConstructor> = ({ handleOpenModal }) => {
-  const dispatch: any = useDispatch();
+  const dispatch = useDispatch();
 
-  const { selectedIngredientsBun, selectedIngredientsMain, totalPrice, ID } =
-    useSelector((state: any) => state.selectedIngredients);
-  const { auth } = useSelector((state: any) => state.auth);
+  const { selectedIngredientsBun, selectedIngredientsMain, totalPrice, ID } = useSelector(
+    (state) => state.selectedIngredients
+  );
+  const { auth } = useSelector((state) => state.auth);
   const history = useHistory();
+
+  const aToken: string | undefined = getCookie("accessToken");
 
   const [{ isHoverBun }, dropTarget] = useDrop({
     accept: "ingredientBun",
     drop(item: TItem) {
       dispatch({
         type: SET_INGREDIENTS_BUN,
-        item: { ...item, count: 2 },
+        payload: { ...item, count: 2 },
       });
     },
     collect: (monitor) => ({
@@ -50,7 +51,7 @@ const BurgerConstructor: FC<IBurgerConstructor> = ({ handleOpenModal }) => {
     drop(item: TItem) {
       dispatch({
         type: SET_INGREDIENTS_BUN,
-        item: { ...item, count: 2 },
+        payload: { ...item, count: 2 },
       });
     },
     collect: (monitor) => ({
@@ -63,7 +64,7 @@ const BurgerConstructor: FC<IBurgerConstructor> = ({ handleOpenModal }) => {
     drop(item: TItem) {
       dispatch({
         type: ADD_INGREDIENTS_MAIN,
-        item: { ...item, dragId: uuid() },
+        payload: { ...item, dragId: uuid() },
       });
     },
     collect: (monitor) => ({
@@ -76,15 +77,7 @@ const BurgerConstructor: FC<IBurgerConstructor> = ({ handleOpenModal }) => {
 
   const handleOrder = () => {
     if (auth) {
-      dispatch({
-        type: SET_INGREDIENTS_BUN,
-        item: { price: 0 },
-      });
-      dispatch({
-        type: UPDATE_SELECTED_INGREDIENTS,
-        sortedIngredients: [],
-      });
-      dispatch(sendOrder(ID));
+      dispatch(sendOrder(ID as string, aToken));
       handleOpenModal();
     } else {
       history.replace({ pathname: "/login" });
@@ -108,7 +101,7 @@ const BurgerConstructor: FC<IBurgerConstructor> = ({ handleOpenModal }) => {
       newIngredients.splice(hoverIndex, 0, dragIngredient);
       dispatch({
         type: UPDATE_SELECTED_INGREDIENTS,
-        sortedIngredients: newIngredients,
+        payload: newIngredients,
       });
     },
     [selectedIngredientsMain, dispatch]
@@ -122,14 +115,9 @@ const BurgerConstructor: FC<IBurgerConstructor> = ({ handleOpenModal }) => {
         style={{ opacity: opacityBun }}
       >
         {selectedIngredientsBun.price !== 0 ? (
-          <ConstructorElementWrapper
-            item={selectedIngredientsBun}
-            type={"top"}
-          />
+          <ConstructorElementWrapper item={selectedIngredientsBun as TItem} type={"top"} />
         ) : (
-          <li
-            className={`${BurgerConstructorStyles.BurgerConstructor__listItem} mb-4 pl-4 pr-4`}
-          >
+          <li className={`${BurgerConstructorStyles.BurgerConstructor__listItem} mb-4 pl-4 pr-4`}>
             <div></div>
             <div
               style={{ opacity: opacityBun }}
@@ -147,7 +135,7 @@ const BurgerConstructor: FC<IBurgerConstructor> = ({ handleOpenModal }) => {
           style={{ opacity: opacityMain, padding: "0" }}
         >
           {selectedIngredientsMain.length !== 0 ? (
-            selectedIngredientsMain.map((item: any, index: any) => (
+            selectedIngredientsMain.map((item: TItem, index: number) => (
               <ConstructorElementWrapper
                 key={item.dragId}
                 id={item.dragId}
@@ -157,13 +145,9 @@ const BurgerConstructor: FC<IBurgerConstructor> = ({ handleOpenModal }) => {
               />
             ))
           ) : (
-            <li
-              className={`${BurgerConstructorStyles.BurgerConstructor__listItem} pl-4 pr-4`}
-            >
+            <li className={`${BurgerConstructorStyles.BurgerConstructor__listItem} pl-4 pr-4`}>
               <div></div>
-              <div
-                className={BurgerConstructorStyles.BurgerConstructor__element}
-              >
+              <div className={BurgerConstructorStyles.BurgerConstructor__element}>
                 Выберите ингредиент
               </div>
             </li>
@@ -176,14 +160,9 @@ const BurgerConstructor: FC<IBurgerConstructor> = ({ handleOpenModal }) => {
         style={{ opacity: opacityBun }}
       >
         {selectedIngredientsBun.price !== 0 ? (
-          <ConstructorElementWrapper
-            item={selectedIngredientsBun}
-            type={"bottom"}
-          />
+          <ConstructorElementWrapper item={selectedIngredientsBun as TItem} type={"bottom"} />
         ) : (
-          <li
-            className={`${BurgerConstructorStyles.BurgerConstructor__listItem} mt-4 pl-4 pr-4`}
-          >
+          <li className={`${BurgerConstructorStyles.BurgerConstructor__listItem} mt-4 pl-4 pr-4`}>
             <div></div>
             <div
               style={{ opacity: opacityBun }}
@@ -194,9 +173,7 @@ const BurgerConstructor: FC<IBurgerConstructor> = ({ handleOpenModal }) => {
           </li>
         )}
       </ul>
-      <div
-        className={`${BurgerConstructorStyles.BurgerConstructor__result} mt-10`}
-      >
+      <div className={`${BurgerConstructorStyles.BurgerConstructor__result} mt-10`}>
         <div className="mr-10">
           <span
             className={`${BurgerConstructorStyles.BurgerConstructor__totalPrice} text text_type_digits-medium`}
@@ -209,9 +186,7 @@ const BurgerConstructor: FC<IBurgerConstructor> = ({ handleOpenModal }) => {
           type="primary"
           size="large"
           disabled={
-            !selectedIngredientsBun.name || selectedIngredientsMain.length === 0
-              ? true
-              : false
+            !selectedIngredientsBun.name || selectedIngredientsMain.length === 0 ? true : false
           }
           onClick={handleOrder}
         >

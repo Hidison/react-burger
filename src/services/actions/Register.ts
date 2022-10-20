@@ -1,17 +1,37 @@
 import * as AuthApi from "../../utils/AuthApi";
+import { AppDispatch, AppThunk } from "../types";
 import { SET_ERRORS } from "./Auth";
 
-export const REGISTER = "REGISTER";
-export const REGISTER_FAILED = "REGISTER_FAILED";
-export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
+export const REGISTER: "REGISTER" = "REGISTER";
+export const REGISTER_FAILED: "REGISTER_FAILED" = "REGISTER_FAILED";
+export const REGISTER_SUCCESS: "REGISTER_SUCCESS" = "REGISTER_SUCCESS";
 
-function registerFailed(dispatch: any) {
+export interface IRegisterAction {
+  readonly type: typeof REGISTER;
+}
+export interface IRegisterFailedAction {
+  readonly type: typeof REGISTER_FAILED;
+}
+export interface IRegisterSuccessAction {
+  readonly type: typeof REGISTER_SUCCESS;
+  payload?: {
+    accessToken: string;
+    refreshToken: string;
+    success: boolean;
+    user: { email: string; name: string };
+  };
+  registerSuccess: boolean;
+}
+
+export type TRegisterActions = IRegisterAction | IRegisterFailedAction | IRegisterSuccessAction;
+
+function registerFailed(dispatch: AppDispatch) {
   dispatch({
     type: REGISTER_FAILED,
   });
   dispatch({
     type: SET_ERRORS,
-    errors: {
+    payload: {
       name: "",
       email: "",
       password: "",
@@ -20,8 +40,8 @@ function registerFailed(dispatch: any) {
   });
 }
 
-export function register(email: string, password: string, name: string) {
-  return function (dispatch: any) {
+export const register: AppThunk = (email: string, password: string, name: string) => {
+  return function (dispatch: AppDispatch) {
     dispatch({
       type: REGISTER,
     });
@@ -30,7 +50,7 @@ export function register(email: string, password: string, name: string) {
         if (res && res.success) {
           dispatch({
             type: REGISTER_SUCCESS,
-            data: res,
+            payload: res,
             registerSuccess: true,
           });
         } else {
@@ -41,4 +61,4 @@ export function register(email: string, password: string, name: string) {
         registerFailed(dispatch);
       });
   };
-}
+};

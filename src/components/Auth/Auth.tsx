@@ -1,11 +1,8 @@
-import {
-  Button,
-  Input,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
 import LoginStyles from "./Auth.module.css";
 import React, { FC, useEffect } from "react";
 import { Link, Redirect, useLocation } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "../../services/hooks";
 import {
   HIDE_PASSWORD,
   SET_AUTH,
@@ -24,26 +21,18 @@ interface IAuthProps {
 }
 
 const Auth: FC<IAuthProps> = ({ title, buttonTitle, handleClick }) => {
-  const dispatch: any = useDispatch();
+  const dispatch = useDispatch();
   const { handleChange, resetForm } = useFormAndValidation();
 
-  const { auth, hidePassword, values, errors, valid } = useSelector(
-    (state: any) => state.auth
-  );
+  const { auth, hidePassword, values, errors, valid } = useSelector((state) => state.auth);
 
-  const { recoveryRequest, recoveryFailed } = useSelector(
-    (state: any) => state.recovery
-  );
-  const { loginRequest, loginFailed } = useSelector(
-    (state: any) => state.login
-  );
+  const { recoveryRequest, recoveryFailed } = useSelector((state) => state.recovery);
+  const { loginRequest, loginFailed } = useSelector((state) => state.login);
 
-  const { registerRequest, registerFailed } = useSelector(
-    (state: any) => state.register
-  );
+  const { registerRequest, registerFailed } = useSelector((state) => state.register);
 
   const { changePasswordRequest, changePasswordFailed } = useSelector(
-    (state: any) => state.changePassword
+    (state) => state.changePassword
   );
 
   const aToken = getCookie("accessToken");
@@ -52,7 +41,7 @@ const Auth: FC<IAuthProps> = ({ title, buttonTitle, handleClick }) => {
     if (aToken) {
       dispatch({
         type: SET_AUTH,
-        auth: true,
+        payload: true,
       });
     }
   }, [aToken, dispatch]);
@@ -68,7 +57,7 @@ const Auth: FC<IAuthProps> = ({ title, buttonTitle, handleClick }) => {
   const onIconClick = () => {
     dispatch({
       type: HIDE_PASSWORD,
-      hidePassword: hidePassword ? false : true,
+      payload: hidePassword ? false : true,
     });
   };
 
@@ -76,7 +65,7 @@ const Auth: FC<IAuthProps> = ({ title, buttonTitle, handleClick }) => {
     if (location.pathname === "/reset-password") {
       dispatch({
         type: RECOVERY_PASSWORD_SUCCESS,
-        success: false,
+        payload: false,
       });
     }
   };
@@ -89,7 +78,7 @@ const Auth: FC<IAuthProps> = ({ title, buttonTitle, handleClick }) => {
   const resetError = () => {
     dispatch({
       type: SET_ERRORS,
-      errors: {
+      payload: {
         ...errors,
         submit: "",
       },
@@ -101,7 +90,7 @@ const Auth: FC<IAuthProps> = ({ title, buttonTitle, handleClick }) => {
   } else {
     return (
       <div className={LoginStyles.login}>
-        <h1 className="text text_type_main-medium">{title}</h1>
+        <h1 className="text text_type_main-medium mb-6">{title}</h1>
         <form onSubmit={onClick} autoComplete="off">
           {location.pathname === "/register" && (
             <div>
@@ -114,9 +103,7 @@ const Auth: FC<IAuthProps> = ({ title, buttonTitle, handleClick }) => {
                 value={values.name || ""}
                 size={"default"}
               />
-              <div
-                className={`${LoginStyles.errorMessage} text_type_main-default`}
-              >
+              <div className={`${LoginStyles.errorMessage} text_type_main-default`}>
                 {errors.name}
               </div>
             </div>
@@ -126,19 +113,13 @@ const Auth: FC<IAuthProps> = ({ title, buttonTitle, handleClick }) => {
               <Input
                 type={"email"}
                 name={"email"}
-                placeholder={
-                  location.pathname === "/forgot-password"
-                    ? "Укажите e-mail"
-                    : "E-mail"
-                }
+                placeholder={location.pathname === "/forgot-password" ? "Укажите e-mail" : "E-mail"}
                 onChange={handleChange}
                 onFocus={resetError}
                 value={values.email || ""}
                 size={"default"}
               />
-              <div
-                className={`${LoginStyles.errorMessage} text_type_main-default`}
-              >
+              <div className={`${LoginStyles.errorMessage} text_type_main-default`}>
                 {errors.email}
               </div>
             </div>
@@ -150,9 +131,7 @@ const Auth: FC<IAuthProps> = ({ title, buttonTitle, handleClick }) => {
               <Input
                 type={hidePassword ? "password" : "text"}
                 placeholder={
-                  location.pathname === "/reset-password"
-                    ? "Введите новый пароль"
-                    : "Пароль"
+                  location.pathname === "/reset-password" ? "Введите новый пароль" : "Пароль"
                 }
                 onChange={handleChange}
                 onFocus={resetError}
@@ -162,9 +141,7 @@ const Auth: FC<IAuthProps> = ({ title, buttonTitle, handleClick }) => {
                 icon={hidePassword ? "ShowIcon" : "HideIcon"}
                 onIconClick={onIconClick}
               />
-              <div
-                className={`${LoginStyles.errorMessage} text_type_main-default`}
-              >
+              <div className={`${LoginStyles.errorMessage} text_type_main-default`}>
                 {errors.password}
               </div>
             </div>
@@ -210,15 +187,11 @@ const Auth: FC<IAuthProps> = ({ title, buttonTitle, handleClick }) => {
             <div
               className={`${LoginStyles.errorMessage} ${LoginStyles.errorMessage_type_submit} text_type_main-default`}
             >
-              {(recoveryFailed ||
-                loginFailed ||
-                registerFailed ||
-                changePasswordFailed) &&
+              {(recoveryFailed || loginFailed || registerFailed || changePasswordFailed) &&
                 errors.submit}
-              {(recoveryRequest ||
-                loginRequest ||
-                registerRequest ||
-                changePasswordRequest) && <Loader />}
+              {(recoveryRequest || loginRequest || registerRequest || changePasswordRequest) && (
+                <Loader />
+              )}
             </div>
           </div>
         </form>
@@ -231,11 +204,7 @@ const Auth: FC<IAuthProps> = ({ title, buttonTitle, handleClick }) => {
               : "Вспомнили пароль?"}
           </p>
           <Link
-            to={
-              location.pathname === "/login"
-                ? { pathname: "/register" }
-                : { pathname: "/login" }
-            }
+            to={location.pathname === "/login" ? { pathname: "/register" } : { pathname: "/login" }}
             onClick={onLinkClick}
             className={`${LoginStyles.login__moveRegisterText} text text_type_main-default`}
           >
@@ -244,9 +213,7 @@ const Auth: FC<IAuthProps> = ({ title, buttonTitle, handleClick }) => {
         </div>
         {location.pathname === "/login" && (
           <div className={LoginStyles.login__moveBlock}>
-            <p className="text text_type_main-default text_color_inactive">
-              Забыли пароль?
-            </p>
+            <p className="text text_type_main-default text_color_inactive">Забыли пароль?</p>
             <Link
               to={{ pathname: "/forgot-password" }}
               className={`${LoginStyles.login__moveRegisterText} text text_type_main-default`}

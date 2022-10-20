@@ -7,8 +7,15 @@ import { authReducer, changePasswordReducer, recoveryReducer } from "./Auth";
 import { registerReducer } from "./Register";
 import { loginReducer, updateTokenReducer } from "./Login";
 import { getUserReducer, logoutReducer, updateUserReducer } from "./Profile";
+import { setOrderReducer } from "./Order";
+import { orderDataReducer } from "./OrderData";
+import { AppReducer } from "./App";
+import { AppHeaderReducer } from "./AppHeader";
+import { wsReducer } from "./wsReducer";
 
 export const rootReducer = combineReducers({
+  app: AppReducer,
+  appHeader: AppHeaderReducer,
   ingredients: ingredientsReducer,
   ingredient: ingredientReducer,
   selectedIngredients: selectedIngredientReducer,
@@ -22,4 +29,7 @@ export const rootReducer = combineReducers({
   logout: logoutReducer,
   user: getUserReducer,
   updatedUser: updateUserReducer,
+  setOrder: setOrderReducer,
+  orderData: orderDataReducer,
+  ws: wsReducer,
 });

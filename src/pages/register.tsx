@@ -1,13 +1,13 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "../services/hooks";
 import { Redirect } from "react-router-dom";
 import Auth from "../components/Auth/Auth";
 import { register } from "../services/actions/Register";
 
 const RegisterPage = () => {
-  const dispatch: any = useDispatch();
-  const { values } = useSelector((state: any) => state.auth);
-  const { registerSuccess } = useSelector((state: any) => state.register);
+  const dispatch = useDispatch();
+  const { values } = useSelector((state) => state.auth);
+  const { registerSuccess } = useSelector((state) => state.register);
 
   const handleRegister: Function = () => {
     dispatch(register(values.email, values.password, values.name));
@@ -17,11 +17,7 @@ const RegisterPage = () => {
     return <Redirect to="/login" />;
   } else {
     return (
-      <Auth
-        title={"Регистрация"}
-        buttonTitle={"Зарегистрироваться"}
-        handleClick={handleRegister}
-      />
+      <Auth title={"Регистрация"} buttonTitle={"Зарегистрироваться"} handleClick={handleRegister} />
     );
   }
 };

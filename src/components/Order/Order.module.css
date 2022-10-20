@@ -1,0 +1,58 @@
+.feed__info {
+  display: flex;
+  justify-content: space-between;
+}
+
+.feed__info_title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.feed__img {
+  height: 64px;
+  margin-left: -31px;
+}
+
+.feed__img_none {
+  opacity: 0.6;
+}
+
+.feed__img_container {
+  border-radius: 100px;
+  border: 2px solid transparent;
+  background-image: linear-gradient(#000000, #000000),
+    linear-gradient(45deg, rgba(128, 26, 178, 1), rgba(76, 76, 255, 1));
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+  width: 64px;
+  height: 64px;
+  margin-right: -17px;
+  position: relative;
+}
+
+.feed__img_main_container {
+  display: flex;
+  position: relative;
+}
+
+.feed__ing_container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.feed__price_container {
+  display: flex;
+  align-items: center;
+}
+
+.feed__price {
+  margin-right: 9px;
+}
+
+.feed__img_count {
+  position: absolute;
+  top: 22px;
+  left: 18px;
+}

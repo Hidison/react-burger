@@ -21,10 +21,7 @@ export const register = (
   });
 };
 
-export const login = (
-  email: string,
-  password: string
-): Promise<CustomResponse> => {
+export const login = (email: string, password: string): Promise<CustomResponse> => {
   return request(`${baseUrl}/login`, {
     method: "POST",
     headers: {

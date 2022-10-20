@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "../../services/hooks";
 import { Redirect, Route } from "react-router-dom";
 import { SET_AUTH } from "../../services/actions/Auth";
 import { getUser } from "../../services/actions/Profile";
@@ -12,9 +12,9 @@ interface IProtectedRoute {
 }
 
 const ProtectedRoute: FC<IProtectedRoute> = ({ children, ...rest }) => {
-  const dispatch: any = useDispatch();
-  const { auth } = useSelector((state: any) => state.auth);
-  const { updateTokenFailed } = useSelector((state: any) => state.updateToken);
+  const dispatch = useDispatch();
+  const { auth } = useSelector((state) => state.auth);
+  const { updateTokenFailed } = useSelector((state) => state.updateToken);
   const [isUserLoaded, setUserLoaded] = useState(false);
 
   const aToken: string | undefined = getCookie("accessToken");
@@ -28,7 +28,7 @@ const ProtectedRoute: FC<IProtectedRoute> = ({ children, ...rest }) => {
     if (updateTokenFailed) {
       dispatch({
         type: SET_AUTH,
-        auth: false,
+        payload: false,
       });
     }
   }, [dispatch, updateTokenFailed]);

@@ -9,11 +9,12 @@ export const getIngredients = (): Promise<CustomResponse> => {
   });
 };
 
-export const postOrder = (id: string): Promise<CustomResponse> => {
+export const postOrder = (id: string, accessToken: string): Promise<CustomResponse> => {
   return request(`${baseUrl}/orders`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: accessToken,
     },
     body: JSON.stringify({
       ingredients: id,
@@ -33,10 +34,7 @@ export const recoveryPassword = (email: string): Promise<CustomResponse> => {
   });
 };
 
-export const changePassword = (
-  password: string,
-  token: string
-): Promise<CustomResponse> => {
+export const changePassword = (password: string, token: string): Promise<CustomResponse> => {
   return request(`${baseUrl}/password-reset/reset`, {
     method: "POST",
     headers: {

@@ -1,5 +1,5 @@
 .modal {
-  border-radius: 10px;
+  border-radius: 40px;
   background: #1c1c21;
   position: relative;
   display: flex;
@@ -30,4 +30,13 @@
 .modal__closeButton:hover {
   opacity: 0.6;
   transition: all 0.2s linear;
+}
+
+.closeButton__cursor_loading {
+  cursor: progress;
+}
+
+.closeButton__cursor_loading:hover {
+  cursor: progress;
+  opacity: 1;
 }

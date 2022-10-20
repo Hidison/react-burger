@@ -8,23 +8,45 @@ import {
   UPDATE_USER,
   UPDATE_USER_FAILED,
   UPDATE_USER_SUCCESS,
+  TProfileActions,
 } from "../actions/Profile";
 
-const initialStateLogout = {
-  logoutRequest: false,
-  logoutFailed: false,
-  message: "",
+type TLogoutListState = {
+  logoutRequest: boolean;
+  logoutFailed: boolean;
 };
 
-const initialStateUser = {
+type TUserListState = {
+  getUserRequest: boolean;
+  getUserFailed: boolean;
+  updateUserRequest: boolean;
+  updateUserFailed: boolean;
+  user: {
+    email: string;
+    name: string;
+  };
+};
+
+const initialStateLogout: TLogoutListState = {
+  logoutRequest: false,
+  logoutFailed: false,
+};
+
+const initialStateUser: TUserListState = {
   getUserRequest: false,
   getUserFailed: false,
   updateUserRequest: false,
   updateUserFailed: false,
-  user: null,
+  user: {
+    email: "",
+    name: "",
+  },
 };
 
-export const logoutReducer = (state = initialStateLogout, action: any) => {
+export const logoutReducer = (
+  state = initialStateLogout,
+  action: TProfileActions
+): TLogoutListState => {
   switch (action.type) {
     case LOGOUT: {
       return {
@@ -37,7 +59,6 @@ export const logoutReducer = (state = initialStateLogout, action: any) => {
       return {
         ...state,
         logoutRequest: false,
-        message: action.message,
       };
     }
     case LOGOUT_FAILED: {
@@ -53,7 +74,10 @@ export const logoutReducer = (state = initialStateLogout, action: any) => {
   }
 };
 
-export const getUserReducer = (state = initialStateUser, action: any) => {
+export const getUserReducer = (
+  state = initialStateUser,
+  action: TProfileActions
+): TUserListState => {
   switch (action.type) {
     case GET_USER: {
       return {
@@ -66,7 +90,7 @@ export const getUserReducer = (state = initialStateUser, action: any) => {
       return {
         ...state,
         getUserRequest: false,
-        user: action.user,
+        user: action.payload,
       };
     }
     case GET_USER_FAILED: {
@@ -82,7 +106,7 @@ export const getUserReducer = (state = initialStateUser, action: any) => {
   }
 };
 
-export const updateUserReducer = (state = initialStateUser, action: any) => {
+export const updateUserReducer = (state = initialStateUser, action: TProfileActions) => {
   switch (action.type) {
     case UPDATE_USER: {
       return {
@@ -95,7 +119,7 @@ export const updateUserReducer = (state = initialStateUser, action: any) => {
       return {
         ...state,
         updateUserRequest: false,
-        user: action.user,
+        user: action.payload,
       };
     }
     case UPDATE_USER_FAILED: {

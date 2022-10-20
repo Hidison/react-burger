@@ -3,9 +3,19 @@ import {
   GET_INGREDIENTS,
   GET_INGREDIENTS_SUCCESS,
   GET_INGREDIENTS_FAILED,
+  TBurgerIngredientsActions,
 } from "../actions/BurgerIngredients";
 
-const initialStateIngredients = {
+type TIngredientsListState = {
+  ingredientsRequest: boolean;
+  ingredientsFailed: boolean;
+  ingredients: TItem[];
+  bunIngredients: TItem[];
+  mainIngredients: TItem[];
+  sauceIngredients: TItem[];
+};
+
+const initialStateIngredients: TIngredientsListState = {
   ingredientsRequest: false,
   ingredientsFailed: false,
   ingredients: [],
@@ -16,8 +26,8 @@ const initialStateIngredients = {
 
 export const ingredientsReducer = (
   state = initialStateIngredients,
-  action: any
-) => {
+  action: TBurgerIngredientsActions
+): TIngredientsListState => {
   switch (action.type) {
     case GET_INGREDIENTS: {
       return {
@@ -29,17 +39,11 @@ export const ingredientsReducer = (
     case GET_INGREDIENTS_SUCCESS: {
       return {
         ...state,
-        ingredients: action.ingredients,
+        ingredients: action.payload,
         ingredientsRequest: false,
-        bunIngredients: action.ingredients.filter(
-          (item: TItem) => item.type === "bun"
-        ),
-        mainIngredients: action.ingredients.filter(
-          (item: TItem) => item.type === "main"
-        ),
-        sauceIngredients: action.ingredients.filter(
-          (item: TItem) => item.type === "sauce"
-        ),
+        bunIngredients: action.payload.filter((item: TItem) => item.type === "bun"),
+        mainIngredients: action.payload.filter((item: TItem) => item.type === "main"),
+        sauceIngredients: action.payload.filter((item: TItem) => item.type === "sauce"),
       };
     }
     case GET_INGREDIENTS_FAILED: {

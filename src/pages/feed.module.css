@@ -1,0 +1,76 @@
+.feed__container:hover {
+  opacity: 0.6;
+  transition: all 0.2s linear;
+}
+
+.feed__page {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.feed__list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-right: 16px;
+  max-width: 584px;
+  height: auto;
+}
+
+.feed__title {
+  width: 100%;
+  margin: 0;
+  padding: 40px 0 20px 0;
+}
+
+.feed__order_info {
+  display: flex;
+  flex-direction: column;
+}
+
+.feed__order_info_container {
+  display: flex;
+  gap: 36px;
+}
+
+.feed__order_info_subcontainer {
+  width: 272px;
+}
+
+.feed__order_info_container_list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  height: 312px;
+  flex-direction: column;
+  flex-wrap: wrap;
+  row-gap: 8px;
+}
+
+.feed__order_info_container_list_item {
+  max-height: 24px;
+}
+
+.colour_created {
+  color: #00cccc;
+}
+
+.feed__order_all_time_container_value {
+  text-shadow: 0px 0px 16px rgba(51, 51, 255, 0.25),
+    0px 0px 8px rgba(51, 51, 255, 0.25), 0px 4px 32px rgba(51, 51, 255, 0.5);
+}
+
+.feed__order_all_time_container {
+  display: flex;
+  flex-direction: column;
+}
+
+.feed__order_today_container {
+  display: flex;
+  flex-direction: column;
+}
+
+.feed__order_info_status_title {
+  display: block;
+}

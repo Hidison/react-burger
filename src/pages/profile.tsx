@@ -1,37 +1,25 @@
-import {
-  Button,
-  Input,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
 import React, { useEffect, useRef, useState } from "react";
 import ProfileStyles from "./profile.module.css";
 import LoginStyles from "../components/Auth/Auth.module.css";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
-import {
-  SET_AUTH,
-  SET_ERRORS,
-  SET_VALID,
-  SET_VALUES,
-} from "../services/actions/Auth";
-import { getUser, logout, updateUser } from "../services/actions/Profile";
-import { deleteCookie, getCookie } from "../utils/utils";
+import { useDispatch, useSelector } from "../services/hooks";
+import { SET_ERRORS, SET_VALID, SET_VALUES } from "../services/actions/Auth";
+import { getUser, updateUser } from "../services/actions/Profile";
+import { getCookie } from "../utils/utils";
 import Loader from "../components/UI/Loader/Loader";
 import { useFormAndValidation } from "../hooks/useFormAndValidation";
 import { SyntheticEvent } from "../types";
+import ProfileNav from "../components/ProfileNav/ProfileNav";
 
 const ProfilePage = () => {
   const [disabledName, setDisabledName] = useState<boolean>(true);
   const [disabledEmail, setDisabledEmail] = useState<boolean>(true);
   const [saveButtonDisabled, setSaveButtonDisabled] = useState<boolean>(true);
-  const dispatch: any = useDispatch();
+  const dispatch = useDispatch();
 
-  const location = useLocation();
-
-  const { values, errors, valid } = useSelector((state: any) => state.auth);
-  const { user } = useSelector((state: any) => state.user);
-  const { updateUserRequest, updateUserFailed } = useSelector(
-    (state: any) => state.updatedUser
-  );
+  const { values, errors, valid } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.user);
+  const { updateUserRequest, updateUserFailed } = useSelector((state) => state.updatedUser);
   const nameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const { handleChange } = useFormAndValidation();
@@ -46,13 +34,12 @@ const ProfilePage = () => {
   }, [disabledEmail, disabledName]);
 
   const aToken = getCookie("accessToken");
-  const rToken = localStorage.getItem("refreshToken");
 
   useEffect(() => {
     if (user) {
       dispatch({
         type: SET_VALUES,
-        values: { ...values, name: user.name, email: user.email },
+        payload: { ...values, name: user.name, email: user.email },
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -61,7 +48,7 @@ const ProfilePage = () => {
   useEffect(() => {
     dispatch({
       type: SET_VALID,
-      valid: { ...valid, name: true, email: true },
+      payload: { ...valid, name: true, email: true },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
@@ -88,7 +75,7 @@ const ProfilePage = () => {
   const cancelUpdateUserInfo = () => {
     dispatch({
       type: SET_VALUES,
-      values: { name: user.name, email: user.email },
+      payload: { name: user.name, email: user.email, password: "", code: "" },
     });
     resetError();
   };
@@ -96,7 +83,7 @@ const ProfilePage = () => {
   useEffect(() => {
     dispatch({
       type: SET_ERRORS,
-      errors: {
+      payload: {
         ...errors,
         submit: "",
       },
@@ -104,22 +91,10 @@ const ProfilePage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const logoutSistem = () => {
-    dispatch(logout(rToken as string));
-    if (rToken) {
-      deleteCookie("accessToken");
-      localStorage.removeItem("refreshToken");
-      dispatch({
-        type: SET_AUTH,
-        auth: false,
-      });
-    }
-  };
-
   const resetError = () => {
     dispatch({
       type: SET_ERRORS,
-      errors: {
+      payload: {
         ...errors,
         name: "",
         email: "",
@@ -143,50 +118,7 @@ const ProfilePage = () => {
   return (
     <main className={ProfileStyles.main}>
       <section>
-        <nav className={ProfileStyles.nav}>
-          <span className={ProfileStyles.linkBlock}>
-            <Link
-              to="/profile"
-              className={
-                location.pathname === "/profile"
-                  ? `${ProfileStyles.link} ${ProfileStyles.linkActive} text text_type_main-medium`
-                  : `${ProfileStyles.link} ${ProfileStyles.linkDisabled} text text_type_main-medium text_color_inactive`
-              }
-            >
-              Профиль
-            </Link>
-          </span>
-          <span className={ProfileStyles.linkBlock}>
-            <Link
-              to="/profile/orders"
-              className={
-                location.pathname === "/profile/orders"
-                  ? `${ProfileStyles.link} ${ProfileStyles.linkActive} text text_type_main-medium`
-                  : `${ProfileStyles.link} ${ProfileStyles.linkDisabled} text text_type_main-medium text_color_inactive`
-              }
-            >
-              История заказов
-            </Link>
-          </span>
-          <span className={ProfileStyles.linkBlock}>
-            <button
-              onClick={logoutSistem}
-              to="/"
-              className={
-                location.pathname === "/profile/orders/:id"
-                  ? `${ProfileStyles.link} ${ProfileStyles.linkActive} text text_type_main-medium`
-                  : `${ProfileStyles.link} ${ProfileStyles.linkDisabled} text text_type_main-medium text_color_inactive`
-              }
-            >
-              Выход
-            </button>
-          </span>
-          <p
-            className={`${ProfileStyles.text} text text_type_main-default text_color_inactive mt-20`}
-          >
-            В этом разделе вы можете изменить свои персональные данные
-          </p>
-        </nav>
+        <ProfileNav />
       </section>
       <section className={`${ProfileStyles.inputsContainer} ml-15`}>
         <form onSubmit={updateUserInfo} autoComplete="off">
@@ -209,9 +141,7 @@ const ProfilePage = () => {
               size={"default"}
               icon={"EditIcon"}
             />
-            <div
-              className={`${LoginStyles.errorMessage} text_type_main-default`}
-            >
+            <div className={`${LoginStyles.errorMessage} text_type_main-default`}>
               {errors.name}
             </div>
           </div>
@@ -234,9 +164,7 @@ const ProfilePage = () => {
               size={"default"}
               icon={"EditIcon"}
             />
-            <div
-              className={`${LoginStyles.errorMessage} text_type_main-default`}
-            >
+            <div className={`${LoginStyles.errorMessage} text_type_main-default`}>
               {errors.email}
             </div>
           </div>

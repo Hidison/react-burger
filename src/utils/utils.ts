@@ -23,11 +23,7 @@ export function setCookie(name: string, value: string, props: any) {
 
 export function getCookie(name: string) {
   const matches = document.cookie.match(
-    new RegExp(
-      "(?:^|; )" +
-        name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
-        "=([^;]*)"
-    )
+    new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") + "=([^;]*)")
   );
   return matches ? decodeURIComponent(matches[1]) : undefined;
 }
@@ -40,6 +36,14 @@ export function deleteCookie(name: string) {
 
 export function getIngIdFromLocation(pathname: string) {
   return pathname.replace(/ingredients/, "").replace(/[^a-zа-яё0-9\s]/gi, "");
+}
+
+export function getOrderFromLocation(pathname: string) {
+  return pathname
+    .replace(/feed/, "")
+    .replace(/profile/, "")
+    .replace(/orders/, "")
+    .replace(/[^a-zа-яё0-9\s]/gi, "");
 }
 
 export const checkResponse = (res: any) => {
