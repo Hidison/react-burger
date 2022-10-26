@@ -29,7 +29,7 @@ export const ingredientsReducer = (
   action: TBurgerIngredientsActions
 ): TIngredientsListState => {
   switch (action.type) {
-    case GET_INGREDIENTS: {
+    case GET_INGREDIENTS: { 
       return {
         ...state,
         ingredientsRequest: true,

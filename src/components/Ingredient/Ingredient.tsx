@@ -72,6 +72,7 @@ const Ingredient: FC<IIngredient> = ({ item, handleOpenModal }) => {
       <div
         onClick={handleIngredientClick}
         ref={item.type === "bun" ? bunRef : mainRef}
+        id={`${item._id}`}
         style={{ opacity: opacity }}
       >
         <img src={item.image} alt="иконка карточки" className="ml-4 mr-4" />

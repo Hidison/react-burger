@@ -19,7 +19,7 @@ type TWSState = {
   error?: Event;
 };
 
-const initialState: TWSState = {
+export const initialStateWsReducer: TWSState = {
   wsConnected: false,
   message: null,
   messages: null,
@@ -28,7 +28,7 @@ const initialState: TWSState = {
   isClosed: true,
 };
 
-export const wsReducer = (state = initialState, action: TWSActions): TWSState => {
+export const wsReducer = (state = initialStateWsReducer, action: TWSActions): TWSState => {
   switch (action.type) {
     case WS_CONNECTION_SUCCESS:
       return {

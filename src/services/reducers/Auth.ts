@@ -46,7 +46,7 @@ const initialStateChangePasswordRecovery: TChangePasswordRecoveryListState = {
   data: null,
 };
 
-const initialStateAuth: TAuthListState = {
+export const initialStateAuth: TAuthListState = {
   auth: false,
   hidePassword: true,
   values: { name: "", email: "", password: "", code: "" },

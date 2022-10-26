@@ -18,7 +18,7 @@ const initialStateLogin: TLoginListState = {
   loginRequest: false,
   loginFailed: false,
   user: null,
-};
+}; 
 
 const initialStateUpdateToken = {
   updateTokenRequest: false,
