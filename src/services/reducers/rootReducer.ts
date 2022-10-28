@@ -11,7 +11,8 @@ import { setOrderReducer } from "./Order";
 import { orderDataReducer } from "./OrderData";
 import { AppReducer } from "./App";
 import { AppHeaderReducer } from "./AppHeader";
-import { wsReducer } from "./wsReducer";
+import { wsReducerAll } from "./wsReducerAll";
+import { wsReducerAuth } from "./wsReducerAuth";
 
 export const rootReducer = combineReducers({
   app: AppReducer,
@@ -31,5 +32,6 @@ export const rootReducer = combineReducers({
   updatedUser: updateUserReducer,
   setOrder: setOrderReducer,
   orderData: orderDataReducer,
-  ws: wsReducer,
+  wsAll: wsReducerAll,
+  wsAuth: wsReducerAuth,
 });

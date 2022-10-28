@@ -1,18 +1,23 @@
 export const WS_CONNECTION_START: "WS_CONNECTION_START" = "WS_CONNECTION_START";
-export const WS_CONNECTION_START_AUTH: "WS_CONNECTION_START_AUTH" = "WS_CONNECTION_START_AUTH";
 export const WS_CONNECTION_SUCCESS: "WS_CONNECTION_SUCCESS" = "WS_CONNECTION_SUCCESS";
 export const WS_CONNECTION_ERROR: "WS_CONNECTION_ERROR" = "WS_CONNECTION_ERROR";
 export const WS_CONNECTION_CLOSE: "WS_CONNECTION_CLOSE" = "WS_CONNECTION_CLOSE";
 export const WS_CONNECTION_CLOSED: "WS_CONNECTION_CLOSED" = "WS_CONNECTION_CLOSED";
 export const WS_GET_MESSAGE: "WS_GET_MESSAGE" = "WS_GET_MESSAGE";
-export const WS_GET_MESSAGE_AUTH: "WS_GET_MESSAGE_AUTH" = "WS_GET_MESSAGE_AUTH";
 export const WS_SEND_MESSAGE: "WS_SEND_MESSAGE" = "WS_SEND_MESSAGE";
+
+export const WSActionsAll = {
+  wsConnectionStart: WS_CONNECTION_START,
+  wsConnectionSuccess: WS_CONNECTION_SUCCESS,
+  wsConnectionError: WS_CONNECTION_ERROR,
+  wsConnectionClose: WS_CONNECTION_CLOSE,
+  wsConnectionClosed: WS_CONNECTION_CLOSED,
+  wsGetMessage: WS_GET_MESSAGE,
+  wsSendMessage: WS_SEND_MESSAGE,
+};
 
 export interface IWSConnectionStartAction {
   readonly type: typeof WS_CONNECTION_START;
-}
-export interface IWSConnectionStartAuthAction {
-  readonly type: typeof WS_CONNECTION_START_AUTH;
 }
 export interface IWSConnectionSuccessAction {
   readonly type: typeof WS_CONNECTION_SUCCESS;
@@ -31,22 +36,16 @@ export interface IWSGetMessageAction {
   payload: any;
   readonly type: typeof WS_GET_MESSAGE;
 }
-export interface IWSGetMessageAuthAction {
-  payload: any;
-  readonly type: typeof WS_GET_MESSAGE_AUTH;
-}
 export interface IWSSendMessageAction {
   readonly type: typeof WS_SEND_MESSAGE;
   payload: any;
 }
 
-export type TWSActions =
+export type TWSActionsAll =
   | IWSConnectionStartAction
-  | IWSConnectionStartAuthAction
   | IWSConnectionSuccessAction
   | IWSConnectionErrorAction
   | IWSConnectionCloseAction
   | IWSConnectionClosedAction
   | IWSGetMessageAction
-  | IWSGetMessageAuthAction
   | IWSSendMessageAction;

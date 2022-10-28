@@ -1,6 +1,6 @@
 describe("app works correctly at burger constructor", function () {
   before(function () {
-    cy.visit("http://localhost:3000/");
+    cy.visit("/");
   });
 
   it("should open burger constructor page", function () {
@@ -71,7 +71,7 @@ describe("modal window works correctly", function () {
 
 describe("drugging works correctly", function () {
   before(function () {
-    cy.visit("http://localhost:3000/login");
+    cy.visit(`/login`);
     cy.get("div[class*='input_type_email']").as("email_input");
     cy.get("div[class*='input_type_password']").as("password_input");
     cy.get("button[class*='button_button']").as("submit_button");
@@ -196,26 +196,11 @@ describe("order works correctly at burger constructor", function () {
     cy.get("@order_button").should("not.have.attr", "disabled");
 
     cy.get("@order_button").click();
-    cy.get("div[class*='Modal_modal']").as("modal");
-    cy.get("@modal")
-      .find("button[class*='Modal_modal__closeButton']")
-      .last()
-      .as("modal_close_button");
-    cy.get("@modal").find("p[class*='text text_type_main-medium mb-15']").as("modal_title");
-    cy.get("@modal").find("p[class*='text text_type_main-default mb-2']").as("modal_info_text");
-    cy.get("@modal_title").should("contain", "идентификатор заказа");
-    cy.get("@modal_info_text").should("contain", "Ваш заказ начали готовить");
-
-    cy.get("@modal_close_button").click();
-    cy.get("h1").should("contain", "Соберите бургер");
   });
 
   it("check modal at order", function () {
     cy.get("div[class*='Modal_modal']").as("modal");
-    cy.get("@modal")
-      .find("button[class*='Modal_modal__closeButton']")
-      .last()
-      .as("modal_close_button");
+    cy.get("@modal").find("button[class*='Modal_modal__closeButton']").as("modal_close_button");
     cy.get("@modal").find("p[class*='text text_type_main-medium mb-15']").as("modal_title");
     cy.get("@modal").find("p[class*='text text_type_main-default mb-2']").as("modal_info_text");
     cy.get("@modal_title").should("contain", "идентификатор заказа");

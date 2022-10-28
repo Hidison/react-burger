@@ -1,36 +1,36 @@
 import { TMessage } from "../../types";
 import {
-  WS_CONNECTION_SUCCESS,
-  WS_CONNECTION_ERROR,
-  WS_CONNECTION_CLOSED,
-  WS_GET_MESSAGE,
+  WS_CONNECTION_SUCCESS_AUTH,
+  WS_CONNECTION_ERROR_AUTH,
+  WS_CONNECTION_CLOSED_AUTH,
   WS_GET_MESSAGE_AUTH,
-  WS_SEND_MESSAGE,
-  TWSActions,
-} from "../actions/wsActionTypes";
+  WS_SEND_MESSAGE_AUTH,
+  TWSActionsAuth,
+} from "../actions/wsActionTypesAuth";
 
-type TWSState = {
+type TWSAuthState = {
   wsConnected: boolean;
   message: any;
   messages: TMessage[] | null;
-  messagesAuth: TMessage[] | null;
   isError: boolean;
   isClosed: boolean;
   error?: Event;
 };
 
-export const initialStateWsReducer: TWSState = {
+export const initialStateWsReducerAuth: TWSAuthState = {
   wsConnected: false,
   message: null,
   messages: null,
-  messagesAuth: null,
   isError: false,
   isClosed: true,
 };
 
-export const wsReducer = (state = initialStateWsReducer, action: TWSActions): TWSState => {
+export const wsReducerAuth = (
+  state = initialStateWsReducerAuth,
+  action: TWSActionsAuth
+): TWSAuthState => {
   switch (action.type) {
-    case WS_CONNECTION_SUCCESS:
+    case WS_CONNECTION_SUCCESS_AUTH:
       return {
         ...state,
         wsConnected: true,
@@ -38,7 +38,7 @@ export const wsReducer = (state = initialStateWsReducer, action: TWSActions): TW
         isClosed: false,
       };
 
-    case WS_CONNECTION_ERROR:
+    case WS_CONNECTION_ERROR_AUTH:
       return {
         ...state,
         error: action.payload,
@@ -46,7 +46,7 @@ export const wsReducer = (state = initialStateWsReducer, action: TWSActions): TW
         isError: true,
       };
 
-    case WS_CONNECTION_CLOSED:
+    case WS_CONNECTION_CLOSED_AUTH:
       return {
         ...state,
         error: undefined,
@@ -54,19 +54,13 @@ export const wsReducer = (state = initialStateWsReducer, action: TWSActions): TW
         isClosed: true,
       };
 
-    case WS_GET_MESSAGE:
+    case WS_GET_MESSAGE_AUTH:
       return {
         ...state,
         error: undefined,
         messages: action.payload,
       };
-    case WS_GET_MESSAGE_AUTH:
-      return {
-        ...state,
-        error: undefined,
-        messagesAuth: action.payload,
-      };
-    case WS_SEND_MESSAGE:
+    case WS_SEND_MESSAGE_AUTH:
       return {
         ...state,
         error: undefined,

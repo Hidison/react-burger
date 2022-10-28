@@ -19,21 +19,27 @@ import FeedPage from "../../pages/feed";
 import FeedPageID from "../../pages/feed-id";
 import { useDispatch, useSelector } from "../../services/hooks";
 import {
-  WS_CONNECTION_CLOSE,
-  WS_CONNECTION_START,
-  WS_CONNECTION_START_AUTH,
-} from "../../services/actions/wsActionTypes";
-import { getMessages, getMessagesAuth, getWsConnected } from "../../services/selectors";
+  getMessagesAll,
+  getMessagesAuth,
+  getWsAuthConnected,
+  getWsConnected,
+} from "../../services/selectors";
 import OrderDataDetails from "../OrderDataDetails/OrderDataDetails";
 import Loader from "../UI/Loader/Loader";
 import { getWsError } from "../../services/selectors/getWsError";
 import WsConnectedError from "../WsConnectedError/WsConnectedError";
+import { WS_CONNECTION_CLOSE, WS_CONNECTION_START } from "../../services/actions/wsActionTypesAll";
+import {
+  WS_CONNECTION_CLOSE_AUTH,
+  WS_CONNECTION_START_AUTH,
+} from "../../services/actions/wsActionTypesAuth";
 
 const ModalSwitch = () => {
   const dispatch = useDispatch();
-  const messages = useSelector(getMessages);
+  const messages = useSelector(getMessagesAll);
   const messagesAuth = useSelector(getMessagesAuth);
   const wsConnected: boolean = useSelector(getWsConnected);
+  const wsAuthConnected: boolean = useSelector(getWsAuthConnected);
   const isWsError = useSelector(getWsError);
 
   const [ingredientModalVisible, setIngredientModalVisible] = useState<boolean>(true);
@@ -55,10 +61,6 @@ const ModalSwitch = () => {
       dispatch({
         type: WS_CONNECTION_START,
       });
-    } else if (ordersLocation) {
-      dispatch({
-        type: WS_CONNECTION_START_AUTH,
-      });
     }
 
     return () => {
@@ -66,7 +68,21 @@ const ModalSwitch = () => {
         type: WS_CONNECTION_CLOSE,
       });
     };
-  }, [dispatch, feedLocation, ordersLocation]);
+  }, [dispatch, feedLocation]);
+
+  useEffect(() => {
+    if (ordersLocation) {
+      dispatch({
+        type: WS_CONNECTION_START_AUTH,
+      });
+    }
+
+    return () => {
+      dispatch({
+        type: WS_CONNECTION_CLOSE_AUTH,
+      });
+    };
+  }, [dispatch, ordersLocation]);
 
   return (
     <main className={ModalSwitchStyles.main}>
@@ -109,7 +125,7 @@ const ModalSwitch = () => {
         <Route path="/profile/orders/:id" exact={true}>
           {isWsError ? (
             <WsConnectedError />
-          ) : wsConnected && messagesAuth ? (
+          ) : wsAuthConnected && messagesAuth ? (
             <FeedPageID modalVisible={orderModalVisible} />
           ) : (
             <div style={{ marginTop: "60px" }}>

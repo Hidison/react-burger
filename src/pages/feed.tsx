@@ -3,7 +3,7 @@ import FeedPageStyles from "./feed.module.css";
 import MyScrollbar from "../components/UI/myScrollbar/MyScrollbar";
 import { Redirect, useHistory } from "react-router-dom";
 import { useSelector } from "../services/hooks";
-import { getMessages } from "../services/selectors";
+import { getMessagesAll } from "../services/selectors";
 import OrderData from "../components/OrderData/OrderData";
 import Loader from "../components/UI/Loader/Loader";
 import { TMessage } from "../types";
@@ -17,7 +17,7 @@ interface IFeedPage {
 
 const FeedPage: FC<IFeedPage> = ({ setOrderModalVisible, modalVisible }) => {
   const history = useHistory();
-  const messages: TMessage = useSelector(getMessages);
+  const messages: TMessage = useSelector(getMessagesAll);
   const isWsError = useSelector(getWsError);
   const isWsClosed = useSelector(getWsClosed);
   const { heightApp } = useSelector((state) => state.app);

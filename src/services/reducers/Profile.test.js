@@ -1,3 +1,4 @@
+import { testsData } from "../../utils/constants";
 import {
   LOGOUT,
   LOGOUT_SUCCESS,
@@ -80,12 +81,12 @@ describe("Get user reducer", () => {
     expect(
       getUserReducer(initialState, {
         type: GET_USER_SUCCESS,
-        payload: { email: "qwerty@mail.ru", name: "Sasha" },
+        payload: testsData,
       })
     ).toEqual({
       ...initialState,
       getUserRequest: false,
-      user: { email: "qwerty@mail.ru", name: "Sasha" },
+      user: testsData,
     });
   });
 

@@ -1,3 +1,6 @@
+import { WSActionsAll } from "./services/actions/wsActionTypesAll";
+import { WSActionsAuth } from "./services/actions/wsActionTypesAuth";
+
 export type TItem = {
   calories: number;
   carbohydrates: number;
@@ -62,3 +65,5 @@ export interface CustomResponse {
   clone(): Response;
   json(): any;
 }
+
+export type TWSAction = typeof WSActionsAll | typeof WSActionsAuth;

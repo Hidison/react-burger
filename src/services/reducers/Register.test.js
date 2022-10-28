@@ -1,3 +1,4 @@
+import { testsData } from "../../utils/constants";
 import { REGISTER, REGISTER_FAILED, REGISTER_SUCCESS } from "../actions/Register";
 import { initialStateRegister, registerReducer } from "./Register";
 
@@ -28,7 +29,7 @@ describe("Register reducer", () => {
           accessToken: "Bearer eyJhbCJ9.eyJnITU2fQ._ZogBhBs",
           refreshToken: "edba52312bbd3",
           success: true,
-          user: { email: "qwerty@mail.ru", name: "Sasha" },
+          user: testsData,
         },
         registerSuccess: true,
       })
@@ -39,7 +40,7 @@ describe("Register reducer", () => {
         accessToken: "Bearer eyJhbCJ9.eyJnITU2fQ._ZogBhBs",
         refreshToken: "edba52312bbd3",
         success: true,
-        user: { email: "qwerty@mail.ru", name: "Sasha" },
+        user: testsData,
       },
       registerSuccess: true,
     });

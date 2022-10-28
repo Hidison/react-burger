@@ -4,9 +4,10 @@ import { useDispatch } from "../../services/hooks";
 import { Link, useLocation } from "react-router-dom";
 import Order from "../Order/Order";
 import { SET_ORDER_DATA } from "../../services/actions/OrderData";
+import { TMessageOrder } from "../../types";
 
 interface IOrderData {
-  item: any;
+  item: TMessageOrder;
   setOrderModalVisible: Function;
 }
 
@@ -42,7 +43,7 @@ const OrderData: FC<IOrderData> = ({ item, setOrderModalVisible }) => {
       <Order
         number={item.number}
         date={item.createdAt}
-        title={item.name}
+        title={item.name as string}
         ingredientss={item.ingredients}
         status={item.status}
       />

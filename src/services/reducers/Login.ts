@@ -14,13 +14,18 @@ type TLoginListState = {
   user: { email: string; name: string } | null;
 };
 
+type TUpdateTokenListState = {
+  updateTokenRequest: boolean;
+  updateTokenFailed: boolean;
+};
+
 const initialStateLogin: TLoginListState = {
   loginRequest: false,
   loginFailed: false,
   user: null,
-}; 
+};
 
-const initialStateUpdateToken = {
+const initialStateUpdateToken: TUpdateTokenListState = {
   updateTokenRequest: false,
   updateTokenFailed: false,
 };
@@ -54,7 +59,10 @@ export const loginReducer = (state = initialStateLogin, action: TLoginActions): 
   }
 };
 
-export const updateTokenReducer = (state = initialStateUpdateToken, action: any) => {
+export const updateTokenReducer = (
+  state = initialStateUpdateToken,
+  action: any
+): TUpdateTokenListState => {
   switch (action.type) {
     case UPDATE_TOKEN: {
       return {
