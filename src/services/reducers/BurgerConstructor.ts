@@ -16,7 +16,7 @@ type TSelIngredientsListState = {
   ID: string[] | string;
 };
 
-const initialStateSelIngredients: TSelIngredientsListState = {
+export const initialStateSelIngredients: TSelIngredientsListState = {
   selectedIngredientsBun: { price: 0, _id: null, name: "" },
   selectedIngredientsMain: [],
   totalPrice: 0,

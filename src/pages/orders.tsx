@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { FC, useEffect } from "react";
 import ProfileNav from "../components/ProfileNav/ProfileNav";
 import OrdersStyles from "./orders.module.css";
 import ProfileStyles from "./profile.module.css";
@@ -9,15 +9,21 @@ import { useDispatch, useSelector } from "../services/hooks";
 import { getMessagesAuth } from "../services/selectors";
 import Loader from "../components/UI/Loader/Loader";
 import { updateToken } from "../services/actions/Login";
-import { getWsClosed, getWsError } from "../services/selectors/getWsError";
+import { getWsAuthClosed, getWsAuthError } from "../services/selectors/getWsError";
 import WsConnectedError from "../components/WsConnectedError/WsConnectedError";
+import { TMessageOrder } from "../types";
 
-const OrdersPage = ({ setOrderModalVisible, modalVisible }: any) => {
+interface IOrdersPage {
+  modalVisible: boolean;
+  setOrderModalVisible: Function;
+}
+
+const OrdersPage: FC<IOrdersPage> = ({ setOrderModalVisible, modalVisible }) => {
   const dispatch = useDispatch();
 
-  const isWsError = useSelector(getWsError);
-  const isWsClosed = useSelector(getWsClosed);
-  const messagesAuth = useSelector(getMessagesAuth);
+  const isWsAuthError = useSelector(getWsAuthError);
+  const isWsAuthClosed = useSelector(getWsAuthClosed);
+  const messages = useSelector(getMessagesAuth);
 
   const { heightApp } = useSelector((state) => state.app);
   const { heightHeader } = useSelector((state) => state.appHeader);
@@ -28,17 +34,15 @@ const OrdersPage = ({ setOrderModalVisible, modalVisible }: any) => {
 
   const history = useHistory();
 
-  const messagesAuthReverse =
-    messagesAuth &&
-    messagesAuth.success &&
-    messagesAuth.orders.map(messagesAuth.orders.pop, [...messagesAuth.orders]);
+  const messagesReverse =
+    messages && messages.success && messages.orders.map(messages.orders.pop, [...messages.orders]);
 
   useEffect(() => {
     const target = "getOrder";
-    if (messagesAuth && !messagesAuth.success) {
+    if (messages && !messages.success) {
       dispatch(updateToken(rToken, target));
     }
-  }, [dispatch, messagesAuth, rToken]);
+  }, [dispatch, messages, rToken]);
 
   if (history.location.pathname !== "/profile/orders" && !modalVisible) {
     return (
@@ -55,13 +59,13 @@ const OrdersPage = ({ setOrderModalVisible, modalVisible }: any) => {
       <section>
         <ProfileNav />
       </section>
-      {isWsError && isWsClosed ? (
+      {isWsAuthError && isWsAuthClosed ? (
         <WsConnectedError />
-      ) : messagesAuth && messagesAuth.success ? (
+      ) : messages && messages.success ? (
         <section className=" ml-15 mt-10">
           <MyScrollbar height={ordersListHeight}>
             <div className={`${OrdersStyles.orders__list}`}>
-              {messagesAuthReverse.map((item: any) => (
+              {messagesReverse.map((item: TMessageOrder) => (
                 <OrderData key={item._id} item={item} setOrderModalVisible={setOrderModalVisible} />
               ))}
             </div>

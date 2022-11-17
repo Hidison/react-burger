@@ -4,7 +4,7 @@ import { AppDispatch, AppThunk } from "../types";
 import { SET_AUTH, SET_ERRORS } from "./Auth";
 import { sendOrder } from "./OrderDetails";
 import { getUser } from "./Profile";
-import { WS_CONNECTION_START_AUTH } from "./wsActionTypes";
+import { WS_CONNECTION_START_AUTH } from "./wsActionTypesAuth";
 
 export const UPDATE_TOKEN: "UPDATE_TOKEN" = "UPDATE_TOKEN";
 export const UPDATE_TOKEN_FAILED: "UPDATE_TOKEN_FAILED" = "UPDATE_TOKEN_FAILED";

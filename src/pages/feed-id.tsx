@@ -3,7 +3,7 @@ import { getOrderFromLocation } from "../utils/utils";
 import { useHistory, useLocation } from "react-router-dom";
 import NotFound404 from "./not-found";
 import { useDispatch, useSelector } from "../services/hooks";
-import { getMessages, getMessagesAuth } from "../services/selectors";
+import { getMessagesAll, getMessagesAuth } from "../services/selectors";
 import OrderDataDetails from "../components/OrderDataDetails/OrderDataDetails";
 import { SET_ORDER_DATA } from "../services/actions/OrderData";
 import { TMessage } from "../types";
@@ -18,7 +18,7 @@ const FeedPageID: FC<IFeedPageID> = ({ modalVisible }) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
-  const messages: TMessage = useSelector(getMessages);
+  const messages: TMessage = useSelector(getMessagesAll);
   const messagesAuth: TMessage = useSelector(getMessagesAuth);
   const orderFromlocation: string = getOrderFromLocation(history.location.pathname);
 

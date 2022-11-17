@@ -1,7 +1,6 @@
 import { CustomResponse } from "../types";
+import { baseUrl } from "./constants";
 import { request } from "./utils";
-
-export const baseUrl = "https://norma.nomoreparties.space/api";
 
 export const getIngredients = (): Promise<CustomResponse> => {
   return request(`${baseUrl}/ingredients`, {

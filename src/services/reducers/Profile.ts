@@ -32,7 +32,7 @@ const initialStateLogout: TLogoutListState = {
   logoutFailed: false,
 };
 
-const initialStateUser: TUserListState = {
+export const initialStateUser: TUserListState = {
   getUserRequest: false,
   getUserFailed: false,
   updateUserRequest: false,

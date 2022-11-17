@@ -8,12 +8,13 @@ import { TLoginActions } from "../actions/Login";
 import { TOrderDetailsActions } from "../actions/OrderDetails";
 import { TProfileActions } from "../actions/Profile";
 import { TRegisterActions } from "../actions/Register";
-import { TWSActions } from "../actions/wsActionTypes";
+import { TWSActionsAll } from "../actions/wsActionTypesAll";
 import { store } from "../store";
 import { TOrderActions } from "../actions/Order";
 import { TOrderDataActions } from "../actions/OrderData";
 import { TAppActions } from "../actions/App";
 import { TAppHeaderActions } from "../actions/AppHeader";
+import { TWSActionsAuth } from "../actions/wsActionTypesAuth";
 
 export type TApplicationActions =
   | TAppActions
@@ -28,7 +29,8 @@ export type TApplicationActions =
   | TOrderDetailsActions
   | TProfileActions
   | TRegisterActions
-  | TWSActions;
+  | TWSActionsAll
+  | TWSActionsAuth;
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

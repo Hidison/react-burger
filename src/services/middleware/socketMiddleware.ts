@@ -1,72 +1,71 @@
 import type { Middleware, MiddlewareAPI } from "redux";
+import { TWSAction } from "../../types";
 import { getCookie } from "../../utils/utils";
-import { WS_CONNECTION_START, WS_CONNECTION_START_AUTH } from "../actions/wsActionTypes";
 
 import type { TApplicationActions, AppDispatch, RootState } from "../types";
 
-export const socketMiddleware = (wsUrl: string, auth: boolean): Middleware => {
+export const socketMiddleware = (
+  wsUrl: string,
+  WSActions: TWSAction,
+  auth: boolean
+): Middleware => {
   return ((store: MiddlewareAPI<AppDispatch, RootState>) => {
     let socket: WebSocket | null = null;
 
     return (next) => (action: TApplicationActions) => {
       const { dispatch } = store;
       const { type } = action;
+      const {
+        wsConnectionStart,
+        wsConnectionSuccess,
+        wsConnectionError,
+        wsConnectionClose,
+        wsConnectionClosed,
+        wsGetMessage,
+        wsSendMessage,
+      } = WSActions;
 
       const aToken: string | undefined = getCookie("accessToken") as string;
+      const aTokenWithoutBearer = auth && aToken ? aToken.replace("Bearer ", "") : null;
 
-      const aTokenWithoutBearer = aToken ? aToken.replace("Bearer ", "") : null;
-
-      if (type === "WS_CONNECTION_START") {
-        !auth ? (socket = new WebSocket(wsUrl)) : (socket = null);
-      }
-
-      if (type === "WS_CONNECTION_START_AUTH") {
-        auth ? (socket = new WebSocket(`${wsUrl}?token=${aTokenWithoutBearer}`)) : (socket = null);
+      if (type === wsConnectionStart) {
+        socket = aTokenWithoutBearer
+          ? new WebSocket(`${wsUrl}?token=${aTokenWithoutBearer}`)
+          : new WebSocket(wsUrl);
       }
 
       if (socket) {
         let closedByAuth = false;
         socket.onopen = (event) => {
-          dispatch({ type: "WS_CONNECTION_SUCCESS", payload: event });
+          dispatch({ type: wsConnectionSuccess, payload: event });
         };
 
         socket.onerror = (event) => {
-          dispatch({ type: "WS_CONNECTION_ERROR", payload: event });
+          dispatch({ type: wsConnectionError, payload: event });
         };
 
         socket.onmessage = (event) => {
           const { data } = event;
-          !auth
-            ? dispatch({ type: "WS_GET_MESSAGE", payload: JSON.parse(data) })
-            : dispatch({
-                type: "WS_GET_MESSAGE_AUTH",
-                payload: JSON.parse(data),
-              });
+          dispatch({ type: wsGetMessage, payload: JSON.parse(data) });
         };
 
         socket.onclose = (event) => {
-          dispatch({ type: "WS_CONNECTION_CLOSED", payload: event });
+          dispatch({ type: wsConnectionClosed, payload: event });
           if (!closedByAuth && event.code !== 1000) {
             setTimeout(() => {
-              if (auth) {
-                dispatch({
-                  type: WS_CONNECTION_START_AUTH,
-                });
-              } else if (!auth) {
-                dispatch({
-                  type: WS_CONNECTION_START,
-                });
-              }
+              dispatch({
+                type: wsConnectionStart,
+              });
             }, 5000);
           }
         };
 
-        if ("WS_CONNECTION_CLOSE" && type === "WS_CONNECTION_CLOSE" && socket) {
+        if (wsConnectionClose && type === wsConnectionClose && socket) {
           socket.close(1000, "Сокет закрыт");
           closedByAuth = true;
         }
 
-        if (type === "WS_SEND_MESSAGE") {
+        if (type === wsSendMessage) {
           const message = action.payload;
           socket.send(JSON.stringify(message));
         }

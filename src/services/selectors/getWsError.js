@@ -1,2 +1,4 @@
-export const getWsError = (state) => state.ws.isError;
-export const getWsClosed = (state) => state.ws.isClosed;
+export const getWsError = (state) => state.wsAll.isError;
+export const getWsClosed = (state) => state.wsAll.isClosed;
+export const getWsAuthError = (state) => state.wsAuth.isError;
+export const getWsAuthClosed = (state) => state.wsAuth.isClosed;

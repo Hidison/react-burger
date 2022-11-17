@@ -97,7 +97,6 @@ export const logout: AppThunk = (token: string) => {
         if (data && data.success) {
           dispatch({
             type: LOGOUT_SUCCESS,
-            message: data.message,
           });
         } else {
           dispatch(logoutFailed());

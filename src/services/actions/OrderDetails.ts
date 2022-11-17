@@ -24,7 +24,7 @@ export type TOrderDetailsActions =
   | ISendOrderFailedAction
   | ISendOrderSuccessAction;
 
-const rToken: any = localStorage.getItem("refreshToken");
+const rToken = localStorage.getItem("refreshToken");
 
 function sendOrderFailed(): ISendOrderFailedAction {
   return {

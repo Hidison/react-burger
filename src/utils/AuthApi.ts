@@ -1,14 +1,13 @@
 import { CustomResponse } from "../types";
+import { baseUrl } from "./constants";
 import { request } from "./utils";
-
-export const baseUrl = "https://norma.nomoreparties.space/api/auth";
 
 export const register = (
   email: string,
   password: string,
   name: string
 ): Promise<CustomResponse> => {
-  return request(`${baseUrl}/register`, {
+  return request(`${baseUrl}/auth/register`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -22,7 +21,7 @@ export const register = (
 };
 
 export const login = (email: string, password: string): Promise<CustomResponse> => {
-  return request(`${baseUrl}/login`, {
+  return request(`${baseUrl}/auth/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -35,7 +34,7 @@ export const login = (email: string, password: string): Promise<CustomResponse> 
 };
 
 export const updateToken = (token: string): Promise<CustomResponse> => {
-  return request(`${baseUrl}/token`, {
+  return request(`${baseUrl}/auth/token`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -47,7 +46,7 @@ export const updateToken = (token: string): Promise<CustomResponse> => {
 };
 
 export const logout = (token: string): Promise<CustomResponse> => {
-  return request(`${baseUrl}/logout`, {
+  return request(`${baseUrl}/auth/logout`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -59,7 +58,7 @@ export const logout = (token: string): Promise<CustomResponse> => {
 };
 
 export const getUser = (accessToken: string): Promise<CustomResponse> => {
-  return request(`${baseUrl}/user`, {
+  return request(`${baseUrl}/auth/user`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -73,7 +72,7 @@ export const updateUser = (
   email: string,
   name: string
 ): Promise<CustomResponse> => {
-  return request(`${baseUrl}/user`, {
+  return request(`${baseUrl}/auth/user`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",

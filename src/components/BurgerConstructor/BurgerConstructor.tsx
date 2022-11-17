@@ -111,6 +111,7 @@ const BurgerConstructor: FC<IBurgerConstructor> = ({ handleOpenModal }) => {
     <section className={`${BurgerConstructorStyles.BurgerConstructor} mt-25`}>
       <ul
         className={`${BurgerConstructorStyles.BurgerConstructor__list}`}
+        id="list__bun_top"
         ref={dropTarget}
         style={{ opacity: opacityBun }}
       >
@@ -131,6 +132,7 @@ const BurgerConstructor: FC<IBurgerConstructor> = ({ handleOpenModal }) => {
       <MyScrollbar height={"464px"}>
         <ul
           ref={dropTargetMain}
+          id="list__main"
           className={`${BurgerConstructorStyles.BurgerConstructor__list}`}
           style={{ opacity: opacityMain, padding: "0" }}
         >
@@ -156,6 +158,7 @@ const BurgerConstructor: FC<IBurgerConstructor> = ({ handleOpenModal }) => {
       </MyScrollbar>
       <ul
         className={`${BurgerConstructorStyles.BurgerConstructor__list}`}
+        id="list__bun_bottom"
         ref={dropTargetDown}
         style={{ opacity: opacityBun }}
       >
